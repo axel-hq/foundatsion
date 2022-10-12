@@ -1,0 +1,11 @@
+{  "compilerOptions":
+   {  "strict": true
+   ,  "lib": ["es2019"]
+   ,  "newLine": "lf"
+   ,  "target": "es2019"
+   ,  "module": "es6"
+   ,  "moduleResolution": "node"
+   ,  "emitDeclarationOnly": false
+   }
+   ,  "include": ["src/**/*.ts"],
+}

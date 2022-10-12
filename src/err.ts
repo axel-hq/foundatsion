@@ -1,18 +1,15 @@
-const x = typeof window;
-type all = typeof x;
+import {text} from "./text";
 
-type einp = string | TSFoundationError | Error;
+type error_input = string | FoundatsionError | Error;
 
-type lent = string | lent[];
+type processed_input = string | processed_input[];
 
-export class TSFoundationError extends Error {
-   lines: lent[];
-   /**
-    * Use `"\n"` to indicate a separate line.
-    */
-   constructor (...msg: einp[]) {
-      const thisdotlines: lent[] = [];
-      let linebuffer: string | null = null;
+export class FoundatsionError extends Error {
+   lines: processed_input[];
+   /** Use `"\n"` to indicate a separate line. */
+   constructor (...msg: error_input[]) {
+      const thisꓸlines: processed_input[] = [];
+      let working_line: string | null = null;
       for (let e of msg) {
          if (typeof e === "string") {
             for (
@@ -22,35 +19,50 @@ export class TSFoundationError extends Error {
                e = e.slice(idx + 1))
             {
                const line = e.slice(0, idx);
-               if (linebuffer === null) {}
-               else {
-                  thisdotlines.push(linebuffer);
+               if (working_line === null) {
+                  thisꓸlines.push(line);
+               } else {
+                  working_line += ` ${line}`;
+                  thisꓸlines.push(line);
+                  working_line = null;
                }
-               linebuffer = line;
+               // at the end of this loop, linebuffer should always be null
+               // but if this loop doesn't run it might not be null
             }
-            // from here on out, e doesn't contain any newline
+            // from here on out, e doesn't contain any newlines
             // there might not be anything left in e if it ended with a newline
             if (e.length > 0) {
-               if (linebuffer === null) {
-                  linebuffer = e;
+               if (working_line === null) {
+                  working_line = e;
                } else {
-                  linebuffer += ` ${e}`;
+                  working_line += ` ${e}`;
                }
             }
             continue;
          }
-         if (e instanceof TSFoundationError) {
-            if (linebuffer === null) {}
+         if (e instanceof FoundatsionError) {
+            if (working_line === null) {}
             else {
-               thisdotlines.push(linebuffer);
+               thisꓸlines.push(working_line);
+               working_line = null;
             }
-            thisdotlines.push(e.lines);
+            /*
+            TSFoundationError:
+            > blah blah blah
+            > blah blah blah
+            > TSFoundationError
+            > > other stuff here
+            > > other stuff here
+            */
+            thisꓸlines.push(e.name);
+            thisꓸlines.push(e.lines);
             continue;
          }
          if (e instanceof Error) {
-            if (linebuffer === null) {}
+            if (working_line === null) {}
             else {
-               thisdotlines.push(linebuffer);
+               thisꓸlines.push(working_line);
+               working_line = null;
             }
             const sublines = [e.name];
             let msg = e.message;
@@ -67,71 +79,37 @@ export class TSFoundationError extends Error {
             if (msg.length > 0) {
                sublines.push(msg);
             }
-            thisdotlines.push(sublines);
+            thisꓸlines.push(e.name);
+            thisꓸlines.push(sublines);
          }
       }
-      super(lines.join("\n"));
+
+      super(FoundatsionError.processed_input_to_string(thisꓸlines));
+
+      // :scunge:
+      this.lines = thisꓸlines;
    }
-}
 
-new TSFoundationError(
-   "this is on the first line",
-   "this is still on the first line\n",
-   "this is on the second line",
-   "this i"
-)
+   static processed_input_to_lines(l: processed_input): string[] {
+      if (typeof l === "string") {
+         return text.wrap80(l);
+      } else {
+         const lines: string[] = [];
+         for (const sub of l) {
+            for (const subsub of FoundatsionError.processed_input_to_lines(sub)) {
+               lines.push(`> ${subsub}`);
+            }
+         }
+         return lines;
+      }
+   }
 
-function wrap60(s: string): string[] {
-	const lines = [];
-	while (s.length > 60) {
-		lines.push(`${s.slice(0, 59)}-`);
-		s = s.slice(59);
-	}
-	return lines;
-}
-
-export namespace debug {
-	export function show(val: any): string {
-		if (typeof val === "string") {
-			return `"${val}"`;
-		}
-		return `${val}`;
-	}
-}
-
-export class AxelError extends Error {
-	#lines: string[];
-	constructor (...entries: unknown[]) {
-		const lines: string[] = [""];
-		for (const e of entries) {
-			if (e instanceof AxelError) {
-				for (const subline of e.#lines) {
-					lines.push(`> > ${subline}`);
-				}
-				continue;
-			}
-	
-			if (e instanceof Error) {
-				lines.push(
-					`> ${e.name}:`,
-					...wrap60(e.message).map(v => `> > ${v}`),
-					...(e.stack ?? "").split("\n").map(v => `> > ${v}`),
-				);
-				continue;
-			}
-	
-			if (true) {
-				lines.push(`> ${e}`);
-				continue;
-			}
-		}
-		super(lines.join("\n"));
-		this.#lines = lines;
-	}
-}
-
-export class AxelTypeError extends AxelError {
-	constructor (...lines: unknown[]) {
-		super(...lines);
-	}
+   static processed_input_to_string(l: processed_input[]): string {
+      if (l.length === 0) {
+         return "";
+      } else {
+         const lines = FoundatsionError.processed_input_to_lines(l);
+         return `\n${lines.join("\n")}`;
+      }
+   }
 }

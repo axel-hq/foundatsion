@@ -1,1 +1,22 @@
-{}
+{
+	"name": "foundatsion",
+	"version": "0.0.0",
+	"repository": "git@github.com:axel-hq/foundatsion.git",
+	"contributors": [
+		{
+			"name": "Cole Gannon",
+			"email": "cole@axel.dev"
+		},
+		{
+			"name": "Marcus Luebke",
+			"email": "marcus@axel.dev"
+		}
+	],
+	"devDependencies": {
+		"@typescript-eslint/eslint-plugin": "^5.30.5",
+		"@typescript-eslint/parser": "^5.30.5",
+		"eslint": "^8.22.0",
+		"eslint-plugin-unused-imports": "^2.0.0",
+		"typescript": "^4.6.4"
+	}
+}

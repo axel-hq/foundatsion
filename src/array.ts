@@ -1,50 +1,56 @@
-import {debug, AxelTypeError} from "../err";
-import * as unsound from "../foundation/unsound";
-import * as reflect from "./reflect";
+import {FoundatsionError} from "./err";
+import {object} from "./object";
+import {rtti} from "./rtti";
 
 export type array = unknown[];
-export const typename = "array";
+export namespace array {
+   export const name = "array";
 
-export function is(u: unknown): u is array {
-	return Array.isArray(u);
-}
+   export function is(u: unknown): u is array {
+      return Array.isArray(u);
+   }
 
-export function assert(u: unknown): asserts u is array {
-	if (Array.isArray(u)) {}
-	else {
-		throw new AxelTypeError(
-			"Tried asserting that value was array but failed!",
-			`typeof value = ${debug.show(typeof u)}`,
-			`value = ${debug.show(u)}`,
-		);
-	}
-}
+   export function assert(u: unknown): asserts u is array {
+      if (!is(u)) {
+         throw new FoundatsionError(
+            "Tried asserting that value was array but failed!\n",
+            `typeof value = "${typeof u}`,
+            `value = ${u}`,
+         );
+      }
+   }
 
-export type singleton = [unknown];
+   export type typed<t extends rtti> =
+      & (t extends rtti.has_name ? rtti.has_name : {})
+      & (t extends rtti.has_is<infer i> ? rtti.has_is<i[]> : {})
+      & (t extends rtti.has_assert<infer i> ? rtti.has_assert<i[]> : {})
 
-export namespace singleton {
-	export const typename = "singleton";
-	export function is(u: unknown): u is singleton {
-		return Array.isArray(u) && u.length === 1;
-	}
-	export function assert(u: unknown): asserts u is singleton {
-		if (Array.isArray(u)) {}
-		else {
-			throw new AxelTypeError(
-				"Tried asserting that value was array but failed!",
-				`typeof value = ${debug.show(typeof u)}`,
-				`value = ${debug.show(u)}`,
-			);
-		}
-		if (u.length === 1) {}
-		else {
-			throw new AxelTypeError(
-				"Tried asserting that value was singleton but failed!",
-				`typeof value = ${debug.show(typeof u)}`,
-				`value = ${debug.show(u)}`,
-			);
-		}
-	}
+   export function typed<t extends rtti>(t: t): typed<t> {
+      let name: {};
+      if (object.has_key(t, "name")) {
+         name = {name: `${t.name} array`};
+      } else {
+         name = {};
+      }
+
+      let is: {};
+      if (object.has_key(t, "is")) {
+         is = {
+            is(u: unknown): boolean {
+               if (!array.is(u)) return false;
+               for (const elem of u) {
+                  if (t.is(elem)) {}
+                  else {
+                     return false;
+                  }
+               }
+               return true;
+            }
+         }
+      } else {
+         
+      }
+   }
 }
 
 // sufferage
