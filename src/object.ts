@@ -24,6 +24,7 @@ export namespace object {
       }
    }
 
+
    export function has_key
    <o extends {}, k extends string>
       (o: o, k: k):
@@ -47,10 +48,7 @@ export namespace object {
       (o: o, k: k, t: rtti.has_is<t>):
          o is o & {[_ in k]: t}
    {
-      if (has_key(o, k))
-      if (t.is(o[k]))
-         return true;
-      return false;
+      return has_key(o, k) && t.is(o[k]);
    }
 
    /** Assert that an object has a property of type T. */

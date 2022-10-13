@@ -35,6 +35,7 @@ export namespace array {
 
       let is: {};
       if (object.has_key(t, "is")) {
+         t
          is = {
             is(u: unknown): boolean {
                if (!array.is(u)) return false;

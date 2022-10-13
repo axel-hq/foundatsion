@@ -8,5 +8,13 @@ export namespace rtti {
 }
 export type rtti<t = unknown> =
    & Partial<rtti.has_name>
-   & Partial<rtti.has_is<t>>
+   & (rtti.has_is<t> | {is: never})
    & Partial<rtti.has_assert<t>>;
+
+type q = {is: number} | {is: never};
+
+declare const q: q;
+
+if (q.is) {
+   
+}
