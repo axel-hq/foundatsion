@@ -1,4 +1,5 @@
-import {debug, AxelTypeError} from "../err";
+// tuple with length n
+simport {debug, AxelTypeError} from "../err";
 import * as reflect from "./reflect";
 import * as unsound from "./unsound";
 

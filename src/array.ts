@@ -1,6 +1,6 @@
 import {FoundatsionError} from "./err";
-import {object} from "./object";
-import {rtti} from "./rtti";
+import {object} from "./obj";
+import {rtti} from "./type_traits";
 
 export type array = unknown[];
 export namespace array {
@@ -27,14 +27,14 @@ export namespace array {
 
    export function typed<t extends rtti>(t: t): typed<t> {
       let name: {};
-      if (object.has_key(t, "name")) {
+      if (object.has_field(t, "name")) {
          name = {name: `${t.name} array`};
       } else {
          name = {};
       }
 
       let is: {};
-      if (object.has_key(t, "is")) {
+      if (object.has_field(t, "is")) {
          t
          is = {
             is(u: unknown): boolean {
@@ -55,12 +55,7 @@ export namespace array {
 }
 
 // sufferage
-export function typed
-<
-	C extends reflect.capabilities<any>,
-	T = C extends reflect.capabilities<infer inner> ? inner : never,
->
-(c: C):
+export function typed<t>(c: C):
 (
 	& reflect.view
 	& (C extends reflect.validator<T>     ? reflect.validator<T[], unknown>     : {})
