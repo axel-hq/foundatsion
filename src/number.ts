@@ -2,9 +2,11 @@ import {FoundatsionError} from "./err";
 
 export namespace number {
    export const name = "number";
+
    export function is(u: unknown): u is number {
       return typeof u === "number" && !Number.isNaN(u);
    }
+
    export function assert(u: unknown): asserts u is number {
       if (typeof u !== "number") {
          throw new FoundatsionError(

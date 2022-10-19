@@ -1,7 +1,6 @@
 // tuple with length n
-import {unsound} from "./unsound";
 import {FoundatsionError, unreachable} from "./err";
-import {identity, rtti} from "./type_traits";
+import {identity, rtti, unsound} from "./type_traits";
 import {array} from "./array";
 
 export const typename = "tuple";

@@ -1,7 +1,6 @@
 import {obj} from "./obj";
-import {rtti} from "./type_traits";
+import {rtti, unsound} from "./type_traits";
 import {any_fn} from "./any_fn";
-import {unsound} from "./unsound";
 import {FoundatsionError} from "./err";
 
 export type array = unknown[];

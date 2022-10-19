@@ -1,5 +1,4 @@
-import {rtti} from "./type_traits";
-import {unsound} from "./unsound";
+import {rtti, unsound} from "./type_traits";
 import {FoundatsionError} from "./err";
 
 export type obj = {[k in string]: unknown};
