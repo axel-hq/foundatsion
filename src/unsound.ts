@@ -1,4 +1,4 @@
-import {identity} from "./identity";
+import {identity} from "./type_traits";
 
 export namespace unsound {
    // When TypeScript is too stupid to figure out that something is definitely true

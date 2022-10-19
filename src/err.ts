@@ -1,6 +1,6 @@
 import {text} from "./text";
 
-type error_input = string | FoundatsionError | Error;
+type error_input = string | Error | FoundatsionError;
 
 type processed_input = string | processed_input[];
 
@@ -8,6 +8,7 @@ export class FoundatsionError extends Error {
    lines: processed_input[];
    /** Use `"\n"` to indicate a separate line. */
    constructor (...msg: error_input[]) {
+      // :scunge:
       const thisꓸlines: processed_input[] = [];
       let working_line: string | null = null;
       for (let e of msg) {
@@ -47,10 +48,10 @@ export class FoundatsionError extends Error {
                working_line = null;
             }
             /*
-            TSFoundationError:
+            FoundatsionError:
             > blah blah blah
             > blah blah blah
-            > TSFoundationError
+            > FoundatsionError
             > > other stuff here
             > > other stuff here
             */
@@ -86,8 +87,12 @@ export class FoundatsionError extends Error {
 
       super(FoundatsionError.processed_input_to_string(thisꓸlines));
 
-      // :scunge:
-      this.lines = thisꓸlines;
+      // just shut up ts
+      this.lines = [];
+      Object.defineProperty(this, "lines", {
+         enumerable: false,
+         value: thisꓸlines,
+      });
    }
 
    static processed_input_to_lines(l: processed_input): string[] {
@@ -112,4 +117,8 @@ export class FoundatsionError extends Error {
          return `\n${lines.join("\n")}`;
       }
    }
+}
+
+export function unreachable(): never {
+   throw unreachable;
 }

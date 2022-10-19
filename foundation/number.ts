@@ -1,4 +1,6 @@
-import {debug, AxelTypeError} from "../err";
+import {debug, FoundatsionError} from "./err";
+
+
 
 export const typename = "number";
 
@@ -8,7 +10,7 @@ export function is(u: unknown): u is number {
 
 export function assert(u: unknown): asserts u is number {
 	if (typeof u !== "number") {
-		throw new AxelTypeError(
+		throw new FoundatsionError(
 			"Tried asserting that value was number but failed!",
 			`typeof value was ${debug.show(typeof u)} but should've been "number"!`,
 		);
