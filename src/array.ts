@@ -3,13 +3,13 @@ import {any_fn} from "./any_fn";
 import {rtti, unsound} from "./type_traits";
 import {FoundatsionError} from "./err";
 
-export type array<r extends rtti.some> =
+type array_rtti_constructor<r extends rtti.some> =
    & rtti.has_name
    & (r extends rtti.has_is<infer t> ? rtti.has_is<t[]> : {})
    & (r extends rtti.has_assert<infer t> ? rtti.has_assert<t[]> : {});
 
-export function array<r extends rtti.some>(r: r): array<r> {
-   const name = {name: `${r.name} array`};
+export function array<r extends rtti.some>(r: r): array_rtti_constructor<r> {
+   const name = `array<${r.name}>`;
 
    let is = {};
    if (obj.field_is(r, "is", any_fn)) {
@@ -26,9 +26,9 @@ export function array<r extends rtti.some>(r: r): array<r> {
    if (obj.field_is(r, "assert", any_fn)) {
       assert = {
          assert(u: unknown): void {
-            if (Array.isArray(u)) {
+            if (!Array.isArray(u)) {
                throw new FoundatsionError(
-                  "Tried asserting that value was array but failed since",
+                  `Tried asserting that value was ${name} but failed since`,
                   "Array.isArray returned false.",
                );
             }
@@ -41,8 +41,8 @@ export function array<r extends rtti.some>(r: r): array<r> {
                } catch (e) {
                   if (e instanceof Error) {
                      throw new FoundatsionError(
-                        "While asserting that array was homogeneous with type",
-                        `${r.name}, an Error was thrown at index ${i}!`,
+                        `While asserting that value was ${name}, an Error was`,
+                        `thrown at index ${i}!`,
                         e,
                      );
                   } else {
@@ -54,5 +54,5 @@ export function array<r extends rtti.some>(r: r): array<r> {
       }
    }
 
-   return unsound.shut_up({...name, ...is, ...assert});
+   return unsound.shut_up({...{name}, ...is, ...assert});
 }

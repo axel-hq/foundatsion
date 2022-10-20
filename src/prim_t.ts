@@ -1,5 +1,5 @@
-import {FoundatsionError} from "./err";
 import {rtti} from "./type_traits";
+import {FoundatsionError} from "./err";
 
 type primitives =
    | null

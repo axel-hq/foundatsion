@@ -1,6 +1,6 @@
 // pleas optimize uwu
-export const identity = <t>(x: t): t => x;
 export const unit = <t>(_: t) => {};
+export const identity = <t>(x: t): t => x;
 
 export namespace unsound {
    // When TypeScript is too stupid to figure out that something is definitely true
@@ -41,7 +41,7 @@ export namespace rtti {
       r.assert(u);
    }
 
-   export function is_from_assert<a extends assert>(a: a): is {
+   export function is_from_assert(a: assert): is {
       function is(u: unknown): boolean {
          try {
             a(u);

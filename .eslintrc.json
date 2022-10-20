@@ -1,10 +1,6 @@
 {  "root": true
 ,  "parser": "@typescript-eslint/parser"
 ,  "plugins": ["@typescript-eslint", "unused-imports"]
-,  "overrides":
-   [  {"files": ["server/**/*.ts"], "parserOptions": {"project": "server/tsconfig.json"}}
-   ,  {"files": ["test/**/*.ts"], "parserOptions": {"project": "test/tsconfig.json"}}
-   ]
 ,  "rules":
    {  "block-spacing": "error"
    ,  "quote-props": ["error", "consistent-as-needed"]

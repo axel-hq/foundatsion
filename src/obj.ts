@@ -3,7 +3,7 @@ import {FoundatsionError} from "./err";
 
 export type obj = {[k in string]: unknown};
 export namespace obj {
-   export const name = "non-null obj";
+   export const name = "non-null object";
 
    export function is(u: unknown): u is obj {
       return typeof u === "object" && u !== null;
@@ -13,7 +13,7 @@ export namespace obj {
       if (typeof u !== "object") {
          throw new FoundatsionError(
             "Asserting that value was non-null object failed!\n",
-            `typeof value was "${typeof u}" when it should've been "object"`
+            `typeof value was "${typeof u}" when it should've been "object"`,
          );
       }
       if (u === null) {

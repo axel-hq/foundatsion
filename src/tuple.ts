@@ -1,76 +1,72 @@
-// tuple with length n
-import {FoundatsionError, unreachable} from "./err";
+// tuple with .length = n
 import {rtti, unsound} from "./type_traits";
-import {array} from "./array";
+import {FoundatsionError, unreachable} from "./err";
 
-export namespace tuple {
-   export const name = "tuple";
+type unwrap_rtti_tuple<rs extends readonly [...any[]]> =
+   rs extends readonly [infer head, ...infer tail]
+   ? head extends rtti<infer t>
+      ? [t, ...unwrap_rtti_tuple<tail>]
+      : never
+   : [];
 
-   export function assert_in
-   <tup extends tuple>
-      (tup: tup, name: string, elem: tup[number]):
-         asserts elem is tup[number]
-   {
-      if (tup.includes(elem)) {}
-      else {
-         throw new AxelTypeError(
-            `Could not assert that input is a ${name}!`,
-            `elem was ${debug.show(elem)} but should have been one of the following:`,
-            ...tup.map(e => `- ${debug.show(e)}`),
-         );
-      }
-   }
-
-   type unwrap_rtti<rs extends [...unknown[]]> =
-      rs extends [infer head, ...infer tail]
-         ? head extends rtti.all<infer t>
-            ? [t, ...unwrap_rtti<tail>]
-            : never
-         : [];
-
-   export function typed<rs extends [...rtti.all[]]>(rs: rs): rtti.all<unwrap_rtti<rs>> {
-      return {
-         name: `[${rs.join(", ")}]`,
-         is(u: unknown): u is unwrap_rtti<rs> {
-            if (!array.is(u)) {
+export function tuple<rs extends readonly [...rtti[]]>(...rs: rs): rtti<unwrap_rtti_tuple<rs>> {
+   const name = `tuple<${rs.map(r => r.name).join(", ")}>`
+   return {
+      name,
+      is(u: unknown): u is unwrap_rtti_tuple<rs> {
+         if (!Array.isArray(u)) {
+            return false;
+         }
+         unsound.is_now<unknown[]>(u);
+         if (u.length !== rs.length) {
+            return false;
+         }
+         for (let i = 0; i < rs.length; i++) {
+            const r = rs[i];
+            if (r === undefined) {
+               unreachable();
+            }
+            if (!r.is(u[i])) {
                return false;
             }
-            return rs.every((r, i) => r.is(u[i]));
-         },
-         assert(u: unknown): asserts u is unwrap_rtti<rs> {
+         }
+         return true;
+      },
+      assert(u: unknown): void {
+         if (!Array.isArray(u)) {
+            throw new FoundatsionError(
+               `Since ${name} extends array, tried asserting that value was`,
+               "array<unknown> but failed since Array.isArray returned false.",
+            );
+         }
+         unsound.is_now<unknown[]>(u);
+         if (u.length !== rs.length) {
+            throw new FoundatsionError(
+               `Tried asserting that value was ${name} but the lengths were`,
+               "different.\n",
+               `Wanted:   {length: ${rs.length}}\n`,
+               `Received: {length: ${u.length}}\n`,
+            );
+         }
+         for (let i = 0; i < rs.length; i++) {
+            const r = rs[i];
+            if (r === undefined) {
+               unreachable();
+            }
             try {
-               array.assert(u);
+               rtti.assert(r, u[i]);
             } catch (e) {
                if (e instanceof Error) {
-                  throw new FoundatsionError();
+                  throw new FoundatsionError(
+                     `While asserting that value was ${name}, an error was`,
+                     `thrown at index ${i}!`,
+                     e,
+                  );
                } else {
                   throw e;
                }
             }
-            for (let i = 0; i < u.length; i++) {
-               try {
-                  const elem = u[i];
-                  const rtti = rs[i];
-                  if (rtti === undefined) {
-                     unreachable();
-                  }
-                  unsound.fuck_off(rtti.assert)(elem);
-               } catch (e) {
-                  if (e instanceof Error) {
-                     throw new FoundatsionError(
-                        "While asserting that array was homogeneous with type",
-                        `${r.name}, an Error was thrown at index ${i}!`,
-                        e,
-                     );
-                  } else {
-                     throw e;
-                  }
-               }
-            }
          }
-      };
-      if (rs) {
-         
-      }
-   }
+      },
+   };
 }
