@@ -85,6 +85,11 @@ export class FoundatsionError extends Error {
          }
       }
 
+      if (working_line !== null) {
+         thisꓸlines.push(working_line);
+         working_line = null;
+      }
+
       super(FoundatsionError.processed_input_to_string(thisꓸlines));
 
       // just shut up ts

@@ -1,12 +1,10 @@
 // pleas optimize uwu
 export const identity = <t>(x: t): t => x;
-export const unit = <t>(x: t) => {};
-
-export type not_undefined<t> = t extends infer i | undefined ? i : t;
+export const unit = <t>(_: t) => {};
 
 export namespace unsound {
    // When TypeScript is too stupid to figure out that something is definitely true
-   export function is_now<t>(val: any): asserts val is t { void val }
+   export const is_now: {<t>(val: any): asserts val is t} = unit;
    export const cast: {<t>(val: any): t} = identity;
    // Blessing something makes it of that type by definition. Should really only
    // be used with newtypes.
@@ -21,13 +19,20 @@ export namespace unsound {
 }
 
 export namespace rtti {
-   export type has_name
-      = {name: string};
-   export type has_is<t = unknown>
-      = {is: {(u: unknown): u is t}};
-   export type has_assert<t = unknown>
-      = {assert: {(u: unknown): asserts u is t}};
-   export type all<t = unknown> = has_name & has_is<t> & has_assert<t>;
+   export type has_name = {name: string};
+
+   export type is<t = unknown> = {(u: unknown): u is t};
+   export type has_is<t = unknown> = {is: is<t>};
+
+   export type assert<t = unknown> = {(u: unknown): asserts u is t};
+   export type has_assert<t = unknown> = {assert: assert<t>};
+
+   export type some<t = unknown> = {
+      name: string;
+      is?: rtti.is<t>;
+      assert?: rtti.assert<t>;
+   };
+
    export function assert
       <r extends has_assert>
          (r: r, u: unknown):
@@ -36,9 +41,7 @@ export namespace rtti {
       r.assert(u);
    }
 
-   export function is_from_assert
-      <a extends has_assert["assert"]>(a: a): has_is["is"]
-   {
+   export function is_from_assert<a extends assert>(a: a): is {
       function is(u: unknown): boolean {
          try {
             a(u);
@@ -54,30 +57,8 @@ export namespace rtti {
       return unsound.shut_up(is);
    }
 }
+
 export type rtti<t = unknown> =
    & rtti.has_name
-   & Partial<rtti.has_is<t>>
-   & Partial<rtti.has_assert<t>>;
-
-// useful with satisfiable
-export type $extends<parent, child> = child extends parent ? true : false;
-
-/* BEGIN UNSATISFIABLE ********************************************************/
-// With advanced types, we can perform crazy amounts of computation on the type
-// system, after all, typescript's types are a typed lambda calculus.
-// With our types, we can perform our own typechecking. But wait. How do we
-// halt compilation to let the programmer know that something is wrong?
-// For that, we need to generate some sort of compile time error.
-// This is where unsatisfiable comes in.
-// Casting null to satisfies<true> works just fine but not satisfies<false>.
-// null as unsatisfiable generates a compile time error.
-
-// I use this extensively in protocols.ts
-// See action_class_matches and the void(null as action_class_matches...)
-
-declare const unsatisfiable: unique symbol;
-type unsatisfiable = typeof unsatisfiable;
-
-export type satisfies<cond extends boolean>
-   = cond extends true ? never : unsatisfiable;
-/* END UNSATISFIABLE **********************************************************/
+   & rtti.has_is<t>
+   & rtti.has_assert<t>;

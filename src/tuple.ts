@@ -1,24 +1,10 @@
 // tuple with length n
 import {FoundatsionError, unreachable} from "./err";
-import {identity, rtti, unsound} from "./type_traits";
+import {rtti, unsound} from "./type_traits";
 import {array} from "./array";
 
-export const typename = "tuple";
-
 export namespace tuple {
-   // export const to_array:
-   //    {
-   //       <tup extends tuple>(tup: tup):
-   //          tup extends tuple<infer t> ? readonly t[] : never
-   //    } = unsound.shut_up;
-
-   // export function includes
-   //    <t, tup extends tuple>
-   //       (tup: tup, elem: t):
-   //          elem is tup[number]
-   // {
-   //    return unsound.shut_up(tup.includes(elem));
-   // }
+   export const name = "tuple";
 
    export function assert_in
    <tup extends tuple>
