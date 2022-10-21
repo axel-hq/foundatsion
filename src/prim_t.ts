@@ -2,6 +2,7 @@ import {text} from "./text";
 import {rtti} from "./type_traits";
 import {FoundatsionError} from "./err";
 
+// NOTE(Marcus): should this be exported?
 type primitives =
    | null
    | undefined
