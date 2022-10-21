@@ -5,6 +5,9 @@ import {FoundatsionError, unreachable} from "./err";
 type union_rtti_tuple<rs extends [...rtti[]]> =
    rs[number] extends rtti<infer ts> ? ts : never;
 
+const unionization: unique symbol = Symbol("unionization");
+
+
 export function union<rs extends [...rtti[]]>(...rs: rs): rtti<union_rtti_tuple<rs>> {
    if (rs.length === 0) {
       return never;

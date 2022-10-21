@@ -1,4 +1,3 @@
-import {text} from "./text";
 import {FoundatsionError} from "./err";
 
 export namespace never {
