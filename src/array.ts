@@ -1,5 +1,4 @@
 import {obj} from "./obj";
-import {any_fn} from "./any_fn";
 import {rtti, unsound} from "./type_traits";
 import {FoundatsionError} from "./err";
 
@@ -12,7 +11,7 @@ export function array<r extends rtti.some>(r: r): array_rtti_constructor<r> {
    const name = `array<${r.name}>`;
 
    let is = {};
-   if (obj.field_is(r, "is", any_fn)) {
+   if (obj.field_is(r, "is", unsound.any_fn)) {
       is = {
          is(u: unknown): boolean {
             return true
@@ -23,12 +22,12 @@ export function array<r extends rtti.some>(r: r): array_rtti_constructor<r> {
    }
 
    let assert = {};
-   if (obj.field_is(r, "assert", any_fn)) {
+   if (obj.field_is(r, "assert", unsound.any_fn)) {
       assert = {
          assert(u: unknown): void {
             if (!Array.isArray(u)) {
                throw new FoundatsionError(
-                  `Tried asserting that value was ${name} but failed since`,
+                  `Tried asserting for ${name} but failed since`,
                   "Array.isArray returned false.",
                );
             }

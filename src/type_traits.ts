@@ -1,3 +1,5 @@
+import {FoundatsionError} from "./err";
+
 // pleas optimize uwu
 export const unit = <t>(_: t) => {};
 export const identity = <t>(x: t): t => x;
@@ -15,7 +17,25 @@ export namespace unsound {
    export const shut_up: {(non_cubist: any): never} = identity as never;
    // Same thing as above but for the "receiving" side of expressions. Arguments
    // have the right type but the function refuses em? fuck_off's your Go-To.
-   export const fuck_off: {(fookin_knacker: any): any} = identity as never;
+   export const fuck_off: {(stubborn: any): any} = identity as never;
+
+   export type any_fn = (...args: any[]) => unknown;
+   export namespace any_fn {
+      export const name = "any function";
+
+      export function is(u: unknown): u is any_fn {
+         return typeof u === "function";
+      }
+
+      export function assert(u: unknown): asserts u is any_fn {
+         if (typeof u !== "function") {
+            throw new FoundatsionError(
+               "Tried asserting for function but failed because",
+               `typeof value was "${typeof u}" instead of "function"!`,
+            );
+         }
+      }
+   }
 }
 
 export namespace rtti {

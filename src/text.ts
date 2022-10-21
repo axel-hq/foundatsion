@@ -13,6 +13,7 @@ export namespace text {
       }
       return lines;
    }
+
    export function stringify(u: unknown): string {
       switch (typeof u) {
       case "bigint": return `${u}n`;
@@ -21,7 +22,6 @@ export namespace text {
       case "string": return JSON.stringify(u);
       case "symbol": return `Symbol(${stringify(u.description)})`;
       case "undefined": return "undefined";
-
       case "function":
          if (u.name) {
             return "anonymous function";
@@ -31,8 +31,10 @@ export namespace text {
       case "object":
          if (Array.isArray(u)) {
             return `[${u.map(stringify).join(", ")}]`;
+         } else if (u === null) {
+            return "null";
          } else {
-            return "[object Object]";
+            return "object";
          }
       }
    }

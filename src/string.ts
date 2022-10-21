@@ -10,7 +10,7 @@ export namespace string {
    export function assert(u: unknown): asserts u is string {
       if (typeof u !== "string") {
          throw new FoundatsionError(
-            "Tried asserting that value was string but failed!",
+            "Tried asserting that value was string but failed!\n",
             `typeof value was "${typeof u}" but should've been "string"!`,
          );
       }

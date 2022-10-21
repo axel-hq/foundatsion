@@ -1,3 +1,4 @@
+import {text} from "./text";
 import {rtti} from "./type_traits";
 import {FoundatsionError} from "./err";
 
@@ -10,7 +11,8 @@ type primitives =
    | string
    | symbol;
 
-export function prim_t<v extends primitives>(v: v, name: string): rtti<v> {
+export function prim_t<v extends primitives>(v: v): rtti<v> {
+   const name = text.stringify(v);
    return {
       name,
       is(u: unknown): u is v {
@@ -19,7 +21,8 @@ export function prim_t<v extends primitives>(v: v, name: string): rtti<v> {
       assert(u: unknown): asserts u is v {
          if (v !== u) {
             throw new FoundatsionError(
-               ""
+               `Tried asserting that value was ${name} but they were not equal!\n`,
+               `Instead, received ${text.stringify(v)}`,
             );
          }
       }

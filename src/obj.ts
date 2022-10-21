@@ -3,7 +3,7 @@ import {FoundatsionError} from "./err";
 
 export type obj = {[k in string]: unknown};
 export namespace obj {
-   export const name = "non-null object";
+   export const name = "{}";
 
    export function is(u: unknown): u is obj {
       return typeof u === "object" && u !== null;
