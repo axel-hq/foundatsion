@@ -11,6 +11,6 @@ export {string} from "./string";
 export {symbol} from "./symbol";
 export {text} from "./text";
 export {tuple} from "./tuple";
-export {unit, identity, unsound, rtti} from "./type_traits";
+export {unit, identity, assert_extends, unsound, rtti} from "./type_traits";
 export {union} from "./union";
 export {unknown} from "./unknown";

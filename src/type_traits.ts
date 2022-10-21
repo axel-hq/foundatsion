@@ -4,6 +4,10 @@ import {FoundatsionError} from "./err";
 export const unit = <t>(_: t) => {};
 export const identity = <t>(x: t): t => x;
 
+declare const unsatisfiable: unique symbol;
+// NOTE(Marcus): idk if the type here should be never, unknown, or any
+export type assert_extends<child, parent> = child extends parent ? never : typeof unsatisfiable;
+
 export namespace unsound {
    // When TypeScript is too stupid to figure out that something is definitely true
    export const is_now: {<t>(val: any): asserts val is t} = unit;
