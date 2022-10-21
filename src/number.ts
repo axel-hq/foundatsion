@@ -10,14 +10,13 @@ export namespace number {
    export function assert(u: unknown): asserts u is number {
       if (typeof u !== "number") {
          throw new FoundatsionError(
-            "Tried asserting that value was number but failed!\n",
-            `typeof value was "${typeof u}" but should've been "number"!`,
+            "Tried asserting for number but failed.\n",
+            `typeof value was "${typeof u}" but should've been "number".`,
          );
       }
       if (Number.isNaN(u)) {
          throw new FoundatsionError(
-            "Tried asserting that value was number but failed",
-            "because the value was NaN.",
+            "Tried asserting for number but failed because the value was NaN.",
          );
       }
    }

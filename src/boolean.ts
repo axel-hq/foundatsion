@@ -10,7 +10,7 @@ export namespace boolean {
    export function assert(u: unknown): asserts u is boolean {
       if (typeof u !== "boolean") {
          throw new FoundatsionError(
-            "Tried asserting for boolean but failed because",
+            "Tried asserting for boolean but failed.\n",
             `typeof value was "${typeof u}" when it should've been "boolean".`,
          );
       }

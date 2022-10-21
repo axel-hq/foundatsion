@@ -10,8 +10,7 @@ export namespace never {
 
    export function assert(_: unknown): _ is never {
       throw new FoundatsionError(
-         `Tried to assert that ${text.stringify(_)} was never.\n`,
-         "That's Absurd.",
+         `Tried asserting for never but that's absurd!`,
       );
    }
 }

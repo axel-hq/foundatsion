@@ -1,3 +1,4 @@
+import {text} from "./text";
 import {rtti, unsound} from "./type_traits";
 import {FoundatsionError} from "./err";
 
@@ -12,14 +13,13 @@ export namespace obj {
    export function assert(u: unknown): asserts u is obj {
       if (typeof u !== "object") {
          throw new FoundatsionError(
-            "Asserting that value was non-null object failed!\n",
-            `typeof value was "${typeof u}" when it should've been "object"`,
+            "Asserting for {} failed!\n",
+            `typeof value was "${typeof u}" when it should've been "object".`,
          );
       }
       if (u === null) {
          throw new FoundatsionError(
-            "Asserting that value was non-null object failed",
-            "because the value was null!",
+            "Asserting for {} failed because the value was null.",
          );
       }
    }
@@ -45,7 +45,7 @@ export namespace obj {
             throw new FoundatsionError(
                // JSON.stringify(k) is used to escape quotes and other weird
                // characters within k.
-               `While asserting that value was of type {[${JSON.stringify(k)}]: ${t.name}}`,
+               `While asserting for {[${text.stringify(k)}]: ${t.name}}`,
                "an error was thrown:",
                e,
             );

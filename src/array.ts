@@ -41,7 +41,7 @@ export function array<r extends rtti.some>(r: r): array_rtti_constructor<r> {
                   if (e instanceof Error) {
                      throw new FoundatsionError(
                         `While asserting that value was ${name}, an Error was`,
-                        `thrown at index ${i}!`,
+                        `thrown at index ${i}:`,
                         e,
                      );
                   } else {

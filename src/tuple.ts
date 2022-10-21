@@ -35,14 +35,14 @@ export function tuple<rs extends readonly [...rtti[]]>(...rs: rs): rtti<unwrap_r
       assert(u: unknown): void {
          if (!Array.isArray(u)) {
             throw new FoundatsionError(
-               `Since ${name} extends array, tried asserting that value was`,
+               `Since ${name} extends array<unknown>, tried asserting for`,
                "array<unknown> but failed since Array.isArray returned false.",
             );
          }
          unsound.is_now<unknown[]>(u);
          if (u.length !== rs.length) {
             throw new FoundatsionError(
-               `Tried asserting that value was ${name} but the lengths were`,
+               `Tried asserting for ${name} but the lengths were`,
                "different.\n",
                `Wanted:   {length: ${rs.length}}\n`,
                `Received: {length: ${u.length}}\n`,
@@ -58,8 +58,8 @@ export function tuple<rs extends readonly [...rtti[]]>(...rs: rs): rtti<unwrap_r
             } catch (e) {
                if (e instanceof Error) {
                   throw new FoundatsionError(
-                     `While asserting that value was ${name}, an error was`,
-                     `thrown at index ${i}!`,
+                     `While asserting for ${name}, an error was`,
+                     `thrown at index ${i}:`,
                      e,
                   );
                } else {
