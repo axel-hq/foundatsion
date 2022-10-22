@@ -10,11 +10,11 @@ export type assert_extends<child, parent> = child extends parent ? never : typeo
 
 export namespace unsound {
    // When TypeScript is too stupid to figure out that something is definitely true
-   export const is_now: {<t>(val: any): asserts val is t} = unit;
    export const cast: {<t>(val: any): t} = identity;
    // Blessing something makes it of that type by definition. Should really only
    // be used with newtypes.
    export const bless = cast;
+   export const cast_any: {<t>(val: any): asserts val is t} = unit;
    // When you need the type system to shut up and let you do what you want with
    // a value. Usually you want to use this one from the "insertion" side of
    // expressions.

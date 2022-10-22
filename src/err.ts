@@ -6,7 +6,13 @@ type processed_input = string | processed_input[];
 
 export class FoundatsionError extends Error {
    lines: processed_input[];
-   /** Use `"\n"` to indicate a separate line. */
+   /**
+    * Use `"\n"` to indicate a newline.
+    * Entries that do not end in newline will be concatenated with a space and
+    * the entry after it.
+    * You do not need to add a newline before Errors.
+    * One is added automatically.
+    */
    constructor (...msg: error_input[]) {
       // :scunge:
       const thisꓸlines: processed_input[] = [];

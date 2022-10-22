@@ -14,13 +14,19 @@ export namespace text {
       return lines;
    }
 
+   /**
+    * Whenever you're printing something from the user, you should probably just
+    * use this.
+    *
+    * Don't plug `typeof x` into this, that'd be silly.
+    */
    export function stringify(u: unknown): string {
       switch (typeof u) {
-      case "bigint": return `${u}n`;
+      case "bigint":  return `${u}n`;
       case "boolean": return `${u}`;
-      case "number": return `${u}`;
-      case "string": return JSON.stringify(u);
-      case "symbol": return `Symbol(${stringify(u.description)})`;
+      case "number":  return `${u}`;
+      case "string":  return JSON.stringify(u);
+      case "symbol":  return `Symbol(${stringify(u.description)})`;
       case "undefined": return "undefined";
       case "function":
          if (u.name) {

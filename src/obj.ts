@@ -1,10 +1,13 @@
 import {text} from "./text";
-import {rtti, unsound} from "./type_traits";
+import {identity, rtti, unsound} from "./type_traits";
 import {FoundatsionError} from "./err";
 
 export type obj = {[k in string]: unknown};
 export namespace obj {
    export const name = "{}";
+
+   export const unlock: {<o extends {}>(o: o): o & obj}
+      = unsound.shut_up(identity);
 
    export function is(u: unknown): u is obj {
       return typeof u === "object" && u !== null;

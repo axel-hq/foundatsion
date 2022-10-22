@@ -1,3 +1,4 @@
+import {obj} from "./obj";
 import {never} from "./never";
 import {rtti, unsound} from "./type_traits";
 import {FoundatsionError, unreachable} from "./err";
@@ -5,8 +6,7 @@ import {FoundatsionError, unreachable} from "./err";
 type union_rtti_tuple<rs extends [...rtti[]]> =
    rs[number] extends rtti<infer ts> ? ts : never;
 
-const unionization: unique symbol = Symbol("unionization");
-
+const is_union: unique symbol = Symbol("unionization");
 
 export function union<rs extends [...rtti[]]>(...rs: rs): rtti<union_rtti_tuple<rs>> {
    if (rs.length === 0) {
@@ -23,7 +23,7 @@ export function union<rs extends [...rtti[]]>(...rs: rs): rtti<union_rtti_tuple<
    }
 
    const name = `${rs.map(r => r.name).join(" | ")}`;
-   return {
+   const full_rtti = {
       name,
       is(u: unknown): u is union_rtti_tuple<rs> {
          for (const r of rs) {
@@ -54,4 +54,5 @@ export function union<rs extends [...rtti[]]>(...rs: rs): rtti<union_rtti_tuple<
          );
       },
    }
+   obj.unlock(full_rtti)
 }
