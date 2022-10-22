@@ -1,7 +1,7 @@
 import {obj} from "./obj";
 import {never} from "./never";
 import {rtti, unsound} from "./type_traits";
-import {FoundatsionError, unreachable} from "./err";
+import {FoundatsionError, __unreachable} from "./err";
 
 type union_rtti_tuple<rs extends [...rtti[]]> =
    rs[number] extends rtti<infer ts> ? ts : never;
@@ -16,7 +16,7 @@ export function union<rs extends [...rtti[]]>(...rs: rs): rtti<union_rtti_tuple<
    if (rs.length === 1) {
       const r0 = rs[0];
       if (r0 === undefined) {
-         unreachable();
+         __unreachable();
       } else {
          return unsound.shut_up(r0);
       }

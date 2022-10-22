@@ -130,6 +130,6 @@ export class FoundatsionError extends Error {
    }
 }
 
-export function unreachable(): never {
-   throw unreachable;
+export function __unreachable(): never {
+   throw __unreachable;
 }

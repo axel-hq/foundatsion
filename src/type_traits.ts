@@ -2,25 +2,28 @@ import {FoundatsionError} from "./err";
 
 // pleas optimize uwu
 export const unit = <t>(_: t) => {};
+export const absurd = <t>(): t => 0 as never;
 export const identity = <t>(x: t): t => x;
 
-declare const unsatisfiable: unique symbol;
-// NOTE(Marcus): idk if the type here should be never, unknown, or any
-export type assert_extends<child, parent> = child extends parent ? never : typeof unsatisfiable;
-
 export namespace unsound {
-   // When TypeScript is too stupid to figure out that something is definitely true
+   /** Cast any value to type t. */
    export const cast: {<t>(val: any): t} = identity;
-   // Blessing something makes it of that type by definition. Should really only
-   // be used with newtypes.
+   /** `bless` is an alias for cast. Used for blessing newtypes only. */
    export const bless = cast;
-   export const cast_any: {<t>(val: any): asserts val is t} = unit;
-   // When you need the type system to shut up and let you do what you want with
-   // a value. Usually you want to use this one from the "insertion" side of
-   // expressions.
+   /** Changes the type of an identifier. */
+   export const assert: {<t>(val: any): asserts val is t} = unit;
+   /**
+    * Used for stubborn expressions. In general, you should use `unsound.cast`
+    * but in a pinch, this will do. Usually this is used from the "insertion" or
+    * "subtype" side of expressions.
+    */
    export const shut_up: {(non_cubist: any): never} = identity as never;
-   // Same thing as above but for the "receiving" side of expressions. Arguments
-   // have the right type but the function refuses em? fuck_off's your Go-To.
+   /**
+    * Similar to `unsound.shut_up` but for the receiving side of expressions.
+    * Sometimes you're putting the right types into the "wrong" function.
+    * Tell TypeScript to fuck off and let you use the function because *you*
+    * know it's right. #informal-verification-winners.
+    */
    export const fuck_off: {(stubborn: any): any} = identity as never;
 
    export type any_fn = {(...args: any[]): unknown};
@@ -34,7 +37,7 @@ export namespace unsound {
       export function assert(u: unknown): asserts u is any_fn {
          if (typeof u !== "function") {
             throw new FoundatsionError(
-               "Tried asserting for function but failed.",
+               "Tried asserting for function but failed.\n",
                `typeof value was "${typeof u}" when it should've been "function".`,
             );
          }
@@ -86,3 +89,6 @@ export type rtti<t = unknown> =
    & rtti.has_name
    & rtti.has_is<t>
    & rtti.has_assert<t>;
+
+export const ct_check_extends: {<super_t>(sub: super_t): void} = unit;
+export const ct_assert_t: {<t extends true>(): t} = absurd;

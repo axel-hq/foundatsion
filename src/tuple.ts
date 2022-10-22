@@ -1,6 +1,6 @@
 // tuple with .length = n
 import {rtti, unsound} from "./type_traits";
-import {FoundatsionError, unreachable} from "./err";
+import {FoundatsionError, __unreachable} from "./err";
 
 type unwrap_rtti_tuple<rs extends readonly [...any[]]> =
    rs extends readonly [infer head, ...infer tail]
@@ -17,14 +17,14 @@ export function tuple<rs extends readonly [...rtti[]]>(...rs: rs): rtti<unwrap_r
          if (!Array.isArray(u)) {
             return false;
          }
-         unsound.is_now<unknown[]>(u);
+         unsound.assert<unknown[]>(u);
          if (u.length !== rs.length) {
             return false;
          }
          for (let i = 0; i < rs.length; i++) {
             const r = rs[i];
             if (r === undefined) {
-               unreachable();
+               __unreachable();
             }
             if (!r.is(u[i])) {
                return false;
@@ -51,7 +51,7 @@ export function tuple<rs extends readonly [...rtti[]]>(...rs: rs): rtti<unwrap_r
          for (let i = 0; i < rs.length; i++) {
             const r = rs[i];
             if (r === undefined) {
-               unreachable();
+               __unreachable();
             }
             try {
                rtti.assert(r, u[i]);

@@ -1,7 +1,7 @@
 export {array} from "./array";
 export {bigint} from "./bigint";
 export {boolean} from "./boolean";
-export {FoundatsionError, unreachable} from "./err";
+export {FoundatsionError, __unreachable as unreachable} from "./err";
 export {never} from "./never";
 export {newtype, unwrap} from "./newtype";
 export {number} from "./number";

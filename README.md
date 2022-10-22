@@ -1,3 +1,4 @@
 # foundatsion
 
-*Just pronounce it "foundation", OK?*
+*TypeScript Runtime Type-Checking Foundation*
+
