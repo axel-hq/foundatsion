@@ -22,7 +22,7 @@
       }
    ],
    "files": ["bin"],
-   "types": "./bin/dts/mod.ts",
+   "types": "./bin/dts/mod.d.ts",
    "exports": {
       "import": "./bin/es2020/mod.js",
       "require": "./bin/commonjs/mod.js"

@@ -4,7 +4,7 @@ export {array} from "./array";
 export {bigint} from "./bigint";
 export {boolean} from "./boolean";
 export {dyn_record} from "./dyn_record";
-export {FoundatsionError} from "./err";
+export {FoundatsionError as Err} from "./err";
 export {never} from "./never";
 export {number} from "./number";
 export {prim_t} from "./prim_t";

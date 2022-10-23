@@ -21,3 +21,9 @@ bin/%: $(all_deps)
 
 bin/dts: $(all_deps)
 	tsc --module es6 --emitDeclarationOnly --declaration --declarationDir $@
+
+publish: build
+	npm publish --dry-run
+
+publish!: build
+	npm publish --no-git-tag-version --access public

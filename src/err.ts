@@ -28,9 +28,12 @@ export class FoundatsionError extends Error {
                const line = e.slice(0, idx);
                if (working_line === null) {
                   thisꓸlines.push(line);
+               } else if (line === "") {
+                 thisꓸlines.push(working_line);
+                 working_line = null; 
                } else {
                   working_line += ` ${line}`;
-                  thisꓸlines.push(line);
+                  thisꓸlines.push(working_line);
                   working_line = null;
                }
                // at the end of this loop, linebuffer should always be null
@@ -61,7 +64,7 @@ export class FoundatsionError extends Error {
             > > other stuff here
             > > other stuff here
             */
-            thisꓸlines.push(e.name);
+            thisꓸlines.push(`${e.name}:`);
             thisꓸlines.push(e.lines);
             continue;
          }
@@ -86,7 +89,7 @@ export class FoundatsionError extends Error {
             if (msg.length > 0) {
                sublines.push(msg);
             }
-            thisꓸlines.push(e.name);
+            thisꓸlines.push(`${e.name}:`);
             thisꓸlines.push(sublines);
          }
       }
@@ -100,6 +103,7 @@ export class FoundatsionError extends Error {
 
       // just shut up ts
       this.lines = [];
+      this.name = "FoundatsionError";
       Object.defineProperty(this, "lines", {
          configurable: false,
          enumerable: false,
