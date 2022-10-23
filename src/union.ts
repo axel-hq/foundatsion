@@ -1,12 +1,20 @@
-import {obj} from "./obj";
 import {never} from "./never";
-import {rtti, unsound} from "./type_traits";
-import {FoundatsionError, __unreachable} from "./err";
+import {FoundatsionError} from "./err";
+import {rtti, unsound, __unreachable} from "./type_traits";
 
 type union_rtti_tuple<rs extends [...rtti[]]> =
    rs[number] extends rtti<infer ts> ? ts : never;
 
-const is_union: unique symbol = Symbol("unionization");
+const union_rtti_ary: unique symbol = Symbol();
+type union_rtti_object = rtti & {[union_rtti_ary]: rtti[]};
+namespace union_rtti_object {
+   export function is(u: unknown): u is union_rtti_object {
+      // This is really not good enough to prove that u is union_rtti_object.
+      // But if someone else gets a hold of that symbol, that's not really
+      // something that I can prevent.
+      return Object.hasOwnProperty.call(u, union_rtti_ary);
+   }
+}
 
 export function union<rs extends [...rtti[]]>(...rs: rs): rtti<union_rtti_tuple<rs>> {
    if (rs.length === 0) {
@@ -22,11 +30,20 @@ export function union<rs extends [...rtti[]]>(...rs: rs): rtti<union_rtti_tuple<
       }
    }
 
+   const non_union_rs: rtti[] = [];
+   for (const r of rs) {
+      if (union_rtti_object.is(r)) {
+         non_union_rs.push(...r[union_rtti_ary])
+      } else {
+         non_union_rs.push(r);
+      }
+   }
+
    const name = `${rs.map(r => r.name).join(" | ")}`;
-   const full_rtti = {
+   const new_rtti = {
       name,
       is(u: unknown): u is union_rtti_tuple<rs> {
-         for (const r of rs) {
+         for (const r of non_union_rs) {
             if (r.is(u)) {
                return true;
             }
@@ -35,7 +52,7 @@ export function union<rs extends [...rtti[]]>(...rs: rs): rtti<union_rtti_tuple<
       },
       assert(u: unknown): void {
          const errs: Error[] = [];
-         for (const r of rs) {
+         for (const r of non_union_rs) {
             try {
                r.assert(u);
                return;
@@ -54,5 +71,11 @@ export function union<rs extends [...rtti[]]>(...rs: rs): rtti<union_rtti_tuple<
          );
       },
    }
-   obj.unlock(full_rtti)
+   Object.defineProperty(new_rtti, union_rtti_ary, {
+      configurable: false,
+      enumerable: false,
+      value: non_union_rs,
+      writable: false,
+   });
+   return new_rtti;
 }

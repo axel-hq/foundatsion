@@ -1,8 +1,11 @@
 import {FoundatsionError} from "./err";
 
+export function __unreachable(): never {
+   throw __unreachable;
+}
 // pleas optimize uwu
-export const unit = <t>(_: t) => {};
-export const absurd = <t>(): t => 0 as never;
+export const unit = <t>(_?: t) => {};
+export const absurd = <t>(_: never): t => __unreachable();
 export const identity = <t>(x: t): t => x;
 
 export namespace unsound {
@@ -91,4 +94,4 @@ export type rtti<t = unknown> =
    & rtti.has_assert<t>;
 
 export const ct_check_extends: {<super_t>(sub: super_t): void} = unit;
-export const ct_assert_t: {<t extends true>(): t} = absurd;
+export const ct_assert_t: {<_ extends true>(): void} = unit;

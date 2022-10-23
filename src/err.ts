@@ -101,8 +101,10 @@ export class FoundatsionError extends Error {
       // just shut up ts
       this.lines = [];
       Object.defineProperty(this, "lines", {
+         configurable: false,
          enumerable: false,
          value: thisꓸlines,
+         writable: false,
       });
    }
 
@@ -128,8 +130,4 @@ export class FoundatsionError extends Error {
          return `\n${lines.join("\n")}`;
       }
    }
-}
-
-export function __unreachable(): never {
-   throw __unreachable;
 }

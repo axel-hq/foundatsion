@@ -1,17 +1,32 @@
 {
    "name": "@axel-hq/foundatsion",
-   "version": "0.0.0",
+   "version": "0.0.1",
+   "description": "TypeScript runtime type checking foundation",
+   "homepage": "https://github.com/axel-hq/foundatsion#readme",
    "repository": "git@github.com:axel-hq/foundatsion.git",
+   "bugs": {
+      "url" : "https://github.com/axel-hq/foundatsion/issues",
+      "email" : "marcus@axel.dev"
+   },
+   "license": "ISC",
+   "author": {
+      "name": "Cole Gannon",
+      "email": "cole@axel.dev",
+      "url": "https://github.com/AS-Pando"
+   },
    "contributors": [
       {
-         "name": "Cole Gannon",
-         "email": "cole@axel.dev"
-      },
-      {
          "name": "Marcus Luebke",
-         "email": "marcus@axel.dev"
+         "email": "marcus@axel.dev",
+         "url": "https://github.com/rhiz0-eth"
       }
    ],
+   "files": ["bin"],
+   "types": "./bin/dts/mod.ts",
+   "exports": {
+      "import": "./bin/es2020/mod.js",
+      "require": "./bin/commonjs/mod.js"
+   },
    "devDependencies": {
       "@typescript-eslint/eslint-plugin": "^5.30.5",
       "@typescript-eslint/parser": "^5.30.5",

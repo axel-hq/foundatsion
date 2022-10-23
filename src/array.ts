@@ -1,4 +1,4 @@
-import {obj} from "./obj";
+import {dyn_record} from "./dyn_record";
 import {rtti, unsound} from "./type_traits";
 import {FoundatsionError} from "./err";
 
@@ -11,7 +11,7 @@ export function array<r extends rtti.some>(r: r): array_rtti_constructor<r> {
    const name = `array<${r.name}>`;
 
    let is = {};
-   if (obj.field_is(r, "is", unsound.any_fn)) {
+   if (dyn_record.field_is(r, "is", unsound.any_fn)) {
       is = {
          is(u: unknown): boolean {
             return true
@@ -22,7 +22,7 @@ export function array<r extends rtti.some>(r: r): array_rtti_constructor<r> {
    }
 
    let assert = {};
-   if (obj.field_is(r, "assert", unsound.any_fn)) {
+   if (dyn_record.field_is(r, "assert", unsound.any_fn)) {
       assert = {
          assert(u: unknown): void {
             if (!Array.isArray(u)) {
@@ -31,7 +31,7 @@ export function array<r extends rtti.some>(r: r): array_rtti_constructor<r> {
                   "Array.isArray returned false.",
                );
             }
-            unsound.is_now<unknown[]>(u);
+            unsound.assert<unknown[]>(u);
 
             for (let i = 0; i < u.length; i++) {
                try {

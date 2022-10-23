@@ -26,7 +26,7 @@ export namespace real {
       }
       if (!Number.isFinite(u)) {
          throw new FoundatsionError(
-            `Tried asserting for real but the ${text.stringify(u)} is not finite.`,
+            `Tried asserting for real but ${text.stringify(u)} is not finite.`,
          );
       }
    }

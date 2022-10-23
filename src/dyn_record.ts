@@ -1,34 +1,37 @@
 import {text} from "./text";
-import {identity, rtti, unsound} from "./type_traits";
 import {FoundatsionError} from "./err";
+import {identity, rtti, unit, unsound} from "./type_traits";
 
-export type obj = {[k in string]: unknown};
-export namespace obj {
-   export const name = "{}";
+export type dyn_record = {[k in string]: unknown};
 
-   export const unlock: {<o extends {}>(o: o): o & obj}
-      = unsound.shut_up(identity);
+export const cast_record_to_dyn_record: {<o extends {}>(o: o): o & dyn_record}
+   = unsound.shut_up(identity);
 
-   export function is(u: unknown): u is obj {
+export namespace dyn_record {
+   export const name = "dyn_record";
+
+   export function is(u: unknown): u is dyn_record {
       return typeof u === "object" && u !== null;
    }
 
-   export function assert(u: unknown): asserts u is obj {
+   export function assert(u: unknown): asserts u is dyn_record {
       if (typeof u !== "object") {
          throw new FoundatsionError(
-            "Asserting for {} failed!\n",
+            `Asserting for ${name} failed!\n`,
             `typeof value was "${typeof u}" when it should've been "object".`,
          );
       }
       if (u === null) {
          throw new FoundatsionError(
-            "Asserting for {} failed because the value was null.",
+            `Asserting for ${name} failed because the value was null.`,
          );
       }
    }
 
+   export const assert_from_record: {(o: {}): asserts o is dyn_record} = unit;
+
    export function field_is
-      <t, k extends string, o extends obj>
+      <t, k extends string, o extends dyn_record>
          (o: o, k: k, t: rtti.has_is<t>):
             o is o & {[_ in k]: t}
    {
@@ -37,7 +40,7 @@ export namespace obj {
 
    /** Assert that an object has a property of type t. */
    export function assert_field_is
-      <k extends string, o extends obj, t>
+      <k extends string, o extends dyn_record, t>
          (o: o, k: k, t: rtti.has_name & rtti.has_assert<t>):
             asserts o is o & {[_ in k]: t}
    {
@@ -62,7 +65,7 @@ export namespace obj {
       Object.freeze(obj);
    }
 
-   export function keys<o extends obj>(o: o): (keyof o)[] {
+   export function keys<o extends dyn_record>(o: o): (keyof o)[] {
       const ks = Object.keys(o);
       return unsound.shut_up(ks);
    }

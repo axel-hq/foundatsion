@@ -8,12 +8,12 @@
    ,  "strict": true
    ,  "useUnknownInCatchVariables": true
    // modules
-   ,  "module": "es2020"
+   // ,  "module": "es2020"
    ,  "moduleResolution": "node"
    // emit
    ,  "newLine": "lf"
    ,  "noEmitOnError": true
-   ,  "outDir": "bin"
+   // ,  "outDir": "bin"
    // interop constraints
    ,  "esModuleInterop": true
    ,  "forceConsistentCasingInFileNames": true
@@ -21,7 +21,7 @@
    ,  "lib": ["es2020"]
    ,  "target": "es2020"
    // Projects
-   ,  "incremental": true
+   // ,  "incremental": true
    }
-,  "include": ["src/**/*.ts"],
+,  "include": ["src/*.ts"]
 }

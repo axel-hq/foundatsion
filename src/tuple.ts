@@ -1,6 +1,6 @@
 // tuple with .length = n
-import {rtti, unsound} from "./type_traits";
-import {FoundatsionError, __unreachable} from "./err";
+import {FoundatsionError} from "./err";
+import {rtti, unsound, __unreachable} from "./type_traits";
 
 type unwrap_rtti_tuple<rs extends readonly [...any[]]> =
    rs extends readonly [infer head, ...infer tail]
@@ -39,7 +39,7 @@ export function tuple<rs extends readonly [...rtti[]]>(...rs: rs): rtti<unwrap_r
                "array<unknown> but failed since Array.isArray returned false.",
             );
          }
-         unsound.is_now<unknown[]>(u);
+         unsound.assert<unknown[]>(u);
          if (u.length !== rs.length) {
             throw new FoundatsionError(
                `Tried asserting for ${name} but the lengths were`,

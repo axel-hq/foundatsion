@@ -1,16 +1,1 @@
-export {array} from "./array";
-export {bigint} from "./bigint";
-export {boolean} from "./boolean";
-export {FoundatsionError, __unreachable as unreachable} from "./err";
-export {never} from "./never";
-export {newtype, unwrap} from "./newtype";
-export {number} from "./number";
-export {obj} from "./obj";
-export {prim_t} from "./prim_t";
-export {string} from "./string";
-export {symbol} from "./symbol";
-export {text} from "./text";
-export {tuple} from "./tuple";
-export {unit, identity, assert_extends, unsound, rtti} from "./type_traits";
-export {union} from "./union";
-export {unknown} from "./unknown";
+export * as F from "./_all";
