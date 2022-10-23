@@ -8,7 +8,7 @@ export namespace real {
    export const name = "real";
 
    export function is(u: unknown): u is real {
-      return number.is(u) && Number.isFinite(u);
+      return number.is(u) && (!Number.isNaN(u)) && Number.isFinite(u);
    }
 
    export function assert(u: unknown): asserts u is real {
@@ -23,6 +23,11 @@ export namespace real {
          } else {
             throw e;
          }
+      }
+      if (Number.isNaN(u)) {
+         throw new FoundatsionError(
+            "Tried asserting for number but failed because the value was NaN.",
+         );
       }
       if (!Number.isFinite(u)) {
          throw new FoundatsionError(

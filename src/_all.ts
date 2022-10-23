@@ -4,7 +4,7 @@ export {array} from "./array";
 export {bigint} from "./bigint";
 export {boolean} from "./boolean";
 export {dyn_record} from "./dyn_record";
-export {FoundatsionError as Err} from "./err";
+export {FoundatsionError as Error} from "./err";
 export {never} from "./never";
 export {number} from "./number";
 export {prim_t} from "./prim_t";
@@ -21,7 +21,7 @@ export {
    unsound,
    rtti,
    ct_check_extends,
-   ct_assert_t
+   ct_assert_t,
 } from "./type_traits";
 export {union} from "./union";
 export {unknown} from "./unknown";
