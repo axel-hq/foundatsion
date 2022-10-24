@@ -4,7 +4,7 @@ export {array} from "./array";
 export {bigint} from "./bigint";
 export {boolean} from "./boolean";
 export {dyn_record} from "./dyn_record";
-export {FoundatsionError as Error} from "./err";
+export {FoundatsionError as Error} from "./error";
 export {never} from "./never";
 export {number} from "./number";
 export {prim_t} from "./prim_t";
@@ -15,13 +15,13 @@ export {text} from "./text";
 export {tuple} from "./tuple";
 export {
    __unreachable,
-   unit,
+   ct_true,
+   vt_extends,
+   ignore,
    absurd,
    identity,
    unsound,
    rtti,
-   ct_check_extends,
-   ct_assert_t,
 } from "./type_traits";
 export {union} from "./union";
 export {unknown} from "./unknown";

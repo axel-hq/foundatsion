@@ -1,4 +1,4 @@
-import {FoundatsionError} from "./err";
+import {FoundatsionError} from "./error";
 
 export namespace bigint {
    export const name = "bigint";
@@ -15,4 +15,8 @@ export namespace bigint {
          );
       }
    }
+
+   export const from_number = BigInt;
+   export const from_string = BigInt;
+   export const from_boolean = BigInt;
 }

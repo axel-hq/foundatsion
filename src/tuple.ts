@@ -1,5 +1,5 @@
 // tuple with .length = n
-import {FoundatsionError} from "./err";
+import {FoundatsionError} from "./error";
 import {rtti, unsound, __unreachable} from "./type_traits";
 
 type unwrap_rtti_tuple<rs extends readonly [...any[]]> =

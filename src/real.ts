@@ -1,7 +1,7 @@
 import {text} from "./text";
 import {number} from "./number";
 import {newtype} from "./newtype";
-import {FoundatsionError} from "./err";
+import {FoundatsionError} from "./error";
 
 export type real = newtype<"real", number>;
 export namespace real {
@@ -34,5 +34,9 @@ export namespace real {
             `Tried asserting for real but ${text.stringify(u)} is not finite.`,
          );
       }
+   }
+
+   export function to_bigint(r: real): bigint {
+      return BigInt(r);
    }
 }

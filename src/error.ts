@@ -114,7 +114,7 @@ export class FoundatsionError extends Error {
 
    static processed_input_to_lines(l: processed_input): string[] {
       if (typeof l === "string") {
-         return text.wrap80(l);
+         return text.wrap(78, l);
       } else {
          const lines: string[] = [];
          for (const sub of l) {

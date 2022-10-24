@@ -1,6 +1,6 @@
 import {text} from "./text";
-import {FoundatsionError} from "./err";
-import {identity, rtti, unit, unsound} from "./type_traits";
+import {FoundatsionError} from "./error";
+import {identity, rtti, ignore, unsound} from "./type_traits";
 
 export type dyn_record = {[k in string]: unknown};
 
@@ -28,10 +28,10 @@ export namespace dyn_record {
       }
    }
 
-   export const assert_from_record: {(o: {}): asserts o is dyn_record} = unit;
+   export const assert_from_record: {(o: {}): asserts o is dyn_record} = ignore;
 
    export function field_is
-      <t, k extends string, o extends dyn_record>
+      <k extends string, o extends dyn_record, t>
          (o: o, k: k, t: rtti.has_is<t>):
             o is o & {[_ in k]: t}
    {

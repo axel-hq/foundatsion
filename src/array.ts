@@ -1,9 +1,9 @@
 import {dyn_record} from "./dyn_record";
 import {rtti, unsound} from "./type_traits";
-import {FoundatsionError} from "./err";
+import {FoundatsionError} from "./error";
 
 type array_rtti_constructor<r extends rtti.some> =
-   & rtti.has_name
+   & {name: `array<${r["name"]}>`}
    & (r extends rtti.has_is<infer t> ? rtti.has_is<t[]> : {})
    & (r extends rtti.has_assert<infer t> ? rtti.has_assert<t[]> : {});
 

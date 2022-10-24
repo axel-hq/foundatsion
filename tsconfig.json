@@ -23,5 +23,5 @@
    // Projects
    // ,  "incremental": true
    }
-,  "include": ["src/*.ts"]
+,  "include": ["src/*.ts", "src/newtype.ts", "src/type_traits/type_traits.ts"]
 }

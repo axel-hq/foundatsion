@@ -1,4 +1,4 @@
-import {rtti, unit} from "./type_traits";
+import {rtti, ignore} from "./type_traits";
 
 export namespace unknown {
    export const name = "unknown";
@@ -7,5 +7,5 @@ export namespace unknown {
       return true;
    }
 
-   export const assert: rtti.assert = unit;
+   export const assert: rtti.assert = ignore;
 }

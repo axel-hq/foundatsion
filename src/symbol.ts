@@ -1,4 +1,4 @@
-import {FoundatsionError} from "./err";
+import {FoundatsionError} from "./error";
 
 export namespace symbol {
    export const name = "symbol";
@@ -14,5 +14,9 @@ export namespace symbol {
             `typeof value was "${typeof u}" when it should've been "symbol".`,
          );
       }
+   }
+
+   export function from_string(s: string): symbol {
+      return Symbol.for(s);
    }
 }

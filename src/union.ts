@@ -1,5 +1,5 @@
 import {never} from "./never";
-import {FoundatsionError} from "./err";
+import {FoundatsionError} from "./error";
 import {rtti, unsound, __unreachable} from "./type_traits";
 
 type union_rtti_tuple<rs extends [...rtti[]]> =

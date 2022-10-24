@@ -1,4 +1,4 @@
-import {FoundatsionError} from "./err";
+import {FoundatsionError} from "./error";
 
 export namespace never {
    export const name = "never";
