@@ -1,3 +1,4 @@
+import {rtti} from "./rtti";
 import {FoundatsionError} from "./error";
 
 export namespace boolean {
@@ -16,3 +17,5 @@ export namespace boolean {
       }
    }
 }
+
+rtti.verify(boolean);

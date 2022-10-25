@@ -1,5 +1,5 @@
 import {text} from "./text";
-import {rtti} from "./type_traits";
+import {rtti} from "./rtti";
 import {FoundatsionError} from "./error";
 
 type primitives =

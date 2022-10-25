@@ -1,4 +1,5 @@
-import {rtti, ignore} from "./type_traits";
+import {rtti} from "./rtti";
+import {ignore} from "./type_traits";
 
 export namespace unknown {
    export const name = "unknown";
