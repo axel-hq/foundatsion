@@ -16,7 +16,9 @@ export namespace bigint {
       }
    }
 
-   export const from_number = BigInt;
-   export const from_string = BigInt;
-   export const from_boolean = BigInt;
+   export const from = {
+      number: BigInt,
+      string: BigInt,
+      boolean: BigInt,
+   }
 }

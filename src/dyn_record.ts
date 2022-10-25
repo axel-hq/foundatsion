@@ -32,7 +32,7 @@ export namespace dyn_record {
 
    export function field_is
       <k extends string, o extends dyn_record, t>
-         (o: o, k: k, t: rtti.has_is<t>):
+         (o: o, k: k, t: rtti<t>):
             o is o & {[_ in k]: t}
    {
       return t.is(o[k]);
@@ -41,7 +41,7 @@ export namespace dyn_record {
    /** Assert that an object has a property of type t. */
    export function assert_field_is
       <k extends string, o extends dyn_record, t>
-         (o: o, k: k, t: rtti.has_name & rtti.has_assert<t>):
+         (o: o, k: k, t: rtti<t>):
             asserts o is o & {[_ in k]: t}
    {
       try {

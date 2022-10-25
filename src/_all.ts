@@ -1,5 +1,3 @@
-export {newtype, unwrap} from "./newtype";
-
 export {array} from "./array";
 export {bigint} from "./bigint";
 export {boolean} from "./boolean";
@@ -21,7 +19,10 @@ export {
    absurd,
    identity,
    unsound,
+   newtype,
+   unwrap,
    rtti,
+   cast,
 } from "./type_traits";
 export {union} from "./union";
 export {unknown} from "./unknown";

@@ -2,12 +2,11 @@ import {dyn_record} from "./dyn_record";
 import {rtti, unsound} from "./type_traits";
 import {FoundatsionError} from "./error";
 
-type array_rtti_constructor<r extends rtti.some> =
-   & {name: `array<${r["name"]}>`}
-   & (r extends rtti.has_is<infer t> ? rtti.has_is<t[]> : {})
-   & (r extends rtti.has_assert<infer t> ? rtti.has_assert<t[]> : {});
-
-export function array<r extends rtti.some>(r: r): array_rtti_constructor<r> {
+export function array
+   <t, name extends string>
+      (r: rtti<t, name> & rtti.valid_name<name>):
+         rtti<t[], `array<${name}>`>
+{
    const name = `array<${r.name}>`;
 
    let is = {};

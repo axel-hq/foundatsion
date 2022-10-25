@@ -16,7 +16,9 @@ export namespace symbol {
       }
    }
 
-   export function from_string(s: string): symbol {
-      return Symbol.for(s);
-   }
+   export const from = {
+      string(s: string): symbol {
+         return Symbol.for(s);
+      }
+   };
 }
