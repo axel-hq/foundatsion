@@ -1,3 +1,6 @@
+import {FoundatsionError} from "./error";
+import {identity, ignore} from "./type_traits";
+
 export namespace unsound {
    /** Cast any value to type t. */
    export const cast: {<t>(val: any): t} = identity;

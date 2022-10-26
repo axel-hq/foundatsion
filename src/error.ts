@@ -30,7 +30,7 @@ export class FoundatsionError extends Error {
                   thisꓸlines.push(line);
                } else if (line === "") {
                  thisꓸlines.push(working_line);
-                 working_line = null; 
+                 working_line = null;
                } else {
                   working_line += ` ${line}`;
                   thisꓸlines.push(working_line);

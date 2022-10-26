@@ -3,11 +3,13 @@ import {unsound} from "./unsound";
 import {dyn_record} from "./dyn_record";
 import {FoundatsionError} from "./error";
 
-export function array
-   <t, name extends string>
-      (r: rtti<t, name> & rtti.ct_name<name>):
-         rtti<t[], `array<${name}>`>
-{
+const cache = new WeakMap<rtti, rtti<unknown[]>>();
+
+export function array<t>(r: rtti<t>): rtti<t[]> {
+   if (cache.has(r)) {
+      return unsound.shut_up(cache.get(r));
+   }
+
    const name = `array<${r.name}>`;
 
    let is = {};
@@ -53,5 +55,7 @@ export function array
       }
    }
 
-   return unsound.shut_up({...{name}, ...is, ...assert});
+   const artti = unsound.cast<rtti<t[]>>({...{name}, ...is, ...assert});
+   cache.set(r, artti);
+   return artti;
 }

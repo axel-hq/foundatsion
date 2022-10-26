@@ -1,72 +1,44 @@
 import {rtti} from "./rtti";
-import {unknown} from "./unknown";
 import {unsound} from "./unsound";
 import {dyn_record} from "./dyn_record";
 import {FoundatsionError} from "./error";
 
-function cast<from, to, to_name extends string>(
-   rtti_from: rtti<from> & {to: {[m in to_name]: {(from: from): to}}},
-   rtti_to: rtti<to, to_name> & rtti.ct_name<to_name>,
-   from: from,
+// yes, this is definitely very fine
+// let's imagine we're casting a string to a number
+// first check that the string rtti object has
+// .to(number rtti, val: string): number
+// if that doesn't exist, maybe the number rtti object has
+// .from(string rtti, val: string): number
+type tof<r extends rtti> = r extends rtti<infer t> ? t : never;
+function cast<rtti_from extends rtti, to>(
+   rtti_from: rtti_from & (rtti_from extends {to: {(r: rtti<to>, from: tof<rtti_from>): to}} ? unknown : never),
+   rtti_to: rtti<to>,
+   from: tof<rtti_from>,
 ): to;
-function cast<from, to, from_name extends string>(
-   rtti_from: rtti<from, from_name> & rtti.ct_name<from_name>,
-   rtti_to: rtti<to> & {from: {[m in from_name]: {(from: from): to}}},
-   from: from,
-): to;
-function cast<from, to>(
+function cast<from, rtti_to extends rtti>(
    rtti_from: rtti<from>,
-   rtti_to: rtti<to> & {from?: dyn_record},
+   rtti_to: rtti_to & (rtti_to extends {from: {(r: rtti<from>, from: from): tof<rtti_to>}} ? unknown : never),
+   from: from,
+): tof<rtti_to>;
+function cast<from, to>(
+   rtti_from: rtti<from> & {to?: unsound.any_fn},
+   rtti_to: rtti<to> & {from?: unsound.any_fn},
    from: from
 ): to {
-   if (dyn_record.field_is(rtti_from, "to", dyn_record)) {
+   if (dyn_record.field_is(rtti_from, "to", unsound.any_fn)) {
       const to = rtti_from.to;
-      const name = rtti_to.name
-      if (dyn_record.field_is(to, name, unknown)) {
-         const cast_fn = to[name];
-         try {
-            unsound.any_fn.assert(cast_fn);
-         } catch (e) {
-            if (e instanceof Error) {
-               throw new FoundatsionError(
-                  `While casting from ${rtti_from.name} to ${rtti_to.name},`,
-                  `found (${rtti_from.name}).to.[${name}] but it wasn't the`,
-                  "right type",
-                  e,
-               );
-            } else {
-               throw e;
-            }
-         }
-         return unsound.cast<to>(cast_fn(from));
-      }
+      return unsound.cast<to>(to(rtti_to, from));
    }
-   if (dyn_record.field_is(rtti_to, "from", dyn_record)) {
+
+   if (dyn_record.field_is(rtti_to, "from", unsound.any_fn)) {
       const from = rtti_to.from;
-      const name = rtti_from.name;
-      if (dyn_record.field_is(from, name, unknown)) {
-         const cast_fn = from[name];
-         try {
-            unsound.any_fn.assert(cast_fn);
-         } catch (e) {
-            if (e instanceof Error) {
-               throw new FoundatsionError(
-                  `While casting from ${rtti_from.name} to ${rtti_to.name},`,
-                  `found (${rtti_to.name}).from.[${name}] but it wasn't the`,
-                  "right type",
-                  e,
-               );
-            } else {
-               throw e;
-            }
-         }
-         return unsound.cast<to>(cast_fn(from));
-      }
+      return unsound.cast<to>(from(rtti_from, from));
    }
    // at this point, neither the .from.to or .to.from methods were found
    throw new FoundatsionError(
-      ""
+      `Could not cast from (${rtti_from.name}) to (${rtti_to.name}) because:\n`,
+      "1. the initial rtti object did not contain a method .to\n",
+      "2. the terminal rtti object did not contain a method .from\n",
    );
 };
 export {cast};
-

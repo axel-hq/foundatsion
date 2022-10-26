@@ -40,4 +40,4 @@ export namespace text {
          }
       }
    }
-};
+}

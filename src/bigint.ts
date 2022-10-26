@@ -1,6 +1,9 @@
 import {rtti} from "./rtti";
-import {FoundatsionError} from "./error";
+import {number} from "./number";
+import {string} from "./string";
+import {boolean} from "./boolean";
 import {ct_val} from "./type_traits";
+import {FoundatsionError} from "./error";
 
 export namespace bigint {
    export const name = "bigint";
@@ -18,10 +21,11 @@ export namespace bigint {
       }
    }
 
-   export const from = {
-      number: BigInt,
-      string: BigInt,
-      boolean: BigInt,
+   export function from(r: rtti<number> , n: number ): bigint;
+   export function from(r: rtti<string> , s: string ): bigint;
+   export function from(r: rtti<boolean>, b: boolean): bigint;
+   export function from(_: any, u: number | string | boolean): bigint {
+      return BigInt(u);
    }
 }
 

@@ -1,10 +1,14 @@
+import {rtti} from "./rtti";
 import {never} from "./never";
+import {unsound} from "./unsound";
+import {__unreachable} from "./type_traits";
 import {FoundatsionError} from "./error";
-import {rtti, unsound, __unreachable} from "./type_traits";
 
 type union_rtti_tuple<rs extends [...rtti[]]> =
    rs[number] extends rtti<infer ts> ? ts : never;
 
+// I'm adding a little bit of extra type information that *technically*
+// shouldn't exist on an rtti object but I'm not telling anyone, are you?
 const union_rtti_ary: unique symbol = Symbol();
 type union_rtti_object = rtti & {[union_rtti_ary]: rtti[]};
 namespace union_rtti_object {
@@ -33,6 +37,7 @@ export function union<rs extends [...rtti[]]>(...rs: rs): rtti<union_rtti_tuple<
    const non_union_rs: rtti[] = [];
    for (const r of rs) {
       if (union_rtti_object.is(r)) {
+         // if it's another union object, we can unwrap the union into this one
          non_union_rs.push(...r[union_rtti_ary])
       } else {
          non_union_rs.push(r);

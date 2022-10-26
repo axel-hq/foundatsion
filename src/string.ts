@@ -15,10 +15,4 @@ export namespace string {
          );
       }
    }
-
-   export const to = {
-      ["array<string>"](s: string): string[] {
-         return s.split("");
-      }
-   };
 }

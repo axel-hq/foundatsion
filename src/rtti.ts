@@ -1,21 +1,12 @@
 import {unsound} from "./unsound";
-import {is_prim_string, primitive_string} from "./type_traits";
 
 export type rtti<t = unknown> = {
-   debug_name: string;
+   name: string;
    is: rtti.is<t>;
    assert: rtti.assert<t>;
 };
 
 export namespace rtti {
-   /** Use this when accepting generic rtti objects
-    * @example
-    * function generic<t, name extends string>
-    *    (r: rtti<t, name> & rtti.valid_name<name>);
-    */
-   export type ct_name<name extends string> = {
-      name: is_prim_string<name> extends true ? name : primitive_string;
-   }
    export type is<t = unknown> = {(u: unknown): u is t};
    export type assert<t = unknown> = {(u: unknown): asserts u is t};
 
