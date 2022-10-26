@@ -65,7 +65,7 @@ export function union<rs extends [...rtti[]]>(...rs: rs): rtti<union_rtti_tuple<
             }
          }
          throw new FoundatsionError(
-            `While asserting that value was (${name}) one or more errors were`,
+            `While asserting that value was ${name} one or more errors were`,
             "thrown:",
             ...errs,
          );

@@ -15,17 +15,6 @@ export namespace text {
       return lines;
    }
 
-   export type stringify<u>
-      = u extends bigint ? `${u}n`
-      : u extends boolean ? `${u}`
-      : u extends number ? `${u}`
-      : u extends string ? `"${u}"`
-      : u extends symbol ? `Symbol(${stringify<u["description"]>})`
-      : u extends undefined ? "undefined"
-      : u extends Function ? "function"
-      : u extends null ? "null"
-      : u extends 
-
    /**
     * Whenever you're printing something from the user, you should probably just
     * use this.
@@ -34,13 +23,13 @@ export namespace text {
     */
    export function stringify(u: unknown): string {
       switch (typeof u) {
-      case "bigint":  return `${u}n`;
-      case "boolean": return `${u}`;
-      case "number":  return `${u}`;
-      case "string":  return JSON.stringify(u);
-      case "symbol":  return `Symbol(${stringify(u.description)})`;
+      case "bigint":    return `${u}n`;
+      case "boolean":   return `${u}`;
+      case "number":    return `${u}`;
+      case "string":    return JSON.stringify(u);
+      case "symbol":    return `Symbol(${stringify(u.description)})`;
       case "undefined": return "undefined";
-      case "function": return "function";
+      case "function":  return `function ${u.name}(...)`;
       case "object":
          if (Array.isArray(u)) {
             return `[${u.map(stringify).join(", ")}]`;

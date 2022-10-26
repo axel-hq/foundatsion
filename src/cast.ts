@@ -6,11 +6,11 @@ import {FoundatsionError} from "./error";
 
 function cast<from, to, to_name extends string>(
    rtti_from: rtti<from> & {to: {[m in to_name]: {(from: from): to}}},
-   rtti_to: rtti<to, to_name> & rtti.valid_name<to_name>,
+   rtti_to: rtti<to, to_name> & rtti.ct_name<to_name>,
    from: from,
 ): to;
 function cast<from, to, from_name extends string>(
-   rtti_from: rtti<from, from_name> & rtti.valid_name<from_name>,
+   rtti_from: rtti<from, from_name> & rtti.ct_name<from_name>,
    rtti_to: rtti<to> & {from: {[m in from_name]: {(from: from): to}}},
    from: from,
 ): to;

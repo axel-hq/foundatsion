@@ -5,7 +5,7 @@ import {FoundatsionError} from "./error";
 
 export function array
    <t, name extends string>
-      (r: rtti<t, name> & rtti.valid_name<name>):
+      (r: rtti<t, name> & rtti.ct_name<name>):
          rtti<t[], `array<${name}>`>
 {
    const name = `array<${r.name}>`;
