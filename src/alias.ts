@@ -6,7 +6,7 @@ import {rtti} from "./rtti";
 import {unsound} from "./unsound";
 import {dyn_record} from "./dyn_record";
 
-export function alias<t>(r: rtti<t>, name: string): rtti<t> {
+export function alias<r extends rtti>(r: r, name: string): r {
    return new Proxy(r, {
       get(target, prop): any {
          if (prop === "name") {

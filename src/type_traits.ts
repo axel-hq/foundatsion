@@ -34,15 +34,13 @@ export type not_templated_string<s extends string> =
       : s extends `${infer head}${infer tail}`
          ? string extends head
             ? false
-            : `${string}` extends head
+            : `${number}` extends head
                ? false
-               : `${number}` extends head
+               : `${bigint}` extends head
                   ? false
-                  : `${bigint}` extends head
+                  : `${boolean}` extends head
                      ? false
-                     : `${boolean}` extends head
-                        ? false
-                        : not_templated_string<tail>
+                     : not_templated_string<tail>
          : false;
 
 /** Returns `true | false` */

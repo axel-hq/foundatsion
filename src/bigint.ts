@@ -17,13 +17,6 @@ export namespace bigint {
          );
       }
    }
-
-   export function from(r: rtti<number> , n: number ): bigint;
-   export function from(r: rtti<string> , s: string ): bigint;
-   export function from(r: rtti<boolean>, b: boolean): bigint;
-   export function from(_: any, u: number | string | boolean): bigint {
-      return BigInt(u);
-   }
 }
 
 ct_val<rtti>(bigint);

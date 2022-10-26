@@ -35,8 +35,4 @@ export namespace real {
          );
       }
    }
-
-   export function to_bigint(r: real): bigint {
-      return BigInt(r);
-   }
 }

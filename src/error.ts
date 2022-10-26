@@ -74,7 +74,7 @@ export class FoundatsionError extends Error {
                thisꓸlines.push(working_line);
                working_line = null;
             }
-            const sublines = [e.name];
+            const sublines = [];
             let msg = e.message;
             for (
                // iterate through lines in e.message
