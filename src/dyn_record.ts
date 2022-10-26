@@ -31,6 +31,7 @@ export namespace dyn_record {
    }
 
    export const assert_from_record: {(o: {}): asserts o is dyn_record} = ignore;
+   export const from: {(r: {}): dyn_record} = identity;
 
    export function field_is
       <t, k extends string, o extends dyn_record>
