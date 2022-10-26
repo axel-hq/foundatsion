@@ -13,7 +13,7 @@ export namespace real {
 
    export function assert(u: unknown): asserts u is real {
       try {
-         number.assert(u)
+         number.assert(u);
       } catch (e) {
          if (e instanceof Error) {
             throw new FoundatsionError(
