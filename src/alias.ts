@@ -8,12 +8,12 @@ import {dyn_record} from "./dyn_record";
 
 export function alias<t>(r: rtti<t>, name: string): rtti<t> {
    return new Proxy(r, {
-      get(target, prop) {
+      get(target, prop): any {
          if (prop === "name") {
             return name;
          } else {
             return dyn_record.from(target)[unsound.shut_up(prop)];
          }
-      }
+      },
    });
 }

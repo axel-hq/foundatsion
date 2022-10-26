@@ -22,9 +22,9 @@ export function prim_t<v extends primitives>(v: v): rtti<v> {
          if (v !== u) {
             throw new FoundatsionError(
                `Tried asserting for ${name} but the value did not match.\n`,
-               `Instead, received ${text.stringify(v)}.`,
+               `Instead, received ${text.stringify(v)}.`
             );
          }
-      }
+      },
    };
 }

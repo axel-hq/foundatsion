@@ -2,7 +2,7 @@ export function __unreachable(): never {
    throw __unreachable;
 }
 // pleas optimize uwu
-export const ignore = <t>(_?: t) => {};
+export const ignore = <t>(_?: t): void => {};
 export const absurd = <t>(_: never): t => __unreachable();
 export const identity = <t>(x: t): t => x;
 

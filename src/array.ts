@@ -19,8 +19,8 @@ export function array<t>(r: rtti<t>): rtti<t[]> {
             return true
                && Array.isArray(u)
                && u.every(elem => r.is(elem));
-         }
-      }
+         },
+      };
    }
 
    let assert = {};
@@ -51,8 +51,8 @@ export function array<t>(r: rtti<t>): rtti<t[]> {
                   }
                }
             }
-         }
-      }
+         },
+      };
    }
 
    const artti = unsound.cast<rtti<t[]>>({...{name}, ...is, ...assert});

@@ -38,7 +38,7 @@ export function union<rs extends [...rtti[]]>(...rs: rs): rtti<union_rtti_tuple<
    for (const r of rs) {
       if (union_rtti_object.is(r)) {
          // if it's another union object, we can unwrap the union into this one
-         non_union_rs.push(...r[union_rtti_ary])
+         non_union_rs.push(...r[union_rtti_ary]);
       } else {
          non_union_rs.push(r);
       }
@@ -75,7 +75,7 @@ export function union<rs extends [...rtti[]]>(...rs: rs): rtti<union_rtti_tuple<
             ...errs,
          );
       },
-   }
+   };
    Object.defineProperty(new_rtti, union_rtti_ary, {
       configurable: false,
       enumerable: false,

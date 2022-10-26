@@ -1,10 +1,10 @@
 {  "root": true
 ,  "parser": "@typescript-eslint/parser"
-,  "plugins": ["@typescript-eslint", "unused-imports"]
+,  "plugins": ["@typescript-eslint"]
+,  "overrides": [{"files": "src/*.ts", "parserOptions": {"project": "tsconfig.json"}}]
 ,  "rules":
    {  "block-spacing": "error"
    ,  "quote-props": ["error", "consistent-as-needed"]
-   ,  "unused-imports/no-unused-imports": "warn"
    ,  "@typescript-eslint/adjacent-overload-signatures": "warn"
    ,  "@typescript-eslint/comma-dangle": ["error", "always-multiline"]
    ,  "@typescript-eslint/comma-spacing": ["error", {"before": false, "after": true}]
