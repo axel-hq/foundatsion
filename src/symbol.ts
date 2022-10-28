@@ -15,8 +15,4 @@ export namespace symbol {
          );
       }
    }
-
-   // export function from(s: string): symbol {
-   //    return Symbol.for(s);
-   // }
 }

@@ -9,18 +9,27 @@ endif
 
 errors:
 	tsc --noEmit
+.PHONY: errors
 
-cjs: $(cjs_files)
+clean:
+	rd /s /q bin
+.PHONY: clean
+
+cjs: clean
+	tsc --module commonjs --outDir bin/cjs
+.PHONY: cjs
+
+es6: clean
+	tsc --module es6 --outDir bin/es6
+.PHONY: es6
+
+dts: clean
+	tsc --module es6 --emitDeclarationOnly --declaration --declarationDir bin/es6
+.PHONY: dts
+
+build: cjs es6 dts
 	-
-
-build: bin/es2020 bin/commonjs bin/dts
-	-
-
-bin/%: $(all_deps)
-	tsc --module $* --outDir $@
-
-bin/dts: $(all_deps)
-	tsc --module es6 --emitDeclarationOnly --declaration --declarationDir $@
+.PHONY: build
 
 publish: build
 	npm publish --dry-run

@@ -3,7 +3,14 @@ import {number} from "./number";
 import {newtype} from "./newtype";
 import {FoundatsionError} from "./error";
 
-export type real = newtype<"real", number>;
+declare function takes_number(n: number): void;
+takes_number(1);
+declare function takes_foo(foo: foo): void;
+takes_foo(1);
+declare const foo: foo;
+takes_foo(foo);
+
+export type real = newtype<"real", number | string>;
 export namespace real {
    export const name = "real";
 

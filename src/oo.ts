@@ -4,19 +4,17 @@ import {unsound} from "./unsound";
 import {FoundatsionError} from "./error";
 import {identity, ignore} from "./type_traits";
 
-export type dyn_record = {[k in string]: unknown};
+/** Open Object */
+export type oo = {[k in string]: unknown};
 
-export const cast_record_to_dyn_record: {<o extends {}>(o: o): o & dyn_record}
-   = unsound.shut_up(identity);
+export namespace oo {
+   export const name = "open object";
 
-export namespace dyn_record {
-   export const name = "dyn_record";
-
-   export function is(u: unknown): u is dyn_record {
+   export function is(u: unknown): u is oo {
       return typeof u === "object" && u !== null;
    }
 
-   export function assert(u: unknown): asserts u is dyn_record {
+   export function assert(u: unknown): asserts u is oo {
       if (typeof u !== "object") {
          throw new FoundatsionError(
             `Asserting for ${name} failed!\n`,
@@ -30,11 +28,11 @@ export namespace dyn_record {
       }
    }
 
-   export const assert_from_record: {(o: {}): asserts o is dyn_record} = ignore;
-   export const from: {(r: {}): dyn_record} = identity;
+   export const assert_from_record: {(o: {}): asserts o is oo} = ignore;
+   export const from: {(r: {}): oo} = identity;
 
    export function field_is
-      <t, k extends string, o extends dyn_record>
+      <t, k extends string, o extends oo>
          (o: o, k: k, t: rtti<t>):
             o is o & {[_ in k]: t}
    {
@@ -43,7 +41,7 @@ export namespace dyn_record {
 
    /** Assert that an object has a property of type t. */
    export function assert_field_is
-      <t, k extends string, o extends dyn_record>
+      <t, k extends string, o extends oo>
          (o: o, k: k, t: rtti<t>):
             asserts o is o & {[_ in k]: t}
    {
@@ -68,7 +66,7 @@ export namespace dyn_record {
       Object.freeze(obj);
    }
 
-   export function keys<o extends dyn_record>(o: o): (keyof o)[] {
+   export function keys<o extends oo>(o: o): (keyof o)[] {
       const ks = Object.keys(o);
       return unsound.shut_up(ks);
    }

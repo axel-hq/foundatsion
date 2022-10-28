@@ -1,6 +1,6 @@
+import {oo} from "./oo";
 import {rtti} from "./rtti";
 import {unsound} from "./unsound";
-import {dyn_record} from "./dyn_record";
 import {FoundatsionError} from "./error";
 
 const cache = new WeakMap<rtti, rtti<unknown[]>>();
@@ -13,7 +13,7 @@ export function array<t>(r: rtti<t>): rtti<t[]> {
    const name = `array<${r.name}>`;
 
    let is = {};
-   if (dyn_record.field_is(r, "is", unsound.any_fn)) {
+   if (oo.field_is(r, "is", unsound.any_fn)) {
       is = {
          is(u: unknown): boolean {
             return true
@@ -24,7 +24,7 @@ export function array<t>(r: rtti<t>): rtti<t[]> {
    }
 
    let assert = {};
-   if (dyn_record.field_is(r, "assert", unsound.any_fn)) {
+   if (oo.field_is(r, "assert", unsound.any_fn)) {
       assert = {
          assert(u: unknown): void {
             if (!Array.isArray(u)) {

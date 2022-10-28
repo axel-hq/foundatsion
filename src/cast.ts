@@ -1,6 +1,6 @@
+import {oo} from "./oo";
 import {rtti} from "./rtti";
 import {unsound} from "./unsound";
-import {dyn_record} from "./dyn_record";
 import {FoundatsionError} from "./error";
 
 // yes, this is definitely very fine
@@ -25,12 +25,12 @@ function cast<from, to>(
    rtti_to: rtti<to> & {from?: unsound.any_fn},
    from: from
 ): to {
-   if (dyn_record.field_is(rtti_from, "to", unsound.any_fn)) {
+   if (oo.field_is(rtti_from, "to", unsound.any_fn)) {
       const to = rtti_from.to;
       return unsound.cast<to>(to(rtti_to, from));
    }
 
-   if (dyn_record.field_is(rtti_to, "from", unsound.any_fn)) {
+   if (oo.field_is(rtti_to, "from", unsound.any_fn)) {
       const from = rtti_to.from;
       return unsound.cast<to>(from(rtti_from, from));
    }
@@ -40,5 +40,5 @@ function cast<from, to>(
       "1. the initial rtti object did not contain a method .to\n",
       "2. the terminal rtti object did not contain a method .from\n",
    );
-};
+}
 export {cast};

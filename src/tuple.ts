@@ -12,7 +12,7 @@ type unwrap_rtti_tuple<rs extends readonly [...any[]]> =
    : [];
 
 export function tuple<rs extends readonly [...rtti[]]>(...rs: rs): rtti<unwrap_rtti_tuple<rs>> {
-   const name = `tuple<${rs.map(r => r.name).join(", ")}>`
+   const name = `[${rs.map(r => r.name).join(", ")}]`;
    return {
       name,
       is(u: unknown): u is unwrap_rtti_tuple<rs> {
