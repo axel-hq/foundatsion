@@ -58,3 +58,7 @@ declare const primitive_string: unique symbol;
  * `foo${string}`, string, `qux${number}` are not primitive strings.
  */
 export type primitive_string = {[primitive_string]: void};
+
+/** If you're using this, you're probably doing something wrong. */
+export type union_to_intersection<u> =
+   (u extends any ? {(k: u): void} : never) extends {(k: infer t): void} ? t : never;

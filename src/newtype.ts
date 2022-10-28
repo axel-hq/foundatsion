@@ -1,5 +1,5 @@
 import {unsound} from "./unsound";
-import {identity} from "./type_traits";
+import {identity, union_to_intersection} from "./type_traits";
 
 // Newtypes are for internal use only.
 // They will not be exposed to the user since the sdk itself should typecheck
@@ -48,12 +48,16 @@ import {identity} from "./type_traits";
  */
 export declare const nt_s: unique symbol;
 
+type newtype_partials_union<phi_uniq_union extends keyof any> =
+   {[k in phi_uniq_union]: {[nt_s]: {[_ in k]: void}}}[phi_uniq_union];
+
 export type newtype<uniq extends string | symbol> = {[nt_s]: {[k in uniq]: void}};
 export type unwrap<outer> =
    outer extends {[nt_s]: {}}
-      ? outer extends infer inner & {[nt_s]: {[k in keyof outer[typeof nt_s]]: void}}
+      ? outer extends infer inner & union_to_intersection<newtype_partials_union<keyof outer[typeof nt_s]>>
          ? inner
          : never
       : outer;
 
-export const unwrap: {<outer>(outer: outer): unwrap<outer>} = unsound.shut_up(identity);
+export const unwrap: {<outer>(outer: outer): unwrap<outer>}
+   = unsound.shut_up(identity);
