@@ -5,7 +5,7 @@ import {FoundatsionError} from "./error";
 import {identity, ignore} from "./type_traits";
 
 /** Open Object */
-export type oo = {[k in string]: unknown};
+export type oo = object & {[k in string]: unknown};
 
 export namespace oo {
    export const name = "open object";
