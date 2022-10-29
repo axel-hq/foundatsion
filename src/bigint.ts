@@ -1,4 +1,5 @@
 import {rtti} from "./rtti";
+import {real} from "./real";
 import {ct_val} from "./type_traits";
 import {FoundatsionError} from "./error";
 
@@ -17,6 +18,11 @@ export namespace bigint {
          );
       }
    }
+
+   export const from = {
+      number: BigInt,
+      string: BigInt,
+   };
 }
 
 ct_val<rtti>(bigint);

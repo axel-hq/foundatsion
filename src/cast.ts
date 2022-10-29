@@ -3,12 +3,6 @@ import {rtti} from "./rtti";
 import {unsound} from "./unsound";
 import {FoundatsionError} from "./error";
 
-// yes, this is definitely very fine
-// let's imagine we're casting a string to a number
-// first check that the string rtti object has
-// .to(number rtti, val: string): number
-// if that doesn't exist, maybe the number rtti object has
-// .from(string rtti, val: string): number
 type tof<r extends rtti> = r extends rtti<infer t> ? t : never;
 function cast<rtti_from extends rtti, to>(
    rtti_from: rtti_from & (rtti_from extends {to: {(r: rtti<to>, from: tof<rtti_from>): to}} ? unknown : never),

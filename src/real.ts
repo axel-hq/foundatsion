@@ -1,16 +1,10 @@
 import {text} from "./text";
 import {number} from "./number";
 import {newtype} from "./newtype";
+import {unsound} from "./unsound";
 import {FoundatsionError} from "./error";
 
-declare function takes_number(n: number): void;
-takes_number(1);
-declare function takes_foo(foo: foo): void;
-takes_foo(1);
-declare const foo: foo;
-takes_foo(foo);
-
-export type real = newtype<"real", number | string>;
+export type real = number & newtype<"real">;
 export namespace real {
    export const name = "real";
 
@@ -42,4 +36,23 @@ export namespace real {
          );
       }
    }
+
+   export const from = {
+      bigint(b: bigint): real {
+         if (b > Number.MAX_SAFE_INTEGER) {
+            throw new FoundatsionError(
+               "Could not cast bigint to real because",
+               `${b} > ${Number.MAX_SAFE_INTEGER}!`,
+            );
+         }
+         if (b < Number.MIN_SAFE_INTEGER) {
+            throw new FoundatsionError(
+               "Could not cast bigint to real because",
+               `${b} < ${Number.MIN_SAFE_INTEGER}`,
+            );
+         }
+
+         return unsound.cast<real>(Number(b));
+      },
+   };
 }

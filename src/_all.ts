@@ -1,7 +1,7 @@
 export {array} from "./array";
 export {bigint} from "./bigint";
 export {boolean} from "./boolean";
-// export {cast} from "./cast";
+export {cast} from "./cast";
 export {oo} from "./oo";
 export {FoundatsionError as Error} from "./error";
 export {never} from "./never";

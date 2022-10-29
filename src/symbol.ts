@@ -15,4 +15,10 @@ export namespace symbol {
          );
       }
    }
+
+   export const from = {
+      string(s: string): symbol {
+         return Symbol.for(s);
+      },
+   };
 }
