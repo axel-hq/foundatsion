@@ -8,7 +8,7 @@ import {identity, ignore} from "./type_traits";
 export type oo = object & {[k in string]: unknown};
 
 export namespace oo {
-   export const name = "open object";
+   export const name = "open-object";
 
    export function is(u: unknown): u is oo {
       return typeof u === "object" && u !== null;
@@ -71,3 +71,5 @@ export namespace oo {
       return unsound.shut_up(ks);
    }
 }
+
+rtti.verify(oo);

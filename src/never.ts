@@ -1,5 +1,4 @@
 import {rtti} from "./rtti";
-import {ct_val} from "./type_traits";
 import {FoundatsionError} from "./error";
 
 export namespace never {
@@ -16,4 +15,4 @@ export namespace never {
    }
 }
 
-ct_val<rtti>(never);
+rtti.verify(never);

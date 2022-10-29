@@ -5,12 +5,14 @@ import {FoundatsionError} from "./error";
 
 const cache = new WeakMap<rtti, rtti<unknown[]>>();
 
-export function array<t>(r: rtti<t>): rtti<t[]> {
+export function array
+   <t, n extends string>(r: rtti<t, n>): rtti<t[], `array<${n}>`>
+{
    if (cache.has(r)) {
       return unsound.shut_up(cache.get(r));
    }
 
-   const name = `array<${r.name}>`;
+   const name = `array<${r.name}>` as const;
 
    let is = {};
    if (oo.field_is(r, "is", unsound.any_fn)) {
@@ -55,7 +57,7 @@ export function array<t>(r: rtti<t>): rtti<t[]> {
       };
    }
 
-   const artti = unsound.cast<rtti<t[]>>({...{name}, ...is, ...assert});
+   const artti = unsound.shut_up({...{name}, ...is, ...assert});
    cache.set(r, artti);
    return artti;
 }

@@ -1,3 +1,4 @@
+import {rtti} from "./rtti";
 import {text} from "./text";
 import {number} from "./number";
 import {newtype} from "./newtype";
@@ -56,3 +57,5 @@ export namespace real {
       },
    };
 }
+
+rtti.verify(real);

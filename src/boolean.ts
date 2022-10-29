@@ -1,5 +1,4 @@
 import {rtti} from "./rtti";
-import {ct_val} from "./type_traits";
 import {FoundatsionError} from "./error";
 
 export namespace boolean {
@@ -19,4 +18,4 @@ export namespace boolean {
    }
 }
 
-ct_val<rtti>(boolean);
+rtti.verify(boolean);

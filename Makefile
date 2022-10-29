@@ -20,11 +20,11 @@ cjs: clean
 .PHONY: cjs
 
 es6: clean
-	tsc --module es6 --outDir bin/es6
+	tsc --module es2020 --outDir bin/es6
 .PHONY: es6
 
 dts: clean
-	tsc --module es6 --emitDeclarationOnly --declaration --declarationDir bin/es6
+	tsc --module es2020 --emitDeclarationOnly --declaration --declarationDir bin/dts
 .PHONY: dts
 
 build: cjs es6 dts

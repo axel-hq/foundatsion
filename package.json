@@ -24,8 +24,8 @@
    "files": ["bin"],
    "types": "./bin/dts/index.d.ts",
    "exports": {
-      "import": "./bin/es2020/index.js",
-      "require": "./bin/commonjs/index.js"
+      "import": "./bin/es6/index.js",
+      "require": "./bin/cjs/index.js"
    },
    "devDependencies": {
       "@typescript-eslint/eslint-plugin": "^5.30.5",

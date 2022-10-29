@@ -10,3 +10,5 @@ export namespace unknown {
 
    export const assert: rtti.assert = ignore;
 }
+
+rtti.verify(unknown);

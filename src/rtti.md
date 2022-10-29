@@ -115,9 +115,13 @@ namespace c {
 
 A function which delegates the casting will be provided from the `rtti`
 namespace. When casting from `in` to `out`, it will search for
-`out.from.in` first and `in.to.out` second. Function resolution will be done
-using the `rtti.name` field.
+`out.from[in.name]` first and `in.to[out.name]` second.
+Function resolution will be done using the `rtti.name` field.
 
 ### Rationale
 
-Casting is a pain in the \[A$$\] AND IT WE'RE LOSING \[KROMER\] GOD DAMN IT!
+The `from` usage is a lot more defendable for the aforementioned reasons but
+on occasion, you do actually want to cast to something "more primitive", per se.
+
+In short, casting is a pain in the \[A$$\] AND IT WE'RE LOSING \[KROMER\] GOD
+DAMN IT!

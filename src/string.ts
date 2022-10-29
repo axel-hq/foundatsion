@@ -1,3 +1,4 @@
+import {rtti} from "./rtti";
 import {FoundatsionError} from "./error";
 
 export namespace string {
@@ -16,3 +17,5 @@ export namespace string {
       }
    }
 }
+
+rtti.verify(string);

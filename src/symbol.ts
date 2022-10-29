@@ -1,3 +1,4 @@
+import {rtti} from "./rtti";
 import {FoundatsionError} from "./error";
 
 export namespace symbol {
@@ -22,3 +23,5 @@ export namespace symbol {
       },
    };
 }
+
+rtti.verify(symbol);

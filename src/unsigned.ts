@@ -8,6 +8,8 @@ import {FoundatsionError} from "./error";
 const bigint_or_number = union(bigint, number);
 export type unsigned = (bigint | number) & newtype<"unsigned">;
 export namespace unsigned {
+   export const name = "unsigned";
+
    export function is_from_bigint_or_number(b: bigint | number): b is unsigned {
       return b >= 0;
    }
@@ -43,3 +45,5 @@ export namespace unsigned {
       }
    }
 }
+
+rtti.verify(unsigned);

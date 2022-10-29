@@ -1,6 +1,4 @@
 import {rtti} from "./rtti";
-import {real} from "./real";
-import {ct_val} from "./type_traits";
 import {FoundatsionError} from "./error";
 
 export namespace bigint {
@@ -25,4 +23,4 @@ export namespace bigint {
    };
 }
 
-ct_val<rtti>(bigint);
+rtti.verify(bigint);
