@@ -10,6 +10,7 @@ export {number} from "./number";
 export {oo} from "./oo";
 export {prim_t} from "./prim_t";
 export {real} from "./real";
+export {rtti} from "./rtti";
 export {string} from "./string";
 export {symbol} from "./symbol";
 export {text} from "./text";

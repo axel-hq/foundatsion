@@ -16,6 +16,11 @@ export namespace number {
          );
       }
    }
+
+   export const from = {
+      bigint: Number,
+      string: Number,
+   };
 }
 
 rtti.verify(number);

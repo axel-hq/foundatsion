@@ -17,7 +17,7 @@ function cast<from, to, to_name extends string>(
 function cast<from, to>(
    rtti_from: rtti<from> & {to?: oo},
    rtti_to: rtti<to> & {from?: oo},
-   from: from
+   from: from,
 ): to {
    if (oo.field_is(rtti_to, "from", oo)) {
       const from = rtti_to.from;
