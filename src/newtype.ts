@@ -1,5 +1,5 @@
 import {unsound} from "./unsound";
-import {identity, union_to_intersection} from "./type_traits";
+import {identity, tt} from "./type_traits";
 
 // Newtypes are for package internals only.
 // Do not export newtypes over API boundaries!
@@ -28,7 +28,7 @@ type newtype_partials_union<phi_uniq_union extends keyof any> =
 export type newtype<uniq extends string | symbol> = {[nt_s]: {[k in uniq]: void}};
 export type unwrap<outer> =
    outer extends {[nt_s]: {}}
-      ? outer extends infer inner & union_to_intersection<newtype_partials_union<keyof outer[typeof nt_s]>>
+      ? outer extends infer inner & tt.union_to_intersection<newtype_partials_union<keyof outer[typeof nt_s]>>
          ? inner
          : never
       : outer;

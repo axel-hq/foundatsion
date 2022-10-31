@@ -6,14 +6,11 @@ import {identity, ignore} from "./type_traits";
 
 /** Open Object */
 export type oo = object & {[k in string]: unknown};
-
 export namespace oo {
    export const name = "open-object";
-
    export function is(u: unknown): u is oo {
       return typeof u === "object" && u !== null;
    }
-
    export function assert(u: unknown): asserts u is oo {
       if (typeof u !== "object") {
          throw new FoundatsionError(
@@ -27,10 +24,8 @@ export namespace oo {
          );
       }
    }
-
    export const assert_from_record: {(o: {}): asserts o is oo} = ignore;
    export const from: {(r: {}): oo} = identity;
-
    export function field_is
       <t, k extends string, o extends oo>
          (o: o, k: k, t: rtti<t>):
@@ -38,7 +33,6 @@ export namespace oo {
    {
       return t.is(o[k]);
    }
-
    /** Assert that an object has a property of type t. */
    export function assert_field_is
       <t, k extends string, o extends oo>
@@ -61,11 +55,9 @@ export namespace oo {
          }
       }
    }
-
    export function freeze<t>(obj: t): asserts obj is Readonly<t> {
       Object.freeze(obj);
    }
-
    export function keys<o extends oo>(o: o): (keyof o)[] {
       const ks = Object.keys(o);
       return unsound.shut_up(ks);

@@ -8,11 +8,9 @@ import {FoundatsionError} from "./error";
 export type real = number & newtype<"real">;
 export namespace real {
    export const name = "real";
-
    export function is(u: unknown): u is real {
       return number.is(u) && (!Number.isNaN(u)) && Number.isFinite(u);
    }
-
    export function assert(u: unknown): asserts u is real {
       try {
          number.assert(u);
@@ -37,7 +35,6 @@ export namespace real {
          );
       }
    }
-
    export const from = {
       bigint(b: bigint): real {
          if (b > Number.MAX_SAFE_INTEGER) {
@@ -52,7 +49,6 @@ export namespace real {
                `${b} < ${Number.MIN_SAFE_INTEGER}`,
             );
          }
-
          return unsound.cast<real>(Number(b));
       },
    };

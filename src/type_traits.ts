@@ -18,47 +18,50 @@ export const ct_true: {<_ extends true>(): void} = ignore;
  */
 export const ct_val: {<sup = never, sub extends sup = sup>(sub: sub): void} = ignore;
 
-type _not_union<t1, t2> =
-   t1 extends unknown
-      ? t2 extends t1
-         ? true
-         : unknown
-      : never;
-/** Returns `true` if t is not a union, `unknown` otherwise */
-export type not_union<t> = _not_union<t, t>;
+/** obscure type traits that most people won't be using */
+export namespace tt {
+   type _not_union<t1, t2> =
+      t1 extends unknown
+         ? t2 extends t1
+            ? true
+            : unknown
+         : never;
+   /** Returns `true` if t is not a union, `unknown` otherwise */
+   export type not_union<t> = _not_union<t, t>;
 
-/** Returns `true` on regular string and `false` on templated string */
-export type not_templated_string<s extends string> =
-   s extends ""
-      ? true
-      : s extends `${infer head}${infer tail}`
-         ? string extends head
-            ? false
-            : `${number}` extends head
+   /** Returns `true` on regular string and `false` on templated string */
+   export type not_templated_string<s extends string> =
+      s extends ""
+         ? true
+         : s extends `${infer head}${infer tail}`
+            ? string extends head
                ? false
-               : `${bigint}` extends head
+               : `${number}` extends head
                   ? false
-                  : `${boolean}` extends head
+                  : `${bigint}` extends head
                      ? false
-                     : not_templated_string<tail>
+                     : `${boolean}` extends head
+                        ? false
+                        : not_templated_string<tail>
+            : false;
+
+   /** Returns `true | false` */
+   export type is_prim_string<s extends string> =
+      not_union<s> extends true
+         ? not_templated_string<s>
          : false;
 
-/** Returns `true | false` */
-export type is_prim_string<s extends string> =
-   not_union<s> extends true
-      ? not_templated_string<s>
-      : false;
+   declare const primitive_string: unique symbol;
+   /**
+    * A primitive string is a string that can only have one value.
+    *
+    * Things like "foo", "bar", and "baz" are primitive strings.
+    *
+    * `foo${string}`, string, `qux${number}` are not primitive strings.
+    */
+   export type primitive_string = {[primitive_string]: void};
 
-declare const primitive_string: unique symbol;
-/**
- * A primitive string is a string that can only have one value.
- *
- * Things like "foo", "bar", and "baz" are primitive strings.
- *
- * `foo${string}`, string, `qux${number}` are not primitive strings.
- */
-export type primitive_string = {[primitive_string]: void};
-
-/** If you're using this, you're probably doing something wrong. */
-export type union_to_intersection<u> =
-   (u extends any ? {(k: u): void} : never) extends {(k: infer t): void} ? t : never;
+   /** If you're using this, you're probably doing something wrong. */
+   export type union_to_intersection<u> =
+      (u extends any ? {(k: u): void} : never) extends {(k: infer t): void} ? t : never;
+}

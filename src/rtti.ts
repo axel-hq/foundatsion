@@ -1,5 +1,5 @@
 import {unsound} from "./unsound";
-import {ignore, is_prim_string, primitive_string} from "./type_traits";
+import {ignore, tt} from "./type_traits";
 
 export type rtti<t = unknown, n extends string = string> = {
    name: n;
@@ -12,7 +12,7 @@ export namespace rtti {
    export type assert<t = unknown> = {(u: unknown): asserts u is t};
 
    export type has_valid_name<n extends string> =
-      is_prim_string<n> extends true ? unknown : {name: primitive_string};
+      tt.is_prim_string<n> extends true ? unknown : {name: tt.primitive_string};
 
    export const verify:
       {<n extends string>(r: rtti<unknown, n> & has_valid_name<n>): void}
@@ -34,9 +34,7 @@ export namespace rtti {
       return unsound.shut_up(is);
    }
 
-   /**
-    * If you can help it, don't use this function.
-    */
+   /** If you can help it, don't use this function. */
    export function assert<t, u>(r: rtti<t>, u: u): asserts u is u & t {
       r.assert(u);
    }

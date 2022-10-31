@@ -1,7 +1,6 @@
 import {text} from "./text";
 
 type error_input = string | Error | FoundatsionError;
-
 type processed_input = string | processed_input[];
 
 export class FoundatsionError extends Error {
