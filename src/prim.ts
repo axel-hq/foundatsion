@@ -11,7 +11,7 @@ type primitives =
    | string
    | symbol;
 
-export function prim_t<v extends primitives>(v: v): rtti<v> {
+export function prim<v extends primitives>(v: v): rtti<v> {
    const name = text.stringify(v);
    return {
       name,

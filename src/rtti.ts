@@ -13,13 +13,10 @@ export namespace rtti {
 
    export type has_valid_name<n extends string> =
       is_prim_string<n> extends true ? unknown : {name: primitive_string};
+
    export const verify:
       {<n extends string>(r: rtti<unknown, n> & has_valid_name<n>): void}
          = ignore;
-
-   export function assert<t, u>(r: rtti<t>, u: u): asserts u is u & t {
-      r.assert(u);
-   }
 
    export function is_from_assert<t>(a: assert<t>): is<t> {
       function is(u: unknown): boolean {
@@ -35,5 +32,12 @@ export namespace rtti {
          }
       }
       return unsound.shut_up(is);
+   }
+
+   /**
+    * If you can help it, don't use this function.
+    */
+   export function assert<t, u>(r: rtti<t>, u: u): asserts u is u & t {
+      r.assert(u);
    }
 }

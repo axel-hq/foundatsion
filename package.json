@@ -1,12 +1,12 @@
 {
    "name": "@axel-hq/foundatsion",
-   "version": "0.1.1",
+   "version": "0.1.2",
    "description": "A library for runtime type-checking for TypeScript",
    "homepage": "https://github.com/axel-hq/foundatsion#readme",
    "repository": "git@github.com:axel-hq/foundatsion.git",
    "bugs": {
-      "url" : "https://github.com/axel-hq/foundatsion/issues",
-      "email" : "marcus@axel.dev"
+      "url": "https://github.com/axel-hq/foundatsion/issues",
+      "email": "marcus@axel.dev"
    },
    "license": "ISC",
    "author": {
@@ -21,7 +21,9 @@
          "url": "https://github.com/rhiz0-eth"
       }
    ],
-   "files": ["bin"],
+   "files": [
+      "bin"
+   ],
    "types": "./bin/dts/index.d.ts",
    "exports": {
       "import": "./bin/es6/index.js",
