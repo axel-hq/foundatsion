@@ -15,7 +15,7 @@ export namespace rtti {
       tt.is_prim_string<n> extends true ? unknown : {name: tt.primitive_string};
 
    export const verify:
-      {<t = unknown, n extends string = string>(r: rtti<t, n> & has_valid_name<n>): void}
+      {<t, n extends string>(r: rtti<t, n> & has_valid_name<n>): void}
          = ignore;
 
    export function is_from_assert<t>(a: assert<t>): is<t> {
