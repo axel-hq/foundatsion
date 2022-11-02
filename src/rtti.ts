@@ -34,7 +34,10 @@ export namespace rtti {
       return unsound.shut_up(is);
    }
 
-   /** If you can help it, don't use this function. */
+   /**
+    * @deprecated
+    * If you can help it, don't use this function.
+    */
    export function assert<t, u>(r: rtti<t>, u: u): asserts u is u & t {
       r.assert(u);
    }
