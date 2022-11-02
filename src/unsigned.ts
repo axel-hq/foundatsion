@@ -5,12 +5,17 @@ import {number} from "./number";
 import {newtype} from "./newtype";
 import {FoundatsionError} from "./error";
 
-const bigint_or_number = union(bigint, number);
+{
+   const r = union(bigint, number);
+   var bigint_or_number: typeof r = r;
+}
+
 export type unsigned = (bigint | number) & newtype<"unsigned">;
 export namespace unsigned {
    export const name = "unsigned";
 
    export function is_from_bigint_or_number(b: bigint | number): b is unsigned {
+      // NaN fails this as it should
       return b >= 0;
    }
    export const is_from_bigint = is_from_bigint_or_number;
@@ -23,15 +28,15 @@ export namespace unsigned {
    export function assert_from_bigint_or_number(b: bigint | number): asserts b is unsigned {
       if (is_from_bigint_or_number(b)) return;
       throw new FoundatsionError(
-         "While asserting for unsigned ",
-         `${b} was not greater than or equal to zero!`,
+         `Could not assert for unsigned because ${b} was not greater than or`,
+         "equal to zero!",
       );
    }
    export const assert_from_bigint = assert_from_bigint_or_number;
    export const assert_from_number = assert_from_bigint_or_number;
    export function assert(u: unknown): asserts u is unsigned {
       try {
-         rtti.assert(bigint_or_number, u);
+         bigint_or_number.assert(u);
          assert_from_bigint_or_number(u);
       } catch (e) {
          if (e instanceof Error) {

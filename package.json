@@ -1,6 +1,6 @@
 {
    "name": "@axel-hq/foundatsion",
-   "version": "0.2.0",
+   "version": "0.2.1",
    "description": "A library for runtime type-checking for TypeScript",
    "homepage": "https://github.com/axel-hq/foundatsion#readme",
    "repository": "git@github.com:axel-hq/foundatsion.git",

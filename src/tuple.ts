@@ -51,12 +51,14 @@ export function tuple<rs extends readonly [...rtti[]]>(...rs: rs): rtti<unwrap_r
             );
          }
          for (let i = 0; i < rs.length; i++) {
-            const r = rs[i];
-            if (r === undefined) {
+            const maybe_r = rs[i];
+            if (maybe_r === undefined) {
                __unreachable();
             }
+            // picky typescript
+            const r: typeof maybe_r = maybe_r;
             try {
-               rtti.assert(r, u[i]);
+               r.assert(u[i]);
             } catch (e) {
                if (e instanceof Error) {
                   throw new FoundatsionError(
