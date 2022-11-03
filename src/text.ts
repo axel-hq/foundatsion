@@ -21,18 +21,18 @@ export namespace text {
     *
     * Don't plug `typeof x` into this, that'd be silly.
     */
-   export function stringify(u: unknown): string {
+   export function show(u: unknown): string {
       switch (typeof u) {
       case "bigint":    return `${u}n`;
       case "boolean":   return `${u}`;
       case "number":    return `${u}`;
       case "string":    return JSON.stringify(u);
-      case "symbol":    return `Symbol(${stringify(u.description)})`;
+      case "symbol":    return `Symbol(${show(u.description)})`;
       case "undefined": return "undefined";
       case "function":  return `function ${u.name}(...)`;
       case "object":
          if (Array.isArray(u)) {
-            return `[${u.map(stringify).join(", ")}]`;
+            return `[${u.map(show).join(", ")}]`;
          } else if (u === null) {
             return "null";
          } else {

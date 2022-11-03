@@ -12,7 +12,7 @@ type primitives =
    | symbol;
 
 export function prim<v extends primitives>(v: v): rtti<v> {
-   const name = text.stringify(v);
+   const name = text.show(v);
    return {
       name,
       is(u: unknown): u is v {
@@ -22,7 +22,7 @@ export function prim<v extends primitives>(v: v): rtti<v> {
          if (v !== u) {
             throw new FoundatsionError(
                `Tried asserting for ${name} but the value did not match.\n`,
-               `Instead, received ${text.stringify(v)}.`
+               `Instead, received ${text.show(v)}.`
             );
          }
       },

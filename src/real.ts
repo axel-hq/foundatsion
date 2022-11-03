@@ -31,26 +31,12 @@ export namespace real {
       }
       if (!Number.isFinite(u)) {
          throw new FoundatsionError(
-            `Tried asserting for real but ${text.stringify(u)} is not finite.`,
+            `Tried asserting for real but ${text.show(u)} is not finite.`,
          );
       }
    }
    export const from = {
-      bigint(b: bigint): real {
-         if (b > Number.MAX_SAFE_INTEGER) {
-            throw new FoundatsionError(
-               "Could not cast bigint to real because",
-               `${b} > ${Number.MAX_SAFE_INTEGER}!`,
-            );
-         }
-         if (b < Number.MIN_SAFE_INTEGER) {
-            throw new FoundatsionError(
-               "Could not cast bigint to real because",
-               `${b} < ${Number.MIN_SAFE_INTEGER}`,
-            );
-         }
-         return unsound.cast<real>(Number(b));
-      },
+      // string()
    };
 }
 

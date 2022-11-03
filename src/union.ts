@@ -4,7 +4,7 @@ import {unsound} from "./unsound";
 import {__unreachable} from "./type_traits";
 import {FoundatsionError} from "./error";
 
-type union_rtti_tuple<rs extends [...rtti[]]> =
+type union_decant<rs extends [...rtti[]]> =
    rs[number] extends rtti<infer ts> ? ts : never;
 
 // I'm adding a little bit of extra type information that *technically*
@@ -20,7 +20,7 @@ namespace union_rtti_object {
    }
 }
 
-export function union<rs extends [...rtti[]]>(...rs: rs): rtti<union_rtti_tuple<rs>> {
+export function union<rs extends [...rtti[]]>(...rs: rs): rtti<union_decant<rs>> {
    if (rs.length === 0) {
       return never;
    }
@@ -47,7 +47,7 @@ export function union<rs extends [...rtti[]]>(...rs: rs): rtti<union_rtti_tuple<
    const name = `${rs.map(r => r.name).join(" | ")}`;
    const new_rtti = {
       name,
-      is(u: unknown): u is union_rtti_tuple<rs> {
+      is(u: unknown): u is union_decant<rs> {
          for (const r of non_union_rs) {
             if (r.is(u)) {
                return true;

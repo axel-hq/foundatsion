@@ -1,7 +1,6 @@
 import {real} from "./real";
 import {rtti} from "./rtti";
 import {text} from "./text";
-import {number} from "./number";
 import {newtype} from "./newtype";
 import {unsound} from "./unsound";
 import {FoundatsionError} from "./error";
@@ -12,28 +11,23 @@ export namespace int {
    export function is(u: unknown): u is int {
       return Number.isInteger(u);
    }
-   export function assert(u: unknown): asserts u is real {
+   export function assert(u: unknown): asserts u is int {
       if (is(u)) return;
       else throw new FoundatsionError(
-         `Could not assert to int because Number.isInteger(${text.stringify})`,
+         `Could not assert to int because Number.isInteger(${text.show})`,
          "returned false.",
       );
    }
    export const from = {
-      bigint(b: bigint): real {
-         if (b > Number.MAX_SAFE_INTEGER) {
+      bigint(b: bigint): int {
+         const n = Number(b);
+         if (`${b}` !== `${n}`) {
             throw new FoundatsionError(
-               "Could not cast bigint to real because",
-               `${b} > ${Number.MAX_SAFE_INTEGER}!`,
+               "Loss of precision when converting from bigint to int!\n",
+               `${b} !== ${n}`,
             );
          }
-         if (b < Number.MIN_SAFE_INTEGER) {
-            throw new FoundatsionError(
-               "Could not cast bigint to real because",
-               `${b} < ${Number.MIN_SAFE_INTEGER}`,
-            );
-         }
-         return unsound.cast<real>(Number(b));
+         return unsound.cast<int>(n);
       },
    };
 }

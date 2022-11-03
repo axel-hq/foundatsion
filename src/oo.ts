@@ -46,7 +46,7 @@ export namespace oo {
             throw new FoundatsionError(
                // JSON.stringify(k) is used to escape quotes and other weird
                // characters within k.
-               `While asserting for {[${text.stringify(k)}]: ${t.name}}`,
+               `While asserting for {[${text.show(k)}]: ${t.name}}`,
                "an error was thrown:",
                e,
             );
