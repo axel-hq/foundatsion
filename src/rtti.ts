@@ -1,7 +1,6 @@
-import {unsound} from "./unsound";
-import {ignore, tt} from "./type_traits";
 import {oo} from "./oo";
 import {string} from "./string";
+import {unsound} from "./unsound";
 
 export type rtti<t = unknown> = {
    name: string;
@@ -38,7 +37,7 @@ export namespace rtti {
             && oo.is(u)
             && oo.field_is(u, "name", string)
             && oo.field_is(u, "is", unsound.any_fn)
-            && oo.field_is(u, "assert", unsound.any_fn)
+            && oo.field_is(u, "assert", unsound.any_fn);
       }
    }
 }

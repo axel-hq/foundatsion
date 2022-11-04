@@ -1,4 +1,3 @@
-import {rtti} from "./rtti";
 import {union} from "./union";
 import {bigint} from "./bigint";
 import {number} from "./number";
@@ -50,5 +49,3 @@ export namespace unsigned {
       }
    }
 }
-
-rtti.verify(unsigned);

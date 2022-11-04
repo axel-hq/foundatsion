@@ -4,18 +4,16 @@ import {unsound} from "./unsound";
 import {__unreachable} from "./type_traits";
 import {FoundatsionError} from "./error";
 
-type unwrap_rtti_tuple<rs extends readonly [...any[]]> =
-   rs extends readonly [infer head, ...infer tail]
-   ? head extends rtti<infer t>
-      ? [t, ...unwrap_rtti_tuple<tail>]
-      : never
-   : [];
+type decant_tuple<rs extends readonly [...rtti[]]> =
+   rs extends readonly [rtti<infer t>, ...infer tail extends [...rtti[]]]
+      ? [t, ...decant_tuple<tail>]
+      : [];
 
-export function tuple<rs extends readonly [...rtti[]]>(...rs: rs): rtti<unwrap_rtti_tuple<rs>> {
+export function tuple<rs extends readonly [...rtti[]]>(...rs: rs): rtti<decant_tuple<rs>> {
    const name = `[${rs.map(r => r.name).join(", ")}]`;
    return {
       name,
-      is(u: unknown): u is unwrap_rtti_tuple<rs> {
+      is(u: unknown): u is decant_tuple<rs> {
          if (!Array.isArray(u)) {
             return false;
          }

@@ -1,4 +1,3 @@
-import {rtti} from "./rtti";
 import {FoundatsionError} from "./error";
 
 export namespace bigint {
@@ -19,5 +18,3 @@ export namespace bigint {
       string: BigInt,
    };
 }
-
-rtti.verify(bigint);

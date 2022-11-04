@@ -1,4 +1,3 @@
-import {rtti} from "./rtti";
 import {FoundatsionError} from "./error";
 
 export namespace never {
@@ -12,5 +11,3 @@ export namespace never {
       );
    }
 }
-
-rtti.verify(never);

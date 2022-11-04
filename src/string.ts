@@ -1,7 +1,6 @@
-import {rtti} from "./rtti";
 import {FoundatsionError} from "./error";
 
-namespace _string {
+export namespace string {
    export const name = "string";
    export function is(u: unknown): u is string {
       return typeof u === "string";
@@ -19,5 +18,3 @@ namespace _string {
       number: String,
    };
 }
-export const string: typeof _string = _string;
-rtti.verify(string);

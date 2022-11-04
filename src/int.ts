@@ -1,5 +1,4 @@
 import {real} from "./real";
-import {rtti} from "./rtti";
 import {text} from "./text";
 import {newtype} from "./newtype";
 import {unsound} from "./unsound";
@@ -31,5 +30,3 @@ export namespace int {
       },
    };
 }
-
-rtti.verify(real);

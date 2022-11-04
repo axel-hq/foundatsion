@@ -58,6 +58,8 @@ export namespace oo {
    export function freeze<t>(obj: t): asserts obj is Readonly<t> {
       Object.freeze(obj);
    }
+   // it may be incorrect but I'm past caring
+   export function keys<o extends {}>(o: o): (keyof o)[] {
+      return unsound.shut_up(Object.keys(o));
+   }
 }
-
-rtti.verify(oo);

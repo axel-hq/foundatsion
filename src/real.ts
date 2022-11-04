@@ -1,4 +1,3 @@
-import {rtti} from "./rtti";
 import {text} from "./text";
 import {number} from "./number";
 import {newtype} from "./newtype";
@@ -36,8 +35,34 @@ export namespace real {
       }
    }
    export const from = {
-      // string()
+      string(s: string): real {
+         let n;
+         try {
+            n = Number(s);
+         } catch (e) {
+            if (e instanceof Error) {
+               throw new FoundatsionError(
+                  "Could not cast string to real because the Number constructor",
+                  "threw an error:",
+                  e,
+               );
+            } else {
+               throw e;
+            }
+         }
+         if (Number.isNaN(n)) {
+            throw new FoundatsionError(
+               `Could not cast string to real because ${text.show(s)} was parsed`,
+               "as NaN!",
+            );
+         }
+         if (!Number.isFinite(n)) {
+            throw new FoundatsionError(
+               `Could not cast string (${text.show(s)}) to real because`,
+               `${text.show(n)} was not finite!`,
+            );
+         }
+         return unsound.bless<real>(n);
+      },
    };
 }
-
-rtti.verify(real);

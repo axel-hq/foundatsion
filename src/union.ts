@@ -20,18 +20,14 @@ namespace union_rtti_object {
    }
 }
 
-export function union<rs extends [...rtti[]]>(...rs: rs): rtti<union_decant<rs>> {
+export type union<rs extends [...rtti[]]> = rtti<union_decant<rs>>;
+export function union<rs extends [...rtti[]]>(...rs: rs): union<rs> {
    if (rs.length === 0) {
       return never;
    }
 
    if (rs.length === 1) {
-      const r0 = rs[0];
-      if (r0 === undefined) {
-         __unreachable();
-      } else {
-         return unsound.shut_up(r0);
-      }
+      return unsound.shut_up(rs[0]);
    }
 
    const non_union_rs: rtti[] = [];
@@ -44,9 +40,8 @@ export function union<rs extends [...rtti[]]>(...rs: rs): rtti<union_decant<rs>>
       }
    }
 
-   const name = `${rs.map(r => r.name).join(" | ")}`;
    const new_rtti = {
-      name,
+      name: `${rs.map(r => r.name).join(" | ")}`,
       is(u: unknown): u is union_decant<rs> {
          for (const r of non_union_rs) {
             if (r.is(u)) {
@@ -70,7 +65,7 @@ export function union<rs extends [...rtti[]]>(...rs: rs): rtti<union_decant<rs>>
             }
          }
          throw new FoundatsionError(
-            `While asserting that value was ${name} one or more errors were`,
+            `While asserting that value was ${this.name} one or more errors were`,
             "thrown:",
             ...errs,
          );

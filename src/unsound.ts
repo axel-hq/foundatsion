@@ -22,6 +22,11 @@ export namespace unsound {
     */
    export const fuck_off: {(stubborn: any): any} = identity as never;
 
+   export const not_undefined: {<t>(v: t): Exclude<t, undefined>}
+      = identity as never;
+   export const assert_not_undefined: {<t>(v: t): asserts v is Exclude<t, undefined>}
+      = ignore as never;
+
    export type any_fn = {(...args: any[]): unknown};
    export namespace any_fn {
       export const name = "any function";

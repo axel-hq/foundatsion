@@ -61,7 +61,10 @@ export namespace tt {
     */
    export type primitive_string = {[primitive_string]: void};
 
-   /** If you're using this, you're probably doing something wrong. */
+   /**
+    * If you're using this, you're probably doing something wrong.
+    * Also sometimes it randomly doesn't work.
+    */
    export type union_to_intersection<u> =
       (u extends any ? {(k: u): void} : never) extends {(k: infer t): void} ? t : never;
 }

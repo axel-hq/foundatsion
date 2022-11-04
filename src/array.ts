@@ -5,9 +5,7 @@ import {FoundatsionError} from "./error";
 
 const cache = new WeakMap<rtti, rtti<unknown[]>>();
 
-export function array
-   <t, n extends string>(r: rtti<t, n>): rtti<t[], `array<${n}>`>
-{
+export function array<t>(r: rtti<t>): rtti<t[]> {
    if (cache.has(r)) {
       return unsound.shut_up(cache.get(r));
    }

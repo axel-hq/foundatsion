@@ -1,5 +1,7 @@
-export {alias} from "./alias";
 export {array} from "./array";
+import {assert as _assert} from "./assert";
+export const assert: typeof _assert = _assert;
+export {auto} from "./auto";
 import {bigint as _bigint} from "./bigint";
 export const bigint: typeof _bigint = _bigint;
 import {boolean as _boolean} from "./boolean";
@@ -8,6 +10,7 @@ export {FoundatsionError as Error} from "./error";
 import {int as _int} from "./int";
 export type int = _int;
 export const int: typeof _int = _int;
+export {inter} from "./inter";
 import {never as _never} from "./never";
 export const never: typeof _never = _never;
 export {nt_s, newtype, unwrap} from "./newtype";
