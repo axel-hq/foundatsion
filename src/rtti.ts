@@ -1,3 +1,4 @@
+import {FoundatsionError} from "./error";
 import {oo} from "./oo";
 import {string} from "./string";
 import {unsound} from "./unsound";
@@ -38,6 +39,13 @@ export namespace rtti {
             && oo.field_is(u, "name", string)
             && oo.field_is(u, "is", unsound.any_fn)
             && oo.field_is(u, "assert", unsound.any_fn);
+      }
+      export function assert(u: unknown): asserts u is rtti {
+         if (!is(u)) {
+            throw new FoundatsionError(
+               "Value was not rtti!",
+            );
+         }
       }
    }
 }

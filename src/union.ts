@@ -43,12 +43,7 @@ export function union<rs extends [...rtti[]]>(...rs: rs): union<rs> {
    const new_rtti = {
       name: `${rs.map(r => r.name).join(" | ")}`,
       is(u: unknown): u is union_decant<rs> {
-         for (const r of non_union_rs) {
-            if (r.is(u)) {
-               return true;
-            }
-         }
-         return false;
+         return non_union_rs.some(r => r.is(u));
       },
       assert(u: unknown): void {
          const errs: Error[] = [];

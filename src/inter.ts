@@ -1,6 +1,6 @@
 import {rtti} from "./rtti";
-import {never} from "./never";
 import {unsound} from "./unsound";
+import {unknown} from "./unknown";
 import {FoundatsionError} from "./error";
 
 type inter_decant<rs> =
@@ -10,7 +10,7 @@ type inter_decant<rs> =
 
 export function inter<rs extends [...rtti[]]>(...rs: rs): rtti<inter_decant<rs>> {
    if (rs.length === 0) {
-      return never;
+      return unsound.shut_up(unknown);
    }
 
    if (rs.length === 1) {
