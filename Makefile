@@ -12,7 +12,7 @@ errors:
 .PHONY: errors
 
 clean:
-	rd /s /q bin
+	-rd /s /q bin
 .PHONY: clean
 
 cjs: clean
