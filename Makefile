@@ -1,10 +1,9 @@
-. := $(dir $(MAKEFILE_LIST))
-all_deps := $(MAKEFILE_LIST) $(wildcard src/*.ts)
+/ := $(dir $(MAKEFILE_LIST))
 
 ifeq ($(OS), Windows_NT)
-	PATH := $./node_modules/.bin;$(PATH)
+	PATH := $/node_modules/.bin;$(PATH)
 else
-	PATH := $./node_modules/.bin:$(PATH)
+	PATH := $/node_modules/.bin:$(PATH)
 endif
 
 errors:
@@ -12,19 +11,23 @@ errors:
 .PHONY: errors
 
 clean:
-	-rd /s /q bin
+	ifeq ($(OS), Windows_NT)
+	-rd /s /q $/bin
+	else
+	-rm -rf $/bin
+	endif
 .PHONY: clean
 
 cjs: clean
-	tsc --module commonjs --outDir bin/cjs
+	tsc --module commonjs --outDir $/bin/cjs
 .PHONY: cjs
 
 es6: clean
-	tsc --module es2020 --outDir bin/es6
+	tsc --module es2020 --outDir $/bin/es6
 .PHONY: es6
 
 dts: clean
-	tsc --module es2020 --emitDeclarationOnly --declaration --declarationDir bin/dts
+	tsc --module es2020 --emitDeclarationOnly --declaration --declarationDir $/bin/dts
 .PHONY: dts
 
 build: cjs es6 dts

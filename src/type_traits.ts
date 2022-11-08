@@ -20,14 +20,23 @@ export const ct_val: {<sup = never, sub extends sup = sup>(sub: sub): void} = ig
 
 /** obscure type traits that most people won't be using */
 export namespace tt {
-   type _not_union<t1, t2> =
-      t1 extends unknown
+   export type prim =
+      | null
+      | undefined
+      | boolean
+      | number
+      | bigint
+      | string
+      | symbol;
+
+   type _is_union<t1, t2> =
+      t2 extends unknown
          ? t2 extends t1
-            ? true
-            : unknown
+            ? unknown // it's not a union
+            : true
          : never;
-   /** Returns `true` if t is not a union, `unknown` otherwise */
-   export type not_union<t> = _not_union<t, t>;
+   /** Returns `true` if t is a union */
+   export type is_union<t> = _is_union<t, t>;
 
    /** Returns `true` on regular string and `false` on templated string */
    export type not_templated_string<s extends string> =
@@ -46,21 +55,34 @@ export namespace tt {
             : false;
 
    /** Returns `true | false` */
-   export type is_prim_string<s extends string> =
-      not_union<s> extends true
+   export type is_const_string<s extends string> =
+      is_union<s> extends true
          ? not_templated_string<s>
          : false;
 
-   declare const primitive_string: unique symbol;
-   /**
-    * A primitive string is a string that can only have one value.
-    *
-    * Things like "foo", "bar", and "baz" are primitive strings.
-    *
-    * `foo${string}`, string, `qux${number}` are not primitive strings.
-    */
-   export type primitive_string = {[primitive_string]: void};
+   declare const const_string: unique symbol;
+   export type const_string = {[const_string]: void};
 
+   // Returns `true | false`
+   export type is_const_prim<p extends prim> =
+      is_union<p> extends true                                   // case: union
+         ? false
+      : p extends number                                         // case: number
+         ? number extends p
+            ? false
+            : true
+      : p extends bigint                                         // case: bigint
+         ? bigint extends p
+            ? false
+            : true
+      : p extends string                                         // case: string
+         ? is_const_string<p>
+      : p extends symbol                                         // case: symbol
+         ? symbol extends p
+            ? false
+            : true
+      : true;
+      
    /**
     * If you're using this, you're probably doing something wrong.
     * Also sometimes it randomly doesn't work.

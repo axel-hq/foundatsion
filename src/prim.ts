@@ -1,17 +1,9 @@
 import {text} from "./text";
 import {rtti} from "./rtti";
+import {tt} from "./type_traits";
 import {FoundatsionError} from "./error";
 
-type primitives =
-   | null
-   | undefined
-   | boolean
-   | number
-   | bigint
-   | string
-   | symbol;
-
-export function prim<v extends primitives>(v: v): rtti<v> {
+export function prim<v extends tt.prim>(v: v): rtti<v> {
    const name = text.show(v);
    return {
       name,
