@@ -11,11 +11,11 @@ errors:
 .PHONY: errors
 
 clean:
-	ifeq ($(OS), Windows_NT)
+ifeq ($(OS), Windows_NT)
 	-rd /s /q $/bin
-	else
+else
 	-rm -rf $/bin
-	endif
+endif
 .PHONY: clean
 
 cjs: clean
