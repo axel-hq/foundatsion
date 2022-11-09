@@ -8,7 +8,7 @@ type inter_decant<rs> =
       ? t & inter_decant<tail>
       : unknown;
 
-export function inter<rs extends [...rtti[]]>(...rs: rs): rtti<inter_decant<rs>> {
+export function inter<rs extends rtti[]>(...rs: readonly [...rs]): rtti<inter_decant<rs>> {
    if (rs.length === 0) {
       return unsound.shut_up(unknown);
    }

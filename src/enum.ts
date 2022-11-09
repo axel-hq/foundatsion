@@ -1,35 +1,38 @@
-import {rtti} from "./rtti";
-import {never} from "./never";
-import {unsound} from "./unsound";
-import {tt, __unreachable} from "./type_traits";
-import {FoundatsionError} from "./error";
 import {prim} from "./prim";
 import {text} from "./text";
+import {rtti} from "./rtti";
+import {never} from "./never";
+import {FoundatsionError} from "./error";
+import {tt, __unreachable} from "./type_traits";
 
-const holder = {
-   "enum"<prims extends [...tt.prim[]]>(name: string, prims: prims): rtti<prims[number]> {
-      if (prims.length === 0) {
-         return never;
-      }
-
-      if (prims.length = 1) {
-         return prim(prims[0]);
-      }
-
-      return {
-         name,
-         is(u: unknown): u is prims[number] {
-            return prims.some(p => u === p);
-         },
-         assert(u: unknown): asserts u is prims[number] {
-            throw new FoundatsionError(
-               `Could not assert that ${text.show(u)} was enum ${this.name}!\n`,
-               "The value must be one of the following:\n",
-               ...prims.map(p => `- ${text.show(p)}\n`),
-            );
-         },
-      };
-   },
+type require_const_prim_tpl<ts extends tt.prim[]> = {
+   [k in (number & keyof ts)]: tt.is_const_prim<ts[k]> extends true ? ts[k] : tt.const_prim;
 };
 
-export const emun = holder["enum"];
+export function f_enum
+   <prims extends tt.prim[]>
+      (name: string, prims: readonly [...prims] & require_const_prim_tpl<prims>):
+         rtti<prims[number]>;
+export function f_enum(name: string, prims: readonly tt.prim[]): rtti {
+   if (prims.length === 0) {
+      return never;
+   }
+
+   if (prims.length === 1) {
+      return prim(prims[0]);
+   }
+
+   return {
+      name,
+      is(u: unknown): u is unknown {
+         return prims.some(p => u === p);
+      },
+      assert(u: unknown): asserts u is unknown {
+         throw new FoundatsionError(
+            `Could not assert that ${text.show(u)} was enum ${this.name}!\n`,
+            "The value must be one of the following:\n",
+            ...prims.map(p => `- ${text.show(p)}\n`),
+         );
+      },
+   };
+}

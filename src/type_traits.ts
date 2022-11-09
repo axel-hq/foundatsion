@@ -57,8 +57,8 @@ export namespace tt {
    /** Returns `true | false` */
    export type is_const_string<s extends string> =
       is_union<s> extends true
-         ? not_templated_string<s>
-         : false;
+         ? false
+         : not_templated_string<s>;
 
    declare const const_string: unique symbol;
    export type const_string = {[const_string]: void};
@@ -82,7 +82,12 @@ export namespace tt {
             ? false
             : true
       : true;
-      
+
+   declare const const_prim: unique symbol;
+   export type const_prim = {[const_prim]: void};
+
+   export type require_const_prim<t> = is_const_prim<t> extends true ? t : const_prim;
+
    /**
     * If you're using this, you're probably doing something wrong.
     * Also sometimes it randomly doesn't work.

@@ -21,7 +21,7 @@ namespace union_rtti_object {
 }
 
 export type union<rs extends [...rtti[]]> = rtti<union_decant<rs>>;
-export function union<rs extends [...rtti[]]>(...rs: rs): union<rs> {
+export function union<rs extends rtti[]>(...rs: readonly [...rs]): union<rs> {
    if (rs.length === 0) {
       return never;
    }

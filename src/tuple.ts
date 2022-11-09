@@ -9,7 +9,7 @@ type decant_tuple<rs extends readonly [...rtti[]]> =
       ? [t, ...decant_tuple<tail>]
       : [];
 
-export function tuple<rs extends readonly [...rtti[]]>(...rs: rs): rtti<decant_tuple<rs>> {
+export function tuple<rs extends rtti[]>(...rs: readonly [...rs]): rtti<decant_tuple<rs>> {
    const name = `[${rs.map(r => r.name).join(", ")}]`;
    return {
       name,
