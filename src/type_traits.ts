@@ -86,7 +86,8 @@ export namespace tt {
    declare const const_prim: unique symbol;
    export type const_prim = {[const_prim]: void};
 
-   export type require_const_prim<t> = is_const_prim<t> extends true ? t : const_prim;
+   export type require_const_prim<t extends prim> =
+      is_const_prim<t> extends true ? t : const_prim;
 
    /**
     * If you're using this, you're probably doing something wrong.

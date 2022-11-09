@@ -12,7 +12,7 @@ errors:
 
 clean:
 ifeq ($(OS), Windows_NT)
-	-rd /s /q $/bin
+	-rd /s /q .\bin
 else
 	-rm -rf $/bin
 endif

@@ -6,7 +6,7 @@ import {bigint as _bigint} from "./bigint";
 export const bigint: typeof _bigint = _bigint;
 import {boolean as _boolean} from "./boolean";
 export const boolean: typeof _boolean = _boolean;
-export {emun as enum} from "./enum";
+export {f_enum as enum} from "./enum";
 export {FoundatsionError as Error} from "./error";
 import {int as _int} from "./int";
 export type int = _int;
