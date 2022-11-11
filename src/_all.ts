@@ -1,6 +1,7 @@
 export {array} from "./array";
 import {assert as _assert} from "./assert";
 export const assert: typeof _assert = _assert;
+export {assert_and_return} from "./assert";
 export {auto} from "./auto";
 import {bigint as _bigint} from "./bigint";
 export const bigint: typeof _bigint = _bigint;
