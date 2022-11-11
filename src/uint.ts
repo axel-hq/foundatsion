@@ -1,12 +1,15 @@
-import {F} from "@axel-hq/foundatsion";
+import {int} from "./int";
+import {inter} from "./inter";
 import {ubigint} from "./ubigint";
+import {unsigned} from "./unsigned";
+import {unsound} from "./unsound";
 
-export type uint = F.unsigned & F.int;
+export type uint = unsigned & int;
 export const uint = {
-   ...F.inter(F.unsigned, F.int),
+   ...inter(unsigned, int),
    from: {
       ubigint(u: ubigint): uint {
-         return F.unsound.shut_up(F.int.from.bigint(u));
+         return unsound.shut_up(int.from.bigint(u));
       },
    },
 };
