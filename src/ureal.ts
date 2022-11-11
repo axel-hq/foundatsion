@@ -1,6 +1,6 @@
 import {int} from "./int";
 import {real} from "./real";
-import {inter} from "../bin/dts/inter";
+import {inter} from "./inter";
 import {unsigned} from "./unsigned";
 
 export type ureal = unsigned & int;
