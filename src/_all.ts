@@ -41,6 +41,12 @@ export {
    ct_val,
    tt,
 } from "./type_traits";
+import {ubigint as _ubigint} from "./ubigint";
+export type ubigint = _ubigint;
+export const ubigint: typeof _ubigint = _ubigint;
+import {uint as _uint} from "./uint";
+export type uint = _uint;
+export const uint: typeof _uint = _uint;
 export {union} from "./union";
 import {unknown as _unknown} from "./unknown";
 export const unknown: typeof _unknown = _unknown;
@@ -49,3 +55,6 @@ export type unsigned = _unsigned;
 export const unsigned: typeof _unsigned = _unsigned;
 import {unsound as _unsound} from "./unsound";
 export const unsound: typeof _unsound = _unsound;
+import {ureal as _ureal} from "./ureal";
+export type ureal = _ureal;
+export const ureal: typeof _ureal = _ureal;
