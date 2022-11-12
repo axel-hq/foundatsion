@@ -13,8 +13,8 @@ export function prim<v extends tt.prim>(v: v): rtti<v> {
       assert(u: unknown): asserts u is v {
          if (v !== u) {
             throw new FoundatsionError(
-               `Tried asserting for ${name} but the value did not match.\n`,
-               `Instead, received ${text.show(v)}.`
+               `Tried asserting for ${this.name} but the value did not match.\n`,
+               `Instead, received ${text.show(u)}.`
             );
          }
       },

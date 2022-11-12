@@ -35,14 +35,14 @@ export function tuple<rs extends rtti[]>(...rs: readonly [...rs]): rtti<decant_t
       assert(u: unknown): void {
          if (!Array.isArray(u)) {
             throw new FoundatsionError(
-               `Since ${name} extends array<unknown>, tried asserting for`,
+               `Since ${this.name} extends array<unknown>, tried asserting for`,
                "array<unknown> but failed since Array.isArray returned false.",
             );
          }
          unsound.assert<unknown[]>(u);
          if (u.length !== rs.length) {
             throw new FoundatsionError(
-               `Tried asserting for ${name} but the lengths were`,
+               `Tried asserting for ${this.name} but the lengths were`,
                "different.\n",
                `Wanted:   {length: ${rs.length}}\n`,
                `Received: {length: ${u.length}}\n`,
@@ -60,7 +60,7 @@ export function tuple<rs extends rtti[]>(...rs: readonly [...rs]): rtti<decant_t
             } catch (e) {
                if (e instanceof Error) {
                   throw new FoundatsionError(
-                     `While asserting for ${name}, an error was`,
+                     `While asserting for ${this.name}, an error was`,
                      `thrown at index ${i}:`,
                      e,
                   );

@@ -25,14 +25,18 @@ export function f_enum(name: string, prims: readonly tt.prim[]): rtti {
    return {
       name,
       is(u: unknown): u is unknown {
-         return prims.some(p => u === p);
+         return prims.some(p => p === u);
       },
       assert(u: unknown): asserts u is unknown {
-         throw new FoundatsionError(
-            `Could not assert that ${text.show(u)} was enum ${this.name}!\n`,
-            "The value must be one of the following:\n",
-            ...prims.map(p => `- ${text.show(p)}\n`),
-         );
+         if (this.is(u)) {
+            return;
+         } else {
+            throw new FoundatsionError(
+               `Could not assert that ${text.show(u)} was enum ${this.name}!\n`,
+               "The value must be one of the following:\n",
+               ...prims.map(p => `- ${text.show(p)}\n`),
+            );
+         }
       },
    };
 }

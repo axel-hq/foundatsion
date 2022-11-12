@@ -11,16 +11,16 @@ export namespace oo {
    export function is(u: unknown): u is oo {
       return typeof u === "object" && u !== null;
    }
-   export function assert(u: unknown): asserts u is oo {
+   export function assert(this: typeof oo, u: unknown): asserts u is oo {
       if (typeof u !== "object") {
          throw new FoundatsionError(
-            `Asserting for ${name} failed!\n`,
+            `Asserting for ${this.name} failed!\n`,
             `typeof value was "${typeof u}" when it should've been "object".`,
          );
       }
       if (u === null) {
          throw new FoundatsionError(
-            `Asserting for ${name} failed because the value was null.`,
+            `Asserting for ${this.name} failed because the value was null.`,
          );
       }
    }
