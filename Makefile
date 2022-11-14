@@ -12,22 +12,22 @@ errors:
 
 clean:
 ifeq ($(OS), Windows_NT)
-	-rd /s /q .\bin
+	-rd /s /q bin
 else
-	-rm -rf $/bin
+	-rm -rf bin
 endif
 .PHONY: clean
 
 cjs: clean
-	tsc --module commonjs --outDir $/bin/cjs
+	tsc --module commonjs --outDir bin/cjs
 .PHONY: cjs
 
 es6: clean
-	tsc --module es2020 --outDir $/bin/es6
+	tsc --module es2020 --outDir bin/es6
 .PHONY: es6
 
 dts: clean
-	tsc --module es2020 --emitDeclarationOnly --declaration --declarationDir $/bin/dts
+	tsc --module es2020 --emitDeclarationOnly --declaration --declarationDir bin/dts
 .PHONY: dts
 
 build: cjs es6 dts
