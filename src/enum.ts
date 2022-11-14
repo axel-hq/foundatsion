@@ -19,7 +19,7 @@ export function f_enum(name: string, prims: readonly tt.prim[]): rtti {
    }
 
    if (prims.length === 1) {
-      return prim(prims[0]);
+      return {...prim(prims[0]), name};
    }
 
    return {
