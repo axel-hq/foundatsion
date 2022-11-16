@@ -43,7 +43,7 @@ export namespace rtti {
       export function assert(u: unknown): asserts u is rtti {
          if (!is(u)) {
             throw new FoundatsionError(
-               "Value was not rtti!",
+               "Value was not an rtti!",
             );
          }
       }

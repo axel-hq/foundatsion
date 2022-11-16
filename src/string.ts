@@ -5,10 +5,10 @@ export namespace string {
    export function is(u: unknown): u is string {
       return typeof u === "string";
    }
-   export function assert(u: unknown): asserts u is string {
+   export function assert(this: typeof string, u: unknown): asserts u is string {
       if (typeof u !== "string") {
          throw new FoundatsionError(
-            "Tried asserting for string but failed.\n",
+            `Tried asserting for ${this.name} but failed.\n`,
             `typeof value was "${typeof u}" but should've been "string".`,
          );
       }

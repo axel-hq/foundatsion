@@ -10,19 +10,27 @@ export namespace int {
    export function is(u: unknown): u is int {
       return Number.isInteger(u);
    }
-   export function assert(u: unknown): asserts u is int {
+   export function assert(this: typeof int, u: unknown): asserts u is int {
       if (is(u)) return;
       else throw new FoundatsionError(
-         `Could not assert to int because Number.isInteger(${text.show})`,
+         `Tried asserting for ${this.name} but failed Number.isInteger(${text.show(u)})`,
          "returned false.",
       );
    }
    export const from = {
-      bigint(b: bigint): int {
+      string(this: typeof int, s: string): int {
+         const i = Number(s);
+         if (Number.isInteger(i)) return i as int;
+         else throw new FoundatsionError(
+            `Could not cast string to ${this.name} because Number.isInteger(${text.show(i)})`,
+            "returned false."
+         );
+      },
+      bigint(this: typeof int, b: bigint): int {
          const n = Number(b);
          if (`${b}` !== `${n}`) {
             throw new FoundatsionError(
-               "Loss of precision when converting from bigint to int!\n",
+               `Loss of precision when converting from bigint to ${this.name}!\n`,
                `${b} !== ${n}`,
             );
          }

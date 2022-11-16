@@ -5,16 +5,16 @@ export namespace number {
    export function is(u: unknown): u is number {
       return typeof u === "number";
    }
-   export function assert(u: unknown): asserts u is number {
+   export function assert(this: typeof number, u: unknown): asserts u is number {
       if (typeof u !== "number") {
          throw new FoundatsionError(
-            "Tried asserting for number but failed.\n",
+            `Tried asserting for ${this.name} but failed.\n`,
             `typeof value was "${typeof u}" but should've been "number".`,
          );
       }
    }
    export const from = {
-      bigint: Number,
       string: Number,
+      bigint: Number,
    };
 }

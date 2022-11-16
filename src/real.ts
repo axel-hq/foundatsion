@@ -10,13 +10,13 @@ export namespace real {
    export function is(u: unknown): u is real {
       return number.is(u) && (!Number.isNaN(u)) && Number.isFinite(u);
    }
-   export function assert(u: unknown): asserts u is real {
+   export function assert(this: typeof real, u: unknown): asserts u is real {
       try {
          number.assert(u);
       } catch (e) {
          if (e instanceof Error) {
             throw new FoundatsionError(
-               "Tried asserting for real but failed asserting for number:",
+               `Tried asserting for ${this.name} but failed asserting for number:`,
                e,
             );
          } else {
@@ -25,25 +25,25 @@ export namespace real {
       }
       if (Number.isNaN(u)) {
          throw new FoundatsionError(
-            "Tried asserting for number but failed because the value was NaN.",
+            `Tried asserting for ${this.name} but failed because the value was NaN.`,
          );
       }
       if (!Number.isFinite(u)) {
          throw new FoundatsionError(
-            `Tried asserting for real but ${text.show(u)} is not finite.`,
+            `Tried asserting for ${this.name} but ${text.show(u)} is not finite.`,
          );
       }
    }
    export const from = {
-      string(s: string): real {
+      string(this: typeof real, s: string): real {
          let n;
          try {
             n = Number(s);
          } catch (e) {
             if (e instanceof Error) {
                throw new FoundatsionError(
-                  "Could not cast string to real because the Number constructor",
-                  "threw an error:",
+                  `Could not cast string to ${this.name} because the Number`,
+                  "constructor threw an error:",
                   e,
                );
             } else {
@@ -52,13 +52,13 @@ export namespace real {
          }
          if (Number.isNaN(n)) {
             throw new FoundatsionError(
-               `Could not cast string to real because ${text.show(s)} was parsed`,
-               "as NaN!",
+               `Could not cast string to ${this.name} because ${text.show(s)}`,
+               "was parsed as NaN!",
             );
          }
          if (!Number.isFinite(n)) {
             throw new FoundatsionError(
-               `Could not cast string (${text.show(s)}) to real because`,
+               `Could not cast string (${text.show(s)}) to ${this.name} because`,
                `${text.show(n)} was not finite!`,
             );
          }

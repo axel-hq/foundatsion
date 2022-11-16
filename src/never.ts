@@ -5,9 +5,9 @@ export namespace never {
    export function is(_: unknown): _ is never {
       return false;
    }
-   export function assert(_: unknown): _ is never {
+   export function assert(this: typeof never, _: unknown): _ is never {
       throw new FoundatsionError(
-         "Tried asserting for never but that's absurd!",
+         `Tried asserting for ${this.name} but that's absurd!`,
       );
    }
 }

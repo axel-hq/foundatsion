@@ -11,5 +11,10 @@ export const uint = {
       ubigint(u: ubigint): uint {
          return unsound.shut_up(int.from.bigint(u));
       },
+      string(s: string): uint {
+         const i = int.from.string(s);
+         unsigned.assert(i);
+         return i;
+      },
    },
 };
