@@ -1,3 +1,4 @@
+import {rtti} from "./rtti";
 import {FoundatsionError} from "./error";
 
 export namespace symbol {
@@ -13,9 +14,7 @@ export namespace symbol {
          );
       }
    }
-   export const from = {
-      string(s: string): symbol {
-         return Symbol.for(s);
-      },
-   };
+   export const cast_from_string = Symbol.for.bind(Symbol);
 }
+
+rtti.verify(symbol);

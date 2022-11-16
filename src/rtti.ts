@@ -1,7 +1,8 @@
-import {FoundatsionError} from "./error";
 import {oo} from "./oo";
 import {string} from "./string";
+import {ignore} from "./type_traits";
 import {unsound} from "./unsound";
+import {FoundatsionError} from "./error";
 
 export type rtti<t = unknown> = {
    name: string;
@@ -10,10 +11,25 @@ export type rtti<t = unknown> = {
 };
 
 export namespace rtti {
+   export type t<r extends rtti> = r extends rtti<infer t> ? t : never;
+
    export type is<t = unknown> = {(u: unknown): u is t};
    export type assert<t = unknown> = {(u: unknown): asserts u is t};
 
-   export type t<r extends rtti> = r extends rtti<infer t> ? t : never;
+   type isish<t> = {is: is<t>};
+   type assertish<t> = {assert: assert<t>};
+   type castish<t = unknown> =
+      & {[k in `cast_from_${string}`]: {(a: any): t}}
+      & {[k in `cast_to_${string}`]: {(t: t): any}};
+
+   type verify<r extends rtti> =
+      r extends isish<infer is_t> & assertish<infer assert_t>
+         ? isish<assert_t> & assertish<is_t> & castish<is_t & assert_t>
+         : never;
+
+   export const verify:
+      {<t, r extends rtti = rtti<t>>(r: r & verify<r>): void}
+         = ignore;
 
    export function is_from_assert<t>(a: assert<t>): is<t> {
       function is(u: unknown): boolean {

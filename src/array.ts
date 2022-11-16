@@ -1,6 +1,7 @@
 import {rtti} from "./rtti";
 import {unsound} from "./unsound";
 import {FoundatsionError} from "./error";
+import {oo} from "./_all";
 
 const cache = new WeakMap<rtti, rtti<unknown[]>>();
 
@@ -9,7 +10,7 @@ export function array<t>(r: rtti<t>): rtti<t[]> {
       return unsound.shut_up(cache.get(r));
    }
 
-   return {
+   const new_rtti = {
       name: `array<${r.name}>`,
       is(u: unknown): u is t[] {
          return true
@@ -43,4 +44,9 @@ export function array<t>(r: rtti<t>): rtti<t[]> {
          }
       },
    };
+
+   oo.freeze(new_rtti);
+   cache.set(r, new_rtti);
+
+   return new_rtti;
 }

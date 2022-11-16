@@ -1,3 +1,4 @@
+import {rtti} from "./rtti";
 import {FoundatsionError} from "./error";
 
 export namespace bigint {
@@ -13,8 +14,9 @@ export namespace bigint {
          );
       }
    }
-   export const from = {
-      number: BigInt,
-      string: BigInt,
-   };
+   export const cast_from = BigInt;
+   export const cast_from_number = BigInt;
+   export const cast_from_string = BigInt;
 }
+
+rtti.verify(bigint);

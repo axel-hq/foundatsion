@@ -25,7 +25,7 @@ export namespace oo {
       }
    }
    export const assert_from_record: {(o: {}): asserts o is oo} = ignore;
-   export const from: {(r: {}): oo} = identity;
+   export const cast_from_record: {(r: {}): oo} = identity;
    export function field_is
       <t, k extends string, o extends oo>
          (o: o, k: k, t: rtti<t>):

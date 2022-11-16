@@ -94,34 +94,25 @@ CAN'T HAVE n1ce \[\[THINGS\]\]!! FOR $13.99 TURN YOUR MISERABLE \[LIFE\] AROUND!
 
 ```ts
 namespace a {
-   declare export const to: {
-      b(a: a): b;
-   };
+   export declare function cast_to_b(a: a): b;
 }
 namespace b {
-   declare export const from: {
-      a(b: b): b;
-   };
-   declare export const to: {
-      b(a: a): b {};
-   };
+   export declare function cast_from_a(a: a): b;
+   export declare function cast_to_c(b: b): c;
 }
 namespace c {
-   declare export const from: {
-      b(b: b): c;
-   };
+   export declare function cast_from_b(b: b): c;
 }
 ```
-
-A function which delegates the casting will be provided from the `rtti`
-namespace. When casting from `in` to `out`, it will search for
-`out.from[in.name]` first and `in.to[out.name]` second.
-Function resolution will be done using the `rtti.name` field.
 
 ### Rationale
 
 The `from` usage is a lot more defendable for the aforementioned reasons but
 on occasion, you do actually want to cast to something "more primitive", per se.
+In that case, you have no choice but to use the "to" field as there is no way to
+just extend namespaces, unfortunately.
+
+Functions should not be named `cast_from_unknown`, instead name them `cast_from`.
 
 In short, casting is a pain in the \[A$$\] AND IT WE'RE LOSING \[KROMER\] GOD
 DAMN IT!

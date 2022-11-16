@@ -31,8 +31,13 @@ export namespace unsigned {
          "equal to zero!",
       );
    }
-   export const assert_from_bigint = assert_from_bigint_or_number;
-   export const assert_from_number = assert_from_bigint_or_number;
+
+   // YES!!! YES YES YES !! O MY GOD I LOVE THIS LANGUAGE
+   export const assert_from_bigint: typeof assert_from_bigint_or_number
+      = assert_from_bigint_or_number;
+   export const assert_from_number: typeof assert_from_bigint_or_number
+      = assert_from_bigint_or_number;
+
    export function assert(u: unknown): asserts u is unsigned {
       try {
          bigint_or_number.assert(u);

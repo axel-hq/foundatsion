@@ -1,4 +1,5 @@
 import {real} from "./real";
+import {rtti} from "./rtti";
 import {text} from "./text";
 import {newtype} from "./newtype";
 import {unsound} from "./unsound";
@@ -17,24 +18,24 @@ export namespace int {
          "returned false.",
       );
    }
-   export const from = {
-      string(this: typeof int, s: string): int {
-         const i = Number(s);
-         if (Number.isInteger(i)) return i as int;
-         else throw new FoundatsionError(
-            `Could not cast string to ${this.name} because Number.isInteger(${text.show(i)})`,
-            "returned false."
+   export function cast_from_string(this: typeof int, s: string): int {
+      const i = Number(s);
+      if (Number.isInteger(i)) return i as int;
+      else throw new FoundatsionError(
+         `Could not cast string to ${this.name} because Number.isInteger(${text.show(i)})`,
+         "returned false."
+      );
+   }
+   export function cast_from_bigint(this: typeof int, b: bigint): int {
+      const n = Number(b);
+      if (`${b}` !== `${n}`) {
+         throw new FoundatsionError(
+            `Loss of precision when converting from bigint to ${this.name}!\n`,
+            `${b} !== ${n}`,
          );
-      },
-      bigint(this: typeof int, b: bigint): int {
-         const n = Number(b);
-         if (`${b}` !== `${n}`) {
-            throw new FoundatsionError(
-               `Loss of precision when converting from bigint to ${this.name}!\n`,
-               `${b} !== ${n}`,
-            );
-         }
-         return unsound.cast<int>(n);
-      },
-   };
+      }
+      return unsound.cast<int>(n);
+   }
 }
+
+rtti.verify(int);

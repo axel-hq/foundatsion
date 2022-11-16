@@ -3,6 +3,7 @@ import {never} from "./never";
 import {unsound} from "./unsound";
 import {__unreachable} from "./type_traits";
 import {FoundatsionError} from "./error";
+import {oo} from "./oo";
 
 type union_decant<rs extends [...rtti[]]> =
    rs[number] extends rtti<infer ts> ? ts : never;
@@ -72,5 +73,6 @@ export function union<rs extends rtti[]>(...rs: readonly [...rs]): union<rs> {
       value: non_union_rs,
       writable: false,
    });
+   oo.freeze(new_rtti);
    return new_rtti;
 }
