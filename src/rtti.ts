@@ -22,14 +22,22 @@ export namespace rtti {
       & {[k in `cast_from_${string}`]: {(a: any): t}}
       & {[k in `cast_to_${string}`]: {(t: t): any}};
 
-   type verify<r extends rtti> =
+   declare const dummy: unique symbol;
+   type dummy = typeof dummy;
+
+   type verify_implicit<r extends rtti> =
       r extends isish<infer is_t> & assertish<infer assert_t>
-         ? isish<assert_t> & assertish<is_t> & castish<is_t & assert_t>
+         ? (is_t | assert_t) extends (is_t & assert_t)
+            ? castish<is_t>
+            : ["Type mismatch between return type of is and assert:", is_t, "is not equal to", assert_t]
          : never;
 
-   export const verify:
-      {<t, r extends rtti = rtti<t>>(r: r & verify<r>): void}
-         = ignore;
+   // prevent user from putting explicit type parameters
+   export function verify
+      <no_explicit_type_parameters extends dummy = dummy, r extends rtti = rtti>
+         (_: r & verify_implicit<r>):
+            void & no_explicit_type_parameters
+   {}
 
    export function is_from_assert<t>(a: assert<t>): is<t> {
       function is(u: unknown): boolean {
