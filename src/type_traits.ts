@@ -4,7 +4,12 @@ export function __unreachable(): never {
 // pleas optimize uwu
 export const ignore = <t>(_?: t): void => {};
 export const absurd = <t>(_: never): t => __unreachable();
-export const identity = <t>(x: t): t => x;
+/**
+ * λx.x
+ *
+ * Also functions as upcast.
+ */
+export const id = <t>(t: t): t => t;
 
 /**
  * Check that a type is true. Useful with conditional types.

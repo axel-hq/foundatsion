@@ -1,5 +1,5 @@
 import {unsound} from "./unsound";
-import {identity, tt} from "./type_traits";
+import {id, tt} from "./type_traits";
 
 // Newtypes are for package internals only.
 // Do not export newtypes over API boundaries!
@@ -22,8 +22,8 @@ import {identity, tt} from "./type_traits";
  */
 export declare const nt_s: unique symbol;
 
-type newtype_partials_union<phi_uniq_union extends keyof any> =
-   {[k in phi_uniq_union]: {[nt_s]: {[_ in k]: void}}}[phi_uniq_union];
+type newtype_partials_union<uniq_union extends keyof any> =
+   {[k in uniq_union]: {[nt_s]: {[_ in k]: void}}}[uniq_union];
 
 export type newtype<uniq extends string | symbol> = {[nt_s]: {[k in uniq]: void}};
 export type unwrap<outer> =
@@ -34,4 +34,4 @@ export type unwrap<outer> =
       : outer;
 
 export const unwrap: {<outer>(outer: outer): unwrap<outer>}
-   = unsound.shut_up(identity);
+   = unsound.shut_up(id);

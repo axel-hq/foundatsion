@@ -2,7 +2,7 @@ import {rtti} from "./rtti";
 import {text} from "./text";
 import {unsound} from "./unsound";
 import {FoundatsionError} from "./error";
-import {identity, ignore} from "./type_traits";
+import {id, ignore} from "./type_traits";
 
 /** Open Object */
 export type oo = object & {[k in string]: unknown};
@@ -25,7 +25,7 @@ export namespace oo {
       }
    }
    export const assert_from_record: {(o: {}): asserts o is oo} = ignore;
-   export const cast_from_record: {(r: {}): oo} = identity;
+   export const cast_from_record: {(r: {}): oo} = id;
    export function field_is
       <t, k extends string, o extends oo>
          (o: o, k: k, t: rtti<t>):
