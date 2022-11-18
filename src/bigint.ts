@@ -1,5 +1,6 @@
 import {rtti} from "./rtti";
 import {FoundatsionError} from "./error";
+import {unsound} from "./unsound";
 
 export namespace bigint {
    export const name = "bigint";
@@ -14,9 +15,9 @@ export namespace bigint {
          );
       }
    }
-   export const cast_from = BigInt;
-   export const cast_from_number = BigInt;
-   export const cast_from_string = BigInt;
+   export const cast_from: {(u: unknown): bigint} = unsound.shut_up(BigInt);
+   export const cast_from_number: {(n: number): bigint} = BigInt;
+   export const cast_from_string: {(s: string): bigint} = BigInt;
 }
 
 rtti.verify(bigint);

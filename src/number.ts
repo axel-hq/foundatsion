@@ -15,9 +15,9 @@ export namespace number {
       }
    }
 
-   export const cast_from = Number;
-   export const cast_from_string = Number;
-   export const cast_from_bigint = Number;
+   export const cast_from: {(u: unknown): number} = Number;
+   export const cast_from_string: {(s: string): number} = Number;
+   export const cast_from_bigint: {(b: bigint): number} = Number;
 }
 
 rtti.verify(number);

@@ -1,6 +1,5 @@
 import {oo} from "./oo";
 import {string} from "./string";
-import {ignore} from "./type_traits";
 import {unsound} from "./unsound";
 import {FoundatsionError} from "./error";
 
@@ -73,3 +72,5 @@ export namespace rtti {
       }
    }
 }
+
+rtti.verify(string); // CULTS
