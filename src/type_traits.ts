@@ -95,4 +95,11 @@ export namespace tt {
     */
    export type union_to_intersection<u> =
       (u extends any ? {(k: u): void} : never) extends {(k: infer t): void} ? t : never;
+
+   export type is_sibling<a, b> =
+      a extends b
+         ? b extends a
+            ? true
+            : false
+         : false;
 }
