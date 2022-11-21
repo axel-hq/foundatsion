@@ -111,13 +111,13 @@ export class FoundatsionError extends Error {
       });
    }
 
-   static processed_input_to_lines(l: processed_input): string[] {
+   static processed_input_to_lines(l: processed_input, len: number): string[] {
       if (typeof l === "string") {
-         return text.wrap(78, l);
+         return text.wrap(len, l);
       } else {
          const lines: string[] = [];
          for (const sub of l) {
-            for (const subsub of FoundatsionError.processed_input_to_lines(sub)) {
+            for (const subsub of FoundatsionError.processed_input_to_lines(sub, len - 2)) {
                lines.push(`> ${subsub}`);
             }
          }
@@ -129,7 +129,7 @@ export class FoundatsionError extends Error {
       if (l.length === 0) {
          return "";
       } else {
-         const lines = FoundatsionError.processed_input_to_lines(l);
+         const lines = FoundatsionError.processed_input_to_lines(l, 80);
          return `\n${lines.join("\n")}`;
       }
    }
