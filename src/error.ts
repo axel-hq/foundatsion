@@ -1,10 +1,7 @@
 import {text} from "./text";
 
-type error_input = string | Error | FoundatsionError;
-type processed_input = string | processed_input[];
-
 export class FoundatsionError extends Error {
-   lines: processed_input[];
+   lines: FoundatsionError.processed_input[];
    /**
     * Use `"\n"` to indicate a newline.
     * Entries that do not end in newline will be concatenated with a space and
@@ -12,9 +9,9 @@ export class FoundatsionError extends Error {
     * You do not need to add a newline before Errors.
     * One is added automatically.
     */
-   constructor (...msg: error_input[]) {
+   constructor (...msg: FoundatsionError.error_input[]) {
       // :scunge:
-      const thisꓸlines: processed_input[] = [];
+      const thisꓸlines: FoundatsionError.processed_input[] = [];
       let working_line: string | null = null;
       for (let e of msg) {
          if (typeof e === "string") {
@@ -63,7 +60,7 @@ export class FoundatsionError extends Error {
             > > other stuff here
             > > other stuff here
             */
-            thisꓸlines.push(`${e.name}:`);
+            // thisꓸlines.push(`${e.name}:`);
             thisꓸlines.push(e.lines);
             continue;
          }
@@ -111,7 +108,7 @@ export class FoundatsionError extends Error {
       });
    }
 
-   static processed_input_to_lines(l: processed_input, len: number): string[] {
+   static processed_input_to_lines(l: FoundatsionError.processed_input, len: number): string[] {
       if (typeof l === "string") {
          return text.wrap(len, l);
       } else {
@@ -125,7 +122,7 @@ export class FoundatsionError extends Error {
       }
    }
 
-   static processed_input_to_string(l: processed_input[]): string {
+   static processed_input_to_string(l: FoundatsionError.processed_input[]): string {
       if (l.length === 0) {
          return "";
       } else {
@@ -133,4 +130,9 @@ export class FoundatsionError extends Error {
          return `\n${lines.join("\n")}`;
       }
    }
+}
+
+export namespace FoundatsionError {
+   export type error_input = string | Error | FoundatsionError;
+   export type processed_input = string | processed_input[];
 }
