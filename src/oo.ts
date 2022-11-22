@@ -29,7 +29,7 @@ export namespace oo {
    export function field_is
       <t, k extends string, o extends oo>
          (o: o, k: k, t: rtti<t>):
-            o is o & {[_ in k]: t}
+            o is merge<o & {[_ in k]: t}>
    {
       return t.is(o[k]);
    }
@@ -37,7 +37,7 @@ export namespace oo {
    export function assert_field_is
       <t, k extends string, o extends oo>
          (o: o, k: k, t: rtti<t>):
-            asserts o is o & {[_ in k]: t}
+            asserts o is merge<o & {[_ in k]: t}>
    {
       try {
          t.assert(o[k]);
@@ -62,4 +62,12 @@ export namespace oo {
    export function keys<o extends {}>(o: o): (keyof o)[] {
       return unsound.shut_up(Object.keys(o));
    }
+   /**
+    * @example
+    * type a = {w: x} & {y: z};
+    * type b = {w: x; y: z};
+    *
+    * // a has different behavior than b
+    */
+   export type merge<o extends {}> = {[k in keyof o]: o[k]};
 }

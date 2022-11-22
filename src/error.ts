@@ -46,9 +46,15 @@ export class FoundatsionError extends Error {
             }
             continue;
          }
+         if (Array.isArray(e)) {
+            if (working_line !== null) {
+               thisꓸlines.push(working_line);
+               working_line;
+            }
+            thisꓸlines.push(e);
+         }
          if (e instanceof FoundatsionError) {
-            if (working_line === null) {}
-            else {
+            if (working_line !== null) {
                thisꓸlines.push(working_line);
                working_line = null;
             }
@@ -65,8 +71,7 @@ export class FoundatsionError extends Error {
             continue;
          }
          if (e instanceof Error) {
-            if (working_line === null) {}
-            else {
+            if (working_line !== null) {
                thisꓸlines.push(working_line);
                working_line = null;
             }
@@ -133,6 +138,6 @@ export class FoundatsionError extends Error {
 }
 
 export namespace FoundatsionError {
-   export type error_input = string | Error | FoundatsionError;
    export type processed_input = string | processed_input[];
+   export type error_input = processed_input | Error | FoundatsionError;
 }
