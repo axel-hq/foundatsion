@@ -1,7 +1,10 @@
+import {newtype} from "./newtype";
+import {rtti} from "./rtti";
+import {string} from "./string";
 import {text} from "./text";
 
 export class FoundatsionError extends Error {
-   lines: FoundatsionError.processed_input[];
+   passages: FoundatsionError.passage[];
    /**
     * Use `"\n"` to indicate a newline.
     * Entries that do not end in newline will be concatenated with a space and
@@ -9,10 +12,10 @@ export class FoundatsionError extends Error {
     * You do not need to add a newline before Errors.
     * One is added automatically.
     */
-   constructor (...msg: FoundatsionError.error_input[]) {
+   constructor (...msg: FoundatsionError.input[]) {
       // :scunge:
-      const thisꓸlines: FoundatsionError.processed_input[] = [];
-      let working_line: string | null = null;
+      const thisꓸpassages: FoundatsionError.passage[] = [];
+      let working_line: FoundatsionError.line | null = null;
       for (let e of msg) {
          if (typeof e === "string") {
             for (
@@ -23,13 +26,13 @@ export class FoundatsionError extends Error {
             {
                const line = e.slice(0, idx);
                if (working_line === null) {
-                  thisꓸlines.push(line);
+                  thisꓸpassages.push(line);
                } else if (line === "") {
-                 thisꓸlines.push(working_line);
+                 thisꓸpassages.push(working_line);
                  working_line = null;
                } else {
                   working_line += ` ${line}`;
-                  thisꓸlines.push(working_line);
+                  thisꓸpassages.push(working_line);
                   working_line = null;
                }
                // at the end of this loop, linebuffer should always be null
@@ -48,14 +51,14 @@ export class FoundatsionError extends Error {
          }
          if (Array.isArray(e)) {
             if (working_line !== null) {
-               thisꓸlines.push(working_line);
+               thisꓸpassages.push(working_line);
                working_line;
             }
-            thisꓸlines.push(e);
+            thisꓸpassages.push(e);
          }
          if (e instanceof FoundatsionError) {
             if (working_line !== null) {
-               thisꓸlines.push(working_line);
+               thisꓸpassages.push(working_line);
                working_line = null;
             }
             /*
@@ -67,12 +70,12 @@ export class FoundatsionError extends Error {
             > > other stuff here
             */
             // thisꓸlines.push(`${e.name}:`);
-            thisꓸlines.push(e.lines);
+            thisꓸpassages.push(e.passages);
             continue;
          }
          if (e instanceof Error) {
             if (working_line !== null) {
-               thisꓸlines.push(working_line);
+               thisꓸpassages.push(working_line);
                working_line = null;
             }
             const sublines = [];
@@ -90,30 +93,30 @@ export class FoundatsionError extends Error {
             if (msg.length > 0) {
                sublines.push(msg);
             }
-            thisꓸlines.push(`${e.name}:`);
-            thisꓸlines.push(sublines);
+            thisꓸpassages.push(`${e.name}:`);
+            thisꓸpassages.push(sublines);
          }
       }
 
       if (working_line !== null) {
-         thisꓸlines.push(working_line);
+         thisꓸpassages.push(working_line);
          working_line = null;
       }
 
-      super(FoundatsionError.processed_input_to_string(thisꓸlines));
+      super(FoundatsionError.processed_input_to_string(thisꓸpassages));
 
       // just shut up ts
-      this.lines = [];
+      this.passages = [];
       this.name = "FoundatsionError";
       Object.defineProperty(this, "lines", {
          configurable: false,
          enumerable: false,
-         value: thisꓸlines,
+         value: thisꓸpassages,
          writable: false,
       });
    }
 
-   static processed_input_to_lines(l: FoundatsionError.processed_input, len: number): string[] {
+   static processed_input_to_lines(l: FoundatsionError.passage, len: number): string[] {
       if (typeof l === "string") {
          return text.wrap(len, l);
       } else {
@@ -127,7 +130,7 @@ export class FoundatsionError extends Error {
       }
    }
 
-   static processed_input_to_string(l: FoundatsionError.processed_input[]): string {
+   static processed_input_to_string(l: FoundatsionError.passage[]): string {
       if (l.length === 0) {
          return "";
       } else {
@@ -138,6 +141,38 @@ export class FoundatsionError extends Error {
 }
 
 export namespace FoundatsionError {
-   export type processed_input = string | processed_input[];
-   export type error_input = processed_input | Error | FoundatsionError;
+   /**
+    * A line is a string without a newline in it.
+    */
+   export type line = string & newtype<"FoundatsionError.line">;
+   export namespace line {
+      export const name = "FoundatsionError.line";
+      export function is(u: unknown): u is line {
+         return string.is(u) && (!u.includes("\n"));
+      }
+      export function assert(u: unknown): asserts u is line {
+         string.assert(u);
+         if (u.includes("\n")) {
+            throw new FoundatsionError(
+               `The string ${text.show(u)} includes a newline!`,
+            );
+         }
+      }
+   }
+   export type passage = line | passage[];
+   export type input = string | passage[] | Error | FoundatsionError;
+   export namespace processed_input {
+      export const name = "processed_input";
+      export const is = rtti.is_from_assert(assert);
+      export function assert(u: unknown): asserts u is passage {
+         if (typeof u === "string") return;
+         if (Array.isArray(u)) {
+            for (const e of u) assert(e);
+            return;
+         }
+         throw new FoundatsionError(
+            ""
+         );
+      }
+   }
 }
