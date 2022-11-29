@@ -15,13 +15,6 @@ export const id = <t>(t: t): t => t;
  * Check that a type is true. Useful with conditional types.
  */
 export const ct_true: {<_ extends true>(): void} = ignore;
-/**
- * Check that the type of a value extends `sup` at compile time.
- *
- * Don't use the second argument, it's only there to force you to use the first
- * one.
- */
-export const ct_val: {<sup = never, sub extends sup = sup>(sub: sub): void} = ignore;
 
 /** obscure type traits that most people won't be using */
 export namespace tt {

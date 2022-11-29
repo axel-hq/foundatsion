@@ -111,5 +111,4 @@ export function auto<t extends template>(t: t): auto<t> {
          }
       },
    };
-
 }
