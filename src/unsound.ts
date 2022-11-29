@@ -1,13 +1,20 @@
+import {rtti} from "./rtti";
 import {FoundatsionError} from "./error";
 import {identity, ignore} from "./type_traits";
 
 export namespace unsound {
    /** Cast any value to type t. */
    export const cast: {<t>(val: any): t} = identity;
+   export const cast_to_not_undefined: {<t>(v: t): Exclude<t, undefined>}
+      = identity as never;
    /** `bless` is an alias for cast. Used for blessing newtypes only. */
    export const bless = cast;
    /** Changes the type of an identifier. */
    export const assert: {<t>(val: any): asserts val is t} = ignore;
+   /**  */
+   export const assert_and_return: {<t, v>(r: rtti<t>, v: v): t & v} = ignore as never;
+   export const assert_not_undefined: {<t>(v: t): asserts v is Exclude<t, undefined>}
+   = ignore as never;
    /**
     * Used for stubborn expressions. In general, you should use `unsound.cast`
     * but in a pinch, this will do. Usually this is used from the "insertion" or
@@ -21,11 +28,6 @@ export namespace unsound {
     * know it's right. #informal-verification-winners.
     */
    export const fuck_off: {(stubborn: any): any} = identity as never;
-
-   export const not_undefined: {<t>(v: t): Exclude<t, undefined>}
-      = identity as never;
-   export const assert_not_undefined: {<t>(v: t): asserts v is Exclude<t, undefined>}
-      = ignore as never;
 
    export type any_fn = {(...args: any[]): unknown};
    export namespace any_fn {
