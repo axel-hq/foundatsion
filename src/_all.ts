@@ -36,9 +36,8 @@ export {
    __unreachable,
    ignore,
    absurd,
-   identity,
+   id,
    ct_true,
-   ct_val,
    tt,
 } from "./type_traits";
 import {ubigint as _ubigint} from "./ubigint";

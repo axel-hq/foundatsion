@@ -1,12 +1,12 @@
 import {rtti} from "./rtti";
 import {FoundatsionError} from "./error";
-import {identity, ignore} from "./type_traits";
+import {id, ignore} from "./type_traits";
 
 export namespace unsound {
    /** Cast any value to type t. */
-   export const cast: {<t>(val: any): t} = identity;
+   export const cast: {<t>(val: any): t} = id;
    export const cast_to_not_undefined: {<t>(v: t): Exclude<t, undefined>}
-      = identity as never;
+      = id as never;
    /** `bless` is an alias for cast. Used for blessing newtypes only. */
    export const bless = cast;
    /** Changes the type of an identifier. */
@@ -20,14 +20,14 @@ export namespace unsound {
     * but in a pinch, this will do. Usually this is used from the "insertion" or
     * "subtype" side of expressions.
     */
-   export const shut_up: {(non_cubist: any): never} = identity as never;
+   export const shut_up: {(non_cubist: any): never} = id as never;
    /**
     * Similar to `unsound.shut_up` but for the receiving side of expressions.
     * Sometimes you're putting the right types into the "wrong" function.
     * Tell TypeScript to fuck off and let you use the function because *you*
     * know it's right. #informal-verification-winners.
     */
-   export const fuck_off: {(stubborn: any): any} = identity as never;
+   export const fuck_off: {(stubborn: any): any} = id as never;
 
    export type any_fn = {(...args: any[]): unknown};
    export namespace any_fn {

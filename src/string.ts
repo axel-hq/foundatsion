@@ -18,5 +18,3 @@ export namespace string {
    export const cast_from_bigint = String;
    export const cast_from_number = String;
 }
-
-rtti.verify(string);

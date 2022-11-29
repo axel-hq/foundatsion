@@ -7,7 +7,7 @@ export namespace text {
       for (const [, capture_group] of s.matchAll(r)) {
          if (capture_group == null) {
             throw new FoundatsionError(
-               "Called wrap80 but internal regex capture group was null.",
+               `Called wrap ${length} but internal regex capture group was null.`,
             );
          }
          lines.push(capture_group);
