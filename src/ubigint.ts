@@ -9,6 +9,11 @@ export type ubigint = unsigned & bigint;
 export const ubigint = {
    ...inter(unsigned, bigint),
    name: "ubigint",
+   cast_from(u: unknown): ubigint {
+      const b = bigint.cast_from(u);
+      unsigned.assert(b);
+      return b;
+   },
    cast_from_string(s: string): ubigint {
       try {
          var b = BigInt(s);
