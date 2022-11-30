@@ -1,3 +1,7 @@
+// I really wish I didn't have to do this but such is life.
+// Since assertion functions require that their identifier has an explicit type
+// annotation, I must re-declare, annotate and export any rtti objects that
+// contain assertion functions.
 export {array} from "./array";
 import {assert as _assert} from "./assert";
 export const assert: typeof _assert = _assert;

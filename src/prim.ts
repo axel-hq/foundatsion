@@ -1,6 +1,6 @@
+import {tt} from "./type_traits";
 import {text} from "./text";
 import {rtti} from "./rtti";
-import {tt} from "./type_traits";
 import {FoundatsionError} from "./error";
 
 export function prim<v extends tt.prim>(v: v): rtti<v> {

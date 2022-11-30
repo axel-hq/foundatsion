@@ -55,7 +55,7 @@ export namespace rtti {
    }
 
    export namespace meta {
-      export const name = "rtti";
+      export const name = "rtti object";
       export function is(u: unknown): u is rtti {
          return true
             && oo.is(u)
@@ -63,10 +63,10 @@ export namespace rtti {
             && oo.field_is(u, "is", unsound.any_fn)
             && oo.field_is(u, "assert", unsound.any_fn);
       }
-      export function assert(u: unknown): asserts u is rtti {
+      export function assert(this: typeof meta, u: unknown): asserts u is rtti {
          if (!is(u)) {
             throw new FoundatsionError(
-               "Value was not an rtti!",
+               `Value was ${this.name}!`,
             );
          }
       }
