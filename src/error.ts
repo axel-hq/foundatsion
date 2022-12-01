@@ -2,6 +2,7 @@ import {newtype} from "./newtype";
 import {rtti} from "./rtti";
 import {string} from "./string";
 import {text} from "./text";
+import {unsound} from "./unsound";
 
 export class FoundatsionError extends Error {
    passages: FoundatsionError.passage[];
@@ -12,7 +13,7 @@ export class FoundatsionError extends Error {
     * You do not need to add a newline before Errors.
     * One is added automatically.
     */
-   constructor (...msg: FoundatsionError.input[]) {
+   constructor (...msg: FoundatsionError.input_arg[]) {
       // :scunge:
       const thisꓸpassages: FoundatsionError.passage[] = [];
       let working_line: FoundatsionError.line | null = null;
@@ -24,14 +25,18 @@ export class FoundatsionError extends Error {
                (idx = e.indexOf("\n")) >= 0;
                e = e.slice(idx + 1))
             {
-               const line = e.slice(0, idx);
+               const line = unsound.cast<FoundatsionError.line>(e.slice(0, idx));
                if (working_line === null) {
                   thisꓸpassages.push(line);
-               } else if (line === "") {
+               } else
+
+               if (line === "") {
                  thisꓸpassages.push(working_line);
                  working_line = null;
-               } else {
-                  working_line += ` ${line}`;
+               }
+
+               else {
+                  working_line = unsound.cast<FoundatsionError.line>(`${working_line} ${line}`);
                   thisꓸpassages.push(working_line);
                   working_line = null;
                }
@@ -69,7 +74,7 @@ export class FoundatsionError extends Error {
             > > other stuff here
             > > other stuff here
             */
-            // thisꓸlines.push(`${e.name}:`);
+            thisꓸlines.push(`${e.name}:`);
             thisꓸpassages.push(e.passages);
             continue;
          }
@@ -141,38 +146,107 @@ export class FoundatsionError extends Error {
 }
 
 export namespace FoundatsionError {
-   /**
-    * A line is a string without a newline in it.
-    */
+   /** A line is a string without a newline in it. */
    export type line = string & newtype<"FoundatsionError.line">;
    export namespace line {
       export const name = "FoundatsionError.line";
       export function is(u: unknown): u is line {
          return string.is(u) && (!u.includes("\n"));
       }
-      export function assert(u: unknown): asserts u is line {
+      export function assert(this: typeof line, u: unknown): asserts u is line {
          string.assert(u);
          if (u.includes("\n")) {
             throw new FoundatsionError(
-               `The string ${text.show(u)} includes a newline!`,
+               `Could not assert for ${this.name} because the the string`,
+               `${text.show(u)} includes a newline!`,
             );
          }
       }
    }
+   /**
+    * A passage represents a multiple indented (or unindented) blocks of text.
+    */
    export type passage = line | passage[];
-   export type input = string | passage[] | Error | FoundatsionError;
-   export namespace processed_input {
-      export const name = "processed_input";
-      export const is = rtti.is_from_assert(assert);
-      export function assert(u: unknown): asserts u is passage {
-         if (typeof u === "string") return;
+   export namespace passage {
+      export const name = "FoundatsionError.passage";
+      export function is(u: unknown): u is passage {
          if (Array.isArray(u)) {
-            for (const e of u) assert(e);
-            return;
+            return u.every(is);
+         } else {
+            return line.is(u);
          }
-         throw new FoundatsionError(
-            ""
-         );
+      }
+      export function assert(this: typeof passage, u: unknown): asserts u is passage {
+         // honestly, I don't really know if this is any better for performance
+         // but I'm mostly doing it for the error message
+         const stack = [u];
+         while (stack.length > 0) {
+            const last_e = stack.pop();
+            try {
+               if (Array.isArray(last_e)) {
+                  // push sub array to back in reverse
+                  // let's imagine you have a passage like so
+                  // [[a, b, c], d]
+                  // let's examine the stack at each loop
+
+                  /* loop n
+                     bottom
+                     middle
+                     top <- next
+                  */
+
+                  /* loop 0
+                     [[a, b, c], d] <- next
+                  */
+
+                  /* loop 1
+                     d
+                     [a, b, c] <- next
+                  */
+
+                  /* loop 2
+                     d
+                     c
+                     b
+                     a <- next
+                  */
+
+                  // etc...
+                  // since our stack uses the last element of the array as the
+                  // top, we need to do it like this.
+                  // notice how the elements are asserted in depth first order.
+                  for (let i = last_e.length; i --> 0;) {
+                     stack.push(last_e[i]);
+                  }
+               } else {
+                  line.assert(last_e);
+               }
+            } catch (e) {
+               if (e instanceof Error) {
+                  throw new FoundatsionError(
+                     `Error while asserting for ${this.name} at depth=${stack.length}`,
+                     e,
+                  );
+               } else {
+                  throw e;
+               }
+            }
+         }
       }
    }
+
+   export type input_arg =
+      // trusted input & automatic flush:
+      // if you pass an array as an argument, FoundatsionError trusts that you've
+      // asserted it's validity.
+      | passage[]
+      // trusted input & automatic flush:
+      // #lines used for input as a passage[]
+      | FoundatsionError
+      // automatic flush:
+      // Interpreted in much the same way as FoundatsionError where
+      // Error#message split into newlines is used instead of #lines
+      | Error
+      // split by newlines and interpreted as multiple input arguments
+      | string;
 }
