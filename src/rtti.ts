@@ -1,4 +1,5 @@
 import {oo} from "./oo";
+import {any_fn} from "./any_fn";
 import {string} from "./string";
 import {unsound} from "./unsound";
 import {FoundatsionError} from "./error";
@@ -60,8 +61,8 @@ export namespace rtti {
          return true
             && oo.is(u)
             && oo.field_is(u, "name", string)
-            && oo.field_is(u, "is", unsound.any_fn)
-            && oo.field_is(u, "assert", unsound.any_fn);
+            && oo.field_is(u, "is", any_fn)
+            && oo.field_is(u, "assert", any_fn);
       }
       export function assert(this: typeof meta, u: unknown): asserts u is rtti {
          if (!is(u)) {

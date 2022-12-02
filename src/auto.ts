@@ -1,5 +1,6 @@
 import {oo} from "./oo";
 import {rtti} from "./rtti";
+import {any_fn} from "./any_fn";
 import {unsound} from "./unsound";
 import {FoundatsionError} from "./error";
 
@@ -7,7 +8,7 @@ type template = rtti | {[k in string]: template};
 
 type auto_decant<t extends template> =
    t extends rtti<infer i> ? i :
-   t extends {name: string; is: unsound.any_fn; assert: unsound.any_fn} ? never :
+   t extends {name: string; is: any_fn; assert: any_fn} ? never :
    t extends {[k in string]: template} ? {[k in keyof t]: auto_decant<t[k]>} : never;
 
 export type auto<t extends template> = rtti<auto_decant<t>>;
@@ -43,7 +44,7 @@ export function auto<t extends template>(t: t): auto<t> {
                   return false; // <----------------------------------- sad path
                }
                for (const k of oo.keys(current_t)) {
-                  const sub_t = unsound.not_undefined(current_t[k]);
+                  const sub_t = unsound.cast_to_not_undefined(current_t[k]);
                   const sub_u = current_u[k];
                   const new_pair = {t: sub_t, u: sub_u};
                   pairs = [new_pair, ...pairs];
@@ -88,7 +89,7 @@ export function auto<t extends template>(t: t): auto<t> {
                   for (const k of oo.keys(current_t)) {
                      const sub_n = `${current_n}.${k}`;
                      const sub_u = current_u[k];
-                     const sub_t = unsound.not_undefined(current_t[k]);
+                     const sub_t = unsound.cast_to_not_undefined(current_t[k]);
                      const new_info = {
                         n: sub_n,
                         u: sub_u,
