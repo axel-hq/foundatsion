@@ -171,19 +171,8 @@ export namespace FoundatsionError {
       export function split_into(s: string): line[] {
          return s.split("\n") as line[];
       }
-      export function wrap(length: number, l: line): line[] {
-         const lines: line[] = [];
-         const r = new RegExp(`(.{1,${length}})(?:\\s|$)`, "g");
-         for (const [, capture_group] of l.matchAll(r)) {
-            if (capture_group == null) {
-               throw new FoundatsionError(
-                  `Called wrap ${length} but internal regex capture group was null.`,
-               );
-            }
-            lines.push(capture_group as line);
-         }
-         return lines;
-      }
+      export const wrap: {(l: line, line_length: number): line[]} =
+         unsound.shut_up(text.wrap);
    }
    /**
     * A passage represents a multiple indented (or unindented) blocks of text.
@@ -257,14 +246,14 @@ export namespace FoundatsionError {
       }
 
       export const default_line_wrap = 80;
-      export function cast_to_lines(l: passage, len: number = default_line_wrap): line[] {
+      export function cast_to_lines(l: passage, line_length: number = default_line_wrap): line[] {
          if (typeof l === "string") {
-            return line.wrap(len, l);
+            return line.wrap(l, line_length);
          } else {
             const lines: line[] = [];
             for (const sub of l) {
                // remove two characters because of the "> "
-               for (const subsub of cast_to_lines(sub, len - 2)) {
+               for (const subsub of cast_to_lines(sub, line_length - 2)) {
                   lines.push(`> ${subsub}` as line);
                }
             }
