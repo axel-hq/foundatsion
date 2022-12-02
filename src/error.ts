@@ -4,7 +4,10 @@ import {newtype} from "./newtype";
 import {unsound} from "./unsound";
 
 export class FoundatsionError extends Error {
-   passages: FoundatsionError.passage[];
+   name = "FoundatsionError";
+   // this is actually initialized but typescript can't know
+   // @ts-expect-error
+   passages: FoundatsionError.passages;
    /**
     * Use `"\n"` to indicate a newline.
     * Entries that do not end in newline will be concatenated with a space and
@@ -13,9 +16,9 @@ export class FoundatsionError extends Error {
     * One is added automatically.
     */
    constructor (...msg: FoundatsionError.input_arg[]) {
-      const new_passages: FoundatsionError.passage[] = [];
+      const new_passages: FoundatsionError.passages = [];
       let linebuffer: FoundatsionError.line | null = null;
-      for (let e of msg) {
+      for (const e of msg) {
          if (typeof e === "string") {
             let string_arg = e;
             // while we can find a newline in the string
@@ -71,6 +74,7 @@ export class FoundatsionError extends Error {
             continue; // next argument
          }
 
+         // passage[]
          if (Array.isArray(e)) {
             if (linebuffer !== null) {
                flush:
@@ -108,6 +112,7 @@ export class FoundatsionError extends Error {
                linebuffer = null;
             }
             const sublines = FoundatsionError.line.split_into(e.message);
+
             if (sublines[0] === "") {
                sublines.shift();
             }
@@ -129,41 +134,16 @@ export class FoundatsionError extends Error {
          new_passages.push(linebuffer);
          linebuffer = null;
       }
+      linebuffer satisfies null;
 
-      super(FoundatsionError.processed_input_to_string(new_passages));
+      super(FoundatsionError.passages.cast_to_string(new_passages));
 
-      // just shut up ts
-      this.passages = [];
-      this.name = "FoundatsionError";
       Object.defineProperty(this, "lines", {
          configurable: false,
          enumerable: false,
          value: new_passages,
          writable: false,
       });
-   }
-
-   static processed_input_to_lines(l: FoundatsionError.passage, len: number): string[] {
-      if (typeof l === "string") {
-         return text.wrap(len, l);
-      } else {
-         const lines: string[] = [];
-         for (const sub of l) {
-            for (const subsub of FoundatsionError.processed_input_to_lines(sub, len - 2)) {
-               lines.push(`> ${subsub}`);
-            }
-         }
-         return lines;
-      }
-   }
-
-   static processed_input_to_string(l: FoundatsionError.passage[]): string {
-      if (l.length === 0) {
-         return "";
-      } else {
-         const lines = FoundatsionError.processed_input_to_lines(l, 80);
-         return `\n${lines.join("\n")}`;
-      }
    }
 }
 
@@ -190,6 +170,19 @@ export namespace FoundatsionError {
       }
       export function split_into(s: string): line[] {
          return s.split("\n") as line[];
+      }
+      export function wrap(length: number, l: line): line[] {
+         const lines: line[] = [];
+         const r = new RegExp(`(.{1,${length}})(?:\\s|$)`, "g");
+         for (const [, capture_group] of l.matchAll(r)) {
+            if (capture_group == null) {
+               throw new FoundatsionError(
+                  `Called wrap ${length} but internal regex capture group was null.`,
+               );
+            }
+            lines.push(capture_group as line);
+         }
+         return lines;
       }
    }
    /**
@@ -262,15 +255,44 @@ export namespace FoundatsionError {
             }
          }
       }
+
+      export const default_line_wrap = 80;
+      export function cast_to_lines(l: passage, len: number = default_line_wrap): line[] {
+         if (typeof l === "string") {
+            return line.wrap(len, l);
+         } else {
+            const lines: line[] = [];
+            for (const sub of l) {
+               // remove two characters because of the "> "
+               for (const subsub of cast_to_lines(sub, len - 2)) {
+                  lines.push(`> ${subsub}` as line);
+               }
+            }
+            return lines;
+         }
+      }
+   }
+   // passages <: passage
+   export type passages = passage[];
+   export namespace passages {
+      // incomplete rtti because I don't care
+      export function cast_to_string(passages: passage[]): string {
+         if (passages.length === 0) {
+            return "";
+         } else {
+            const lines = passage.cast_to_lines(passages, 80);
+            return `\n${lines.join("\n")}`;
+         }
+      }
    }
 
    export type input_arg =
       // trusted input & automatic flush:
       // if you pass an array as an argument, FoundatsionError trusts that you've
       // asserted it's validity.
-      | passage[]
+      | passages
       // trusted input & automatic flush:
-      // #lines used for input as a passage[]
+      // #lines used for input as passages
       | FoundatsionError
       // automatic flush:
       // Interpreted in much the same way as FoundatsionError where
