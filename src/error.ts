@@ -74,7 +74,7 @@ export class FoundatsionError extends Error {
             continue; // next argument
          }
 
-         // passage[]
+         // passages
          if (Array.isArray(e)) {
             if (linebuffer !== null) {
                flush:

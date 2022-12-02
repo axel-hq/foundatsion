@@ -10,7 +10,6 @@ export namespace unsound {
    export const bless = cast;
    /** Changes the type of an identifier. */
    export const assert: {<t>(val: any): asserts val is t} = ignore;
-   /**  */
    export const assert_and_return: {<t, v>(r: rtti<t>, v: v): t & v} = ignore as never;
    export const assert_not_undefined: {<t>(v: t): asserts v is Exclude<t, undefined>}
    = ignore as never;
