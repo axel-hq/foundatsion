@@ -11,7 +11,7 @@
       "rtti",
       "rttii",
       "rꓸassert",
-      "thisꓸpassages",
       "tꓸassert"
-   ]
+   ],
+   "typescript.tsdk": "node_modules\\typescript\\lib"
 }

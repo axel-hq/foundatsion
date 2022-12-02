@@ -20,7 +20,9 @@
          "url": "https://github.com/rhiz0-eth"
       }
    ],
-   "files": ["bin"],
+   "files": [
+      "bin"
+   ],
    "exports": {
       "types": "./bin/dts/index.d.ts",
       "require": "./bin/cjs/index.js",
@@ -29,8 +31,10 @@
    "devDependencies": {
       "@typescript-eslint/eslint-plugin": "^5.30.5",
       "@typescript-eslint/parser": "^5.30.5",
-      "eslint": "^8.22.0",
-      "typescript": "^4.6.4"
+      "eslint": "^8.22.0"
+   },
+   "dependencies": {
+      "typescript": "^4.9.3"
    },
    "engines": {
       "node": ">=16"

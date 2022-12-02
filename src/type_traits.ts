@@ -11,9 +11,7 @@ export const absurd = <t>(_: never): t => __unreachable();
  */
 export const id = <t>(t: t): t => t;
 
-/**
- * Check that a type is true. Useful with conditional types.
- */
+/** Check that a type is true. Useful with conditional types. */
 export const ct_true: {<_ extends true>(): void} = ignore;
 
 /** obscure type traits that most people won't be using */
@@ -60,6 +58,9 @@ export namespace tt {
 
    declare const const_string: unique symbol;
    export type const_string = {[const_string]: void};
+
+   // Internally, the typescript compiler has a flag called Unit.
+   // That's basically what we're making here except on the typelevel.
 
    // Returns `true | false`
    export type is_const_prim<p extends prim> =

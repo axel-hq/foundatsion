@@ -1,7 +1,6 @@
-import {newtype} from "./newtype";
-import {rtti} from "./rtti";
-import {string} from "./string";
 import {text} from "./text";
+import {string} from "./string";
+import {newtype} from "./newtype";
 import {unsound} from "./unsound";
 
 export class FoundatsionError extends Error {
@@ -14,101 +13,124 @@ export class FoundatsionError extends Error {
     * One is added automatically.
     */
    constructor (...msg: FoundatsionError.input_arg[]) {
-      // :scunge:
-      const thisꓸpassages: FoundatsionError.passage[] = [];
-      let working_line: FoundatsionError.line | null = null;
+      const new_passages: FoundatsionError.passage[] = [];
+      let linebuffer: FoundatsionError.line | null = null;
       for (let e of msg) {
          if (typeof e === "string") {
-            for (
-               // iterate through lines
-               let idx: number;
-               (idx = e.indexOf("\n")) >= 0;
-               e = e.slice(idx + 1))
-            {
-               const line = unsound.cast<FoundatsionError.line>(e.slice(0, idx));
-               if (working_line === null) {
-                  thisꓸpassages.push(line);
-               } else
+            let string_arg = e;
+            // while we can find a newline in the string
+            for (let idx_of_newline; (idx_of_newline = string_arg.indexOf("\n")) > 0;) {
+               const line = string_arg.slice(0, idx_of_newline);
+               string_arg = string_arg.slice(idx_of_newline + 1);
 
+               unsound.assert<FoundatsionError.line>(line);
+               // [1]
+               // this one confused me initially when I read it a second time.
+               // normally when we have a line, we append it to the linebuffer
+               // with a space (see condition 3) but in this case, there's
+               // nothing in the linebuffer.
+               // It'd be kinda strange to just add a space, now wouldn't it?
+               if (linebuffer === null) {
+                  flush:
+                  new_passages.push(line);
+                  linebuffer satisfies null; continue;
+               }
+
+               // [2]
+               // When a string is split with an lf at the start or end like so:
+               // "\nbar baz\n".split('\n') -> ["", "bar baz", ""].
+               // If we imagine the linebuffer = "foo", we don't want to flush
+               // "foo ". We just want to flush without adding a space.
                if (line === "") {
-                 thisꓸpassages.push(working_line);
-                 working_line = null;
+                  flush:
+                  new_passages.push(linebuffer);
+                  linebuffer = null;
+                  linebuffer satisfies null; continue;
                }
 
-               else {
-                  working_line = unsound.cast<FoundatsionError.line>(`${working_line} ${line}`);
-                  thisꓸpassages.push(working_line);
-                  working_line = null;
-               }
-               // at the end of this loop, linebuffer should always be null
-               // but if this loop doesn't run it might not be null
+               // [3] (condition 3)
+               // the linebuffer has something in it and line is normalish.
+               // concatenate with a space and then flush.
+               linebuffer = unsound.cast<FoundatsionError.line>(`${linebuffer} ${line}`);
+               flush:
+               new_passages.push(linebuffer);
+               linebuffer = null;
+               linebuffer satisfies null; continue;
             }
-            // from here on out, e doesn't contain any newlines
-            // there might not be anything left in e if it ended with a newline
-            if (e.length > 0) {
-               if (working_line === null) {
-                  working_line = e;
+            // from here on out, string_arg doesn't contain any newlines.
+            unsound.assert<FoundatsionError.line>(string_arg);
+            if (string_arg.length > 0) {
+               // there's still stuff after the last newline
+               if (linebuffer === null) {
+                  linebuffer = string_arg;
                } else {
-                  working_line += ` ${e}`;
+                  linebuffer = unsound.cast<FoundatsionError.line>(` ${string_arg}`);
                }
             }
-            continue;
+            // linebuffer could have stuff in it
+            continue; // next argument
          }
+
          if (Array.isArray(e)) {
-            if (working_line !== null) {
-               thisꓸpassages.push(working_line);
-               working_line;
+            if (linebuffer !== null) {
+               flush:
+               new_passages.push(linebuffer);
+               linebuffer = null;
             }
-            thisꓸpassages.push(e);
+            new_passages.push(e);
+            linebuffer satisfies null; continue;
          }
+
          if (e instanceof FoundatsionError) {
-            if (working_line !== null) {
-               thisꓸpassages.push(working_line);
-               working_line = null;
+            if (linebuffer !== null) {
+               new_passages.push(linebuffer);
+               linebuffer = null;
             }
+            const escapedname = FoundatsionError.line.escape_string(e.name);
+            const header = `${escapedname}:`;
+            unsound.assert<FoundatsionError.line>(header);
             /*
-            FoundatsionError:
-            > blah blah blah
-            > blah blah blah
-            > FoundatsionError
-            > > other stuff here
-            > > other stuff here
+               FoundatsionError:
+               > blah blah blah
+               > blah blah blah
+               > FoundatsionError
+               > > other stuff here
+               > > other stuff here
             */
-            thisꓸlines.push(`${e.name}:`);
-            thisꓸpassages.push(e.passages);
-            continue;
+            new_passages.push(header);
+            new_passages.push(e.passages);
+            linebuffer satisfies null; continue;
          }
+
          if (e instanceof Error) {
-            if (working_line !== null) {
-               thisꓸpassages.push(working_line);
-               working_line = null;
+            if (linebuffer !== null) {
+               new_passages.push(linebuffer);
+               linebuffer = null;
             }
-            const sublines = [];
-            let msg = e.message;
-            for (
-               // iterate through lines in e.message
-               let idx: number;
-               (idx = msg.indexOf("\n")) >= 0;
-               msg = msg.slice(idx + 1))
-            {
-               sublines.push(msg.slice(0, idx));
+            const sublines = FoundatsionError.line.split_into(e.message);
+            if (sublines[0] === "") {
+               sublines.shift();
             }
-            // now msg has no more newlines in it
-            // but it might also have nothing in it
-            if (msg.length > 0) {
-               sublines.push(msg);
+            if (sublines[sublines.length - 1] === "") {
+               sublines.pop();
             }
-            thisꓸpassages.push(`${e.name}:`);
-            thisꓸpassages.push(sublines);
+
+            const escapedname = FoundatsionError.line.escape_string(e.name);
+            const header = `${escapedname}:`;
+            unsound.assert<FoundatsionError.line>(header);
+
+            new_passages.push(header);
+            new_passages.push(sublines);
+            linebuffer satisfies null; continue;
          }
       }
 
-      if (working_line !== null) {
-         thisꓸpassages.push(working_line);
-         working_line = null;
+      if (linebuffer !== null) {
+         new_passages.push(linebuffer);
+         linebuffer = null;
       }
 
-      super(FoundatsionError.processed_input_to_string(thisꓸpassages));
+      super(FoundatsionError.processed_input_to_string(new_passages));
 
       // just shut up ts
       this.passages = [];
@@ -116,7 +138,7 @@ export class FoundatsionError extends Error {
       Object.defineProperty(this, "lines", {
          configurable: false,
          enumerable: false,
-         value: thisꓸpassages,
+         value: new_passages,
          writable: false,
       });
    }
@@ -161,6 +183,13 @@ export namespace FoundatsionError {
                `${text.show(u)} includes a newline!`,
             );
          }
+      }
+      /** turns \n into "\\n" */
+      export function escape_string(s: string): line {
+         return s.replace(/\n/g, "\\n") as line;
+      }
+      export function split_into(s: string): line[] {
+         return s.split("\n") as line[];
       }
    }
    /**
