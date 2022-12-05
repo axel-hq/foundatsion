@@ -11,7 +11,7 @@ export namespace real {
    export function is(u: unknown): u is real {
       return number.is(u) && (!Number.isNaN(u)) && Number.isFinite(u);
    }
-   export function assert(this: typeof real, u: unknown): asserts u is real {
+   export function assert<u>(this: typeof real, u: u): asserts u is u & real {
       try {
          number.assert(u);
       } catch (e) {

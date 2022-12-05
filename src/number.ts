@@ -6,7 +6,7 @@ export namespace number {
    export function is(u: unknown): u is number {
       return typeof u === "number";
    }
-   export function assert(this: typeof number, u: unknown): asserts u is number {
+   export function assert<u>(this: typeof number, u: u): asserts u is u & number {
       if (typeof u !== "number") {
          throw new FoundatsionError(
             `Tried asserting for ${this.name} but failed.\n`,

@@ -31,7 +31,7 @@ export function f_enum(name: string, prims: readonly tt.prim[]): rtti {
       is(u: unknown): u is unknown {
          return prims.some(p => p === u);
       },
-      assert(u: unknown): asserts u is unknown {
+      assert<u>(u: u): asserts u is u & unknown {
          if (this.is(u)) {
             return;
          } else {

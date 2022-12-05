@@ -8,7 +8,7 @@ export namespace any_fn {
       return typeof u === "function";
    }
 
-   export function assert(u: unknown): asserts u is any_fn {
+   export function assert<u>(u: u): asserts u is u & any_fn {
       if (typeof u !== "function") {
          throw new FoundatsionError(
             "Tried asserting for function but failed.\n",

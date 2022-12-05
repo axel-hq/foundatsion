@@ -155,7 +155,7 @@ export namespace FoundatsionError {
       export function is(u: unknown): u is line {
          return string.is(u) && (!u.includes("\n"));
       }
-      export function assert(this: typeof line, u: unknown): asserts u is line {
+      export function assert<u>(this: typeof line, u: u): asserts u is u & line {
          string.assert(u);
          if (u.includes("\n")) {
             throw new FoundatsionError(
@@ -187,7 +187,7 @@ export namespace FoundatsionError {
             return line.is(u);
          }
       }
-      export function assert(this: typeof passage, u: unknown): asserts u is passage {
+      export function assert<u>(this: typeof passage, u: u): asserts u is u & passage {
          // honestly, I don't really know if this is any better for performance
          // but I'm mostly doing it for the error message
          const stack = [u];
@@ -264,6 +264,13 @@ export namespace FoundatsionError {
    // passages <: passage
    export type passages = passage[];
    export namespace passages {
+      export const name = "passages";
+      export function is(u: unknown): u is passage {
+         return Array.isArray(u) && u.every(passage.is);
+      }
+      export function assert<u>(this: typeof passages, u: u): asserts u is u & passages {
+         
+      }
       // incomplete rtti because I don't care
       export function cast_to_string(passages: passage[]): string {
          if (passages.length === 0) {

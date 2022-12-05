@@ -54,7 +54,7 @@ export function auto<t extends template>(t: t): auto<t> {
          }
          return true;
       },
-      assert(u_toplevel: unknown): asserts u_toplevel is auto_decant<t> {
+      assert<u_toplevel>(u_toplevel: u_toplevel): asserts u_toplevel is u_toplevel & auto_decant<t> {
          type assert_info = {
             n: string; // name
             u: unknown;

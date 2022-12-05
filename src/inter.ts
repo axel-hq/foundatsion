@@ -22,7 +22,7 @@ export function inter<rs extends rtti[]>(...rs: readonly [...rs]): rtti<inter_de
       is(u: unknown): u is inter_decant<rs> {
          return rs.every(r => r.is(u));
       },
-      assert(u: unknown): asserts u is inter_decant<rs> {
+      assert<u>(u: unknown): asserts u is u & inter_decant<rs> {
          try {
             for (const r of rs) {
                r.assert(u);

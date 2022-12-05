@@ -1,4 +1,3 @@
-import {rtti} from "./rtti";
 import {FoundatsionError} from "./error";
 
 export namespace string {
@@ -6,7 +5,7 @@ export namespace string {
    export function is(u: unknown): u is string {
       return typeof u === "string";
    }
-   export function assert(this: typeof string, u: unknown): asserts u is string {
+   export function assert<u>(this: typeof string, u: u): asserts u is u & string {
       if (typeof u !== "string") {
          throw new FoundatsionError(
             `Tried asserting for ${this.name} but failed.\n`,

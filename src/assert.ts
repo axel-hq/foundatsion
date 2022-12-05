@@ -8,7 +8,7 @@ import {rtti} from "./rtti";
  * In general, though, you really shouldn't be using this. Annotating the rtti
  * object isn't that difficult.
  */
-export function assert<t>(r: rtti<t>, u: unknown): asserts u is t {
+export function assert<t, u>(r: rtti<t>, u: unknown): asserts u is u & t {
    r.assert(u);
 }
 

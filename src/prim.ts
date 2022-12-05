@@ -10,7 +10,7 @@ export function prim<v extends tt.prim>(v: v): rtti<v> {
       is(u: unknown): u is v {
          return v === u;
       },
-      assert(u: unknown): asserts u is v {
+      assert<u>(u: u | v): asserts u is u & v {
          if (v !== u) {
             throw new FoundatsionError(
                `Tried asserting for ${this.name} but the value did not match.\n`,

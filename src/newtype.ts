@@ -1,5 +1,5 @@
-import {unsound} from "./unsound";
 import {id, tt} from "./type_traits";
+import {unsound} from "./unsound";
 
 // Newtypes are for package internals only.
 // Do not export newtypes over API boundaries!

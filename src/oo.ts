@@ -1,8 +1,8 @@
 import {rtti} from "./rtti";
 import {text} from "./text";
 import {unsound} from "./unsound";
-import {FoundatsionError} from "./error";
 import {id, ignore} from "./type_traits";
+import {FoundatsionError} from "./error";
 
 /** Open Object */
 export type oo = object & {[k in string]: unknown};
@@ -11,7 +11,7 @@ export namespace oo {
    export function is(u: unknown): u is oo {
       return typeof u === "object" && u !== null;
    }
-   export function assert(this: typeof oo, u: unknown): asserts u is oo {
+   export function assert<u>(this: typeof oo, u: u): asserts u is u & oo {
       if (typeof u !== "object") {
          throw new FoundatsionError(
             `Asserting for ${this.name} failed!\n`,

@@ -64,7 +64,7 @@ export namespace rtti {
             && oo.field_is(u, "is", any_fn)
             && oo.field_is(u, "assert", any_fn);
       }
-      export function assert(this: typeof meta, u: unknown): asserts u is rtti {
+      export function assert<u>(this: typeof meta, u: u): asserts u is u & rtti {
          if (!is(u)) {
             throw new FoundatsionError(
                `Value was ${this.name}!`,

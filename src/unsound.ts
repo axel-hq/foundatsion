@@ -1,3 +1,5 @@
+// just want to make sure that we don't import the rtti value because that would
+// make it a circular value dependency
 import type {rtti} from "./rtti";
 import {id, ignore} from "./type_traits";
 

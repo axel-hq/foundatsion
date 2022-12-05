@@ -6,7 +6,7 @@ export namespace boolean {
    export function is(u: unknown): u is boolean {
       return typeof u === "boolean";
    }
-   export function assert(this: typeof boolean, u: unknown): asserts u is boolean {
+   export function assert<u>(this: typeof boolean, u: u): asserts u is u & boolean {
       if (typeof u !== "boolean") {
          throw new FoundatsionError(
             `Tried asserting for ${this.name} but failed.\n`,

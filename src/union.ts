@@ -1,9 +1,9 @@
+import {oo} from "./oo";
 import {rtti} from "./rtti";
 import {never} from "./never";
 import {unsound} from "./unsound";
 import {__unreachable} from "./type_traits";
 import {FoundatsionError} from "./error";
-import {oo} from "./oo";
 
 type union_decant<rs extends [...rtti[]]> =
    rs[number] extends rtti<infer ts> ? ts : never;

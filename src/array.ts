@@ -1,7 +1,7 @@
+import {oo} from "./oo";
 import {rtti} from "./rtti";
 import {unsound} from "./unsound";
 import {FoundatsionError} from "./error";
-import {oo} from "./_all";
 
 const cache = new WeakMap<rtti, rtti<unknown[]>>();
 
@@ -17,7 +17,7 @@ export function array<t>(r: rtti<t>): rtti<t[]> {
             && Array.isArray(u)
             && u.every(elem => r.is(elem));
       },
-      assert(u: unknown): asserts u is t[] {
+      assert<u>(u: u): asserts u is u & t[] {
          if (!Array.isArray(u)) {
             throw new FoundatsionError(
                `Tried asserting for ${this.name} but failed since`,

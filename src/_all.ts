@@ -42,6 +42,7 @@ export {
    absurd,
    id,
    ct_true,
+   T,
    tt,
 } from "./type_traits";
 import {ubigint as _ubigint} from "./ubigint";

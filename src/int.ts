@@ -11,7 +11,7 @@ export namespace int {
    export function is(u: unknown): u is int {
       return Number.isInteger(u);
    }
-   export function assert(this: typeof int, u: unknown): asserts u is int {
+   export function assert<u>(this: typeof int, u: u): asserts u is u & int {
       if (is(u)) return;
       else throw new FoundatsionError(
          `Tried asserting for ${this.name} but failed Number.isInteger(${text.show(u)})`,

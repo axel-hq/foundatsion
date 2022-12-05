@@ -1,9 +1,18 @@
+import {newtype} from "./newtype";
+
 export function __unreachable(): never {
    throw __unreachable;
 }
 // pleas optimize uwu
 export const ignore = (..._: any[]): void => {};
 export const absurd = <t>(_: never): t => __unreachable();
+
+const internal_t = class T<_> {};
+
+// for explicit type parameters
+export const T = internal_t as typeof internal_t & newtype<"T">;
+export type T<t> = typeof T<t> & newtype<"T">;
+
 /**
  * λx.x
  *
