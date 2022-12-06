@@ -1,5 +1,6 @@
 import {rtti} from "./rtti";
 import {FoundatsionError} from "./error";
+import {T} from "./type_traits";
 
 export namespace symbol {
    export const name = "symbol";
@@ -17,4 +18,4 @@ export namespace symbol {
    export const cast_from_string = Symbol.for.bind(Symbol);
 }
 
-rtti.verify(symbol);
+rtti.verify(T<symbol>, symbol);

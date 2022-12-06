@@ -5,6 +5,7 @@ import {ubigint} from "./ubigint";
 import {unsound} from "./unsound";
 import {unsigned} from "./unsigned";
 import {FoundatsionError} from "./error";
+import {T} from "./type_traits";
 
 export type uint = unsigned & int;
 export const uint = {
@@ -31,4 +32,4 @@ export const uint = {
    },
 };
 
-rtti.verify(uint);
+rtti.verify(T<uint>, uint);

@@ -1,3 +1,4 @@
+import {T} from "./type_traits";
 import {rtti} from "./rtti";
 import {FoundatsionError} from "./error";
 
@@ -13,4 +14,4 @@ export namespace never {
    }
 }
 
-rtti.verify(never);
+rtti.verify(T<never>, never);

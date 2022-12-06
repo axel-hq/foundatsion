@@ -1,3 +1,4 @@
+import {T} from "./type_traits";
 import {text} from "./text";
 import {rtti} from "./rtti";
 import {number} from "./number";
@@ -65,4 +66,4 @@ export namespace real {
    }
 }
 
-rtti.verify(real);
+rtti.verify(T<real>, real);

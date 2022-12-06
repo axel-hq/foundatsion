@@ -4,6 +4,7 @@ import {bigint} from "./bigint";
 import {unsound} from "./unsound";
 import {unsigned} from "./unsigned";
 import {FoundatsionError} from "./error";
+import {T} from "./type_traits";
 
 export type ubigint = unsigned & bigint;
 export const ubigint = {
@@ -40,4 +41,4 @@ export const ubigint = {
    },
 };
 
-rtti.verify(ubigint);
+rtti.verify(T<ubigint>, ubigint);

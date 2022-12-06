@@ -17,3 +17,5 @@ export namespace string {
    export const cast_from_bigint = String;
    export const cast_from_number = String;
 }
+
+// no verify because rtti depends on string

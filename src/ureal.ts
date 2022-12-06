@@ -1,3 +1,4 @@
+import {T} from "./type_traits";
 import {real} from "./real";
 import {rtti} from "./rtti";
 import {inter} from "./inter";
@@ -26,4 +27,4 @@ export const ureal = {
    },
 };
 
-rtti.verify(ureal);
+rtti.verify(T<ureal>, ureal);

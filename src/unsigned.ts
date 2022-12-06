@@ -3,6 +3,8 @@ import {bigint} from "./bigint";
 import {number} from "./number";
 import {newtype} from "./newtype";
 import {FoundatsionError} from "./error";
+import {rtti} from "./rtti";
+import {T} from "./type_traits";
 
 {
    const r = union(bigint, number);
@@ -32,10 +34,9 @@ export namespace unsigned {
       );
    }
 
-   // YES!!! YES YES YES !! O MY GOD I LOVE THIS LANGUAGE
-   export const assert_from_bigint: typeof assert_from_bigint_or_number
+   export const assert_from_bigint: {(b: bigint): asserts b is bigint & unsigned}
       = assert_from_bigint_or_number;
-   export const assert_from_number: typeof assert_from_bigint_or_number
+   export const assert_from_number: {(n: number): asserts n is number & unsigned}
       = assert_from_bigint_or_number;
 
    export function assert(u: unknown): asserts u is unsigned {
@@ -54,3 +55,5 @@ export namespace unsigned {
       }
    }
 }
+
+rtti.verify(T<unsigned>, unsigned);

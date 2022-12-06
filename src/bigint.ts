@@ -1,3 +1,4 @@
+import {T} from "./type_traits";
 import {rtti} from "./rtti";
 import {unsound} from "./unsound";
 import {FoundatsionError} from "./error";
@@ -20,4 +21,4 @@ export namespace bigint {
    export const cast_from_string: {(s: string): bigint} = BigInt;
 }
 
-rtti.verify(bigint);
+rtti.verify(T<bigint>, bigint);

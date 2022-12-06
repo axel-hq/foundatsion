@@ -269,7 +269,11 @@ export namespace FoundatsionError {
          return Array.isArray(u) && u.every(passage.is);
       }
       export function assert<u>(this: typeof passages, u: u): asserts u is u & passages {
-         
+         if (!Array.isArray(u)) {
+            throw new FoundatsionError(
+               "",
+            );
+         }
       }
       // incomplete rtti because I don't care
       export function cast_to_string(passages: passage[]): string {

@@ -2,6 +2,7 @@ import {oo} from "./oo";
 import {any_fn} from "./any_fn";
 import {string} from "./string";
 import {unsound} from "./unsound";
+import {T, ignore} from "./type_traits";
 import {FoundatsionError} from "./error";
 
 export type rtti<t = unknown> = {
@@ -18,26 +19,14 @@ export namespace rtti {
 
    type isish<t> = {is: is<t>};
    type assertish<t> = {assert: assert<t>};
-   type castish<t = unknown> =
-      & {[k in `cast_from_${string}`]: {(a: any): t}}
-      & {[k in `cast_to_${string}`]: {(t: t): any}};
+   type castish<t, r> =
+      & {[k in keyof r as k extends "cast_from" ? k : never]: {(u: unknown): t}}
+      & {[k in keyof r as k extends `cast_from_${string}` ? k : never]: {(a: any): t}}
+      & {[k in keyof r as k extends `cast_to_${string}` ? k : never]: {(t: t): any}};
 
-   declare const dummy: unique symbol;
-   type dummy = typeof dummy;
+   type well_formed<t, r> = isish<t> & assertish<t> & castish<t, r>;
 
-   type verify_implicit<r extends rtti> =
-      r extends isish<infer is_t> & assertish<infer assert_t>
-         ? (is_t | assert_t) extends (is_t & assert_t)
-            ? castish<is_t>
-            : ["Type mismatch between return type of is and assert:", is_t, "is not equal to", assert_t]
-         : never;
-
-   // prevent user from putting explicit type parameters
-   export function verify
-      <no_explicit_type_parameters extends dummy = dummy, r extends rtti = rtti>
-         (_: r & verify_implicit<r>):
-            void & no_explicit_type_parameters
-   {}
+   export const verify: {<t, r>(t: T<t>, r: r & well_formed<t, r>): void} = ignore;
 
    export function is_from_assert<t>(a: assert<t>): is<t> {
       function is(u: unknown): boolean {
@@ -74,4 +63,4 @@ export namespace rtti {
    }
 }
 
-rtti.verify(string); // CULTS
+rtti.verify(T<string>, string); // CULTS
