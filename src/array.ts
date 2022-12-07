@@ -51,7 +51,6 @@ export function array<t>(r: rtti<t>): rtti<t[]> {
    return new_rtti;
 }
 export namespace array {
-   export const name = "array<unknown>";
    export function is(u: unknown): u is unknown[] {
       return Array.isArray(u);
    }
