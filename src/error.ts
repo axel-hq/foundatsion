@@ -2,6 +2,7 @@ import {text} from "./text";
 import {string} from "./string";
 import {newtype} from "./newtype";
 import {unsound} from "./unsound";
+import {launder} from "./type_traits";
 
 export class FoundatsionError extends Error {
    name = "FoundatsionError";
@@ -20,17 +21,17 @@ export class FoundatsionError extends Error {
       let linebuffer: FoundatsionError.line | null = null;
       function flush(lb: FoundatsionError.line): null {
          new_passages.push(lb);
-         return linebuffer = null;
+         return null;
       }
       for (const e of msg) {
          if (typeof e === "string") {
-            let string_arg = e;
+            let line: FoundatsionError.line;
             // while we can find a newline in the string
-            for (let idx_of_newline; (idx_of_newline = string_arg.indexOf("\n")) > 0;) {
-               const line = string_arg.slice(0, idx_of_newline);
-               string_arg = string_arg.slice(idx_of_newline + 1);
-
-               unsound.assert<FoundatsionError.line>(line);
+            for (
+               let next: string | null = e;
+               [line, next] = FoundatsionError.line.next(next), next;
+            )
+            {
                // [1]
                // this one confused me initially when I read it a second time.
                // normally when we have a line, we append it to the linebuffer
@@ -59,15 +60,15 @@ export class FoundatsionError extends Error {
                );
                linebuffer satisfies null; continue;
             }
-            // from here on out, string_arg doesn't contain any newlines.
-            unsound.assert<FoundatsionError.line>(string_arg);
-            if (string_arg.length > 0) {
+            if (line.length > 0) {
                // there's still stuff after the last newline
                if (linebuffer === null) {
-                  linebuffer = string_arg;
+                  linebuffer = line;
                } else {
-                  linebuffer = unsound.cast<FoundatsionError.line>(
-                     `${linebuffer} ${string_arg}`
+                  linebuffer = FoundatsionError.line.concat(
+                     launder<FoundatsionError.line>(linebuffer),
+                     " ",
+                     line,
                   );
                }
             }
@@ -89,8 +90,7 @@ export class FoundatsionError extends Error {
                linebuffer = flush(linebuffer);
             }
             const escapedname = FoundatsionError.line.escape_string(e.name);
-            const header = `${escapedname}:`;
-            unsound.assert<FoundatsionError.line>(header);
+            const header = FoundatsionError.line.concat(escapedname, ":");
             /*
                FoundatsionError:
                > blah blah blah
@@ -118,8 +118,7 @@ export class FoundatsionError extends Error {
             }
 
             const escapedname = FoundatsionError.line.escape_string(e.name);
-            const header = `${escapedname}:`;
-            unsound.assert<FoundatsionError.line>(header);
+            const header = FoundatsionError.line.concat(escapedname, ":");
 
             new_passages.push(header);
             new_passages.push(sublines);
@@ -128,8 +127,7 @@ export class FoundatsionError extends Error {
       }
 
       if (linebuffer !== null) {
-         new_passages.push(linebuffer);
-         linebuffer = null;
+         linebuffer = flush(linebuffer);
       }
       linebuffer satisfies null;
 
@@ -161,6 +159,18 @@ export namespace FoundatsionError {
             );
          }
       }
+      export function next(s: string): [line, string | null] {
+         const i = s.indexOf("\n");
+         if (i === -1) {
+            return [unsound.bless<line>(s), null];
+         } else {
+            return [
+               unsound.bless<line>(s.slice(0, i)),
+               s.slice(i + 1),
+            ];
+         }
+      }
+
       /** turns \n into "\\n" */
       export function escape_string(s: string): line {
          return unsound.shut_up(s.replace(/\n/g, "\\n"));
@@ -195,11 +205,11 @@ export namespace FoundatsionError {
                         : force_line<tail>
                   : line; // then it must be an untemplated string
 
-      export type force_lines<i extends readonly string[]> = {
+      export type force_lines<i extends string[]> = {
          [k in keyof i]: force_line<i[k]>;
       };
 
-      export function concat<i extends readonly string[]>(...i: i & force_lines<i>): line {
+      export function concat<i extends string[]>(...i: i & force_lines<i>): line {
          return unsound.cast<line>(i.join(""));
       }
    }
@@ -293,8 +303,7 @@ export namespace FoundatsionError {
             for (const sub of l) {
                // remove two characters because of the "> "
                for (const subsub of cast_to_lines(sub, line_length - 2)) {
-                  lines.push(unsound.cast<line>(`> ${subsub}`));
-                  const q=  ["> ", subsub] as const;
+                  lines.push(line.concat("> ", subsub));
                }
             }
             return lines;

@@ -19,6 +19,13 @@ export type T<t> = typeof T<t> & newtype<"T">;
  * Also functions as upcast.
  */
 export const id = <t>(t: t): t => t;
+/**
+ * Sometimes, setting a value to a type dependent on that value will create a
+ * circular type dependency.
+ *
+ * Use launder to break the dependency.
+ */
+export const launder = <t = never>(v: t): t => v;
 
 /** Check that a type is true. Useful with conditional types. */
 export const ct_true: {<_ extends true>(): void} = ignore;
