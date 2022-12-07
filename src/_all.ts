@@ -62,5 +62,3 @@ export const unsound: typeof _unsound = _unsound;
 import {ureal as _ureal} from "./ureal";
 export type ureal = _ureal;
 export const ureal: typeof _ureal = _ureal;
-
-oo.
