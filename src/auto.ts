@@ -33,6 +33,7 @@ export function auto<t extends template>(t: t): auto<t> {
             const current_t = current.t;
             const current_u = current.u;
 
+            // [a, b, c]
             if (rtti.meta.is(current_t)) {
                if (!current_t.is(current_u)) {
                   return false; // <----------------------------------- sad path
@@ -86,6 +87,8 @@ export function auto<t extends template>(t: t): auto<t> {
                else {
                   // we're dealing with a record
                   oo.assert(current_u);
+                  // TODO: replace with oo.entries
+                  // TODO: make oo.entries
                   for (const k of oo.keys(current_t)) {
                      const sub_n = `${current_n}.${k}`;
                      const sub_u = current_u[k];

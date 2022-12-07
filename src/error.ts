@@ -18,6 +18,10 @@ export class FoundatsionError extends Error {
    constructor (...msg: FoundatsionError.input_arg[]) {
       const new_passages: FoundatsionError.passages = [];
       let linebuffer: FoundatsionError.line | null = null;
+      function flush(lb: FoundatsionError.line): null {
+         new_passages.push(lb);
+         return linebuffer = null;
+      }
       for (const e of msg) {
          if (typeof e === "string") {
             let string_arg = e;
@@ -34,7 +38,6 @@ export class FoundatsionError extends Error {
                // nothing in the linebuffer.
                // It'd be kinda strange to just add a space, now wouldn't it?
                if (linebuffer === null) {
-                  flush:
                   new_passages.push(line);
                   linebuffer satisfies null; continue;
                }
@@ -45,19 +48,15 @@ export class FoundatsionError extends Error {
                // If we imagine the linebuffer = "foo", we don't want to flush
                // "foo ". We just want to flush without adding a space.
                if (line === "") {
-                  flush:
-                  new_passages.push(linebuffer);
-                  linebuffer = null;
-                  linebuffer satisfies null; continue;
+                  continue; // HAHAHAHAHAAHHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHA
                }
 
                // [3] (condition 3)
                // the linebuffer has something in it and line is normalish.
                // concatenate with a space and then flush.
-               linebuffer = unsound.cast<FoundatsionError.line>(`${linebuffer} ${line}`);
-               flush:
-               new_passages.push(linebuffer);
-               linebuffer = null;
+               linebuffer = flush(
+                  FoundatsionError.line.concat(linebuffer, " ", line),
+               );
                linebuffer satisfies null; continue;
             }
             // from here on out, string_arg doesn't contain any newlines.
@@ -67,7 +66,9 @@ export class FoundatsionError extends Error {
                if (linebuffer === null) {
                   linebuffer = string_arg;
                } else {
-                  linebuffer = unsound.cast<FoundatsionError.line>(` ${string_arg}`);
+                  linebuffer = unsound.cast<FoundatsionError.line>(
+                     `${linebuffer} ${string_arg}`
+                  );
                }
             }
             // linebuffer could have stuff in it
@@ -77,9 +78,7 @@ export class FoundatsionError extends Error {
          // passages
          if (Array.isArray(e)) {
             if (linebuffer !== null) {
-               flush:
-               new_passages.push(linebuffer);
-               linebuffer = null;
+               linebuffer = flush(linebuffer);
             }
             new_passages.push(e);
             linebuffer satisfies null; continue;
@@ -87,8 +86,7 @@ export class FoundatsionError extends Error {
 
          if (e instanceof FoundatsionError) {
             if (linebuffer !== null) {
-               new_passages.push(linebuffer);
-               linebuffer = null;
+               linebuffer = flush(linebuffer);
             }
             const escapedname = FoundatsionError.line.escape_string(e.name);
             const header = `${escapedname}:`;
@@ -108,8 +106,7 @@ export class FoundatsionError extends Error {
 
          if (e instanceof Error) {
             if (linebuffer !== null) {
-               new_passages.push(linebuffer);
-               linebuffer = null;
+               linebuffer = flush(linebuffer);
             }
             const sublines = FoundatsionError.line.split_into(e.message);
 
@@ -166,13 +163,13 @@ export namespace FoundatsionError {
       }
       /** turns \n into "\\n" */
       export function escape_string(s: string): line {
-         return s.replace(/\n/g, "\\n") as line;
+         return unsound.shut_up(s.replace(/\n/g, "\\n"));
       }
       export function split_into(s: string): line[] {
-         return s.split("\n") as line[];
+         return unsound.shut_up(s.split("\n"));
       }
       export function wrap(this: typeof line, l: line, length: number): line[] {
-         const lines: string[] = [];
+         const lines: line[] = [];
          const r = new RegExp(`(.{1,${length}})(?:\\s|$)`, "g");
          for (const [, capture_group] of l.matchAll(r)) {
             if (capture_group == null) {
@@ -180,9 +177,30 @@ export namespace FoundatsionError {
                   `Called ${this.name}.wrap ${length} but internal regex capture group was null.`,
                );
             }
+            unsound.assert<line>(capture_group);
             lines.push(capture_group);
          }
-         return lines as line[];
+         return lines;
+      }
+      export type force_line<s> =
+         s extends ""
+            ? string
+            : s extends line
+               ? line
+               : s extends `${infer head}${infer tail}`
+                  ? string extends head
+                     ? line
+                     : head extends "\n"
+                        ? line
+                        : force_line<tail>
+                  : line; // then it must be an untemplated string
+
+      export type force_lines<i extends readonly string[]> = {
+         [k in keyof i]: force_line<i[k]>;
+      };
+
+      export function concat<i extends readonly string[]>(...i: i & force_lines<i>): line {
+         return unsound.cast<line>(i.join(""));
       }
    }
    /**
@@ -212,7 +230,7 @@ export namespace FoundatsionError {
                // let's examine the stack at each loop
 
                /* loop n
-                  bottom
+                  bottom <- 0
                   middle
                   top <- next
                */
@@ -275,7 +293,8 @@ export namespace FoundatsionError {
             for (const sub of l) {
                // remove two characters because of the "> "
                for (const subsub of cast_to_lines(sub, line_length - 2)) {
-                  lines.push(`> ${subsub}` as line);
+                  lines.push(unsound.cast<line>(`> ${subsub}`));
+                  const q=  ["> ", subsub] as const;
                }
             }
             return lines;

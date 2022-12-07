@@ -118,5 +118,5 @@ export namespace tt {
     *
     * // a has different behavior than b
     */
-    export type merge<o extends {}> = {[k in keyof o]: o[k]};
+   export type merge<o extends {}> = {[k in keyof o]: o[k]};
 }

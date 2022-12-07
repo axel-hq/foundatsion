@@ -17,6 +17,7 @@ export namespace unsound {
    }
    export const assert_not_undefined: {<t>(v: t): asserts v is Exclude<t, undefined>}
       = ignore as never;
+   export const assert_truthy: {(u: unknown): asserts u} = ignore;
    /**
     * Used for stubborn expressions. In general, you should use `unsound.cast`
     * but in a pinch, this will do. Usually this is used from the "insertion" or
