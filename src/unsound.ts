@@ -12,9 +12,11 @@ export namespace unsound {
    export const bless = cast;
    /** Changes the type of an identifier. */
    export const assert: {<t>(val: any): asserts val is t} = ignore;
-   export const assert_and_return: {<t, v>(r: rtti<t>, v: v): t & v} = ignore as never;
+   export function assert_and_return<t, v>(_: rtti<t>, v: v): t & v {
+      return v as never;
+   }
    export const assert_not_undefined: {<t>(v: t): asserts v is Exclude<t, undefined>}
-   = ignore as never;
+      = ignore as never;
    /**
     * Used for stubborn expressions. In general, you should use `unsound.cast`
     * but in a pinch, this will do. Usually this is used from the "insertion" or

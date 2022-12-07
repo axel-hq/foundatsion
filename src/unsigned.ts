@@ -1,10 +1,10 @@
+import {T} from "./type_traits";
+import {rtti} from "./rtti";
 import {union} from "./union";
 import {bigint} from "./bigint";
 import {number} from "./number";
 import {newtype} from "./newtype";
 import {FoundatsionError} from "./error";
-import {rtti} from "./rtti";
-import {T} from "./type_traits";
 
 {
    const r = union(bigint, number);

@@ -110,4 +110,13 @@ export namespace tt {
             ? true
             : false
          : false;
+
+   /**
+    * @example
+    * type a = {w: x} & {y: z};
+    * type b = {w: x; y: z};
+    *
+    * // a has different behavior than b
+    */
+    export type merge<o extends {}> = {[k in keyof o]: o[k]};
 }
