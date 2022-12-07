@@ -1,19 +1,6 @@
-import {FoundatsionError} from "./error";
+import {array} from "./array";
 
 export namespace text {
-   export function wrap(s: string, length: number): string[] {
-      const lines: string[] = [];
-      const r = new RegExp(`(.{1,${length}})(?:\\s|$)`, "g");
-      for (const [, capture_group] of s.matchAll(r)) {
-         if (capture_group == null) {
-            throw new FoundatsionError(
-               `Called wrap ${length} but internal regex capture group was null.`,
-            );
-         }
-         lines.push(capture_group);
-      }
-      return lines;
-   }
    /**
     * Whenever you're printing something from the user, you should probably just
     * use this.
@@ -30,7 +17,7 @@ export namespace text {
       case "undefined": return "undefined";
       case "function":  return `function ${u.name}(...)`;
       case "object":
-         if (Array.isArray(u)) {
+         if (array.is(u)) {
             return `[${u.map(show).join(", ")}]`;
          } else if (u === null) {
             return "null";

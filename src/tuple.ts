@@ -1,5 +1,6 @@
 // tuple with .length = n
 import {rtti} from "./rtti";
+import {array} from "./array";
 import {unsound} from "./unsound";
 import {__unreachable} from "./type_traits";
 import {FoundatsionError} from "./error";
@@ -14,7 +15,7 @@ export function tuple<rs extends rtti[]>(...rs: readonly [...rs]): rtti<decant_t
    return {
       name,
       is(u: unknown): u is decant_tuple<rs> {
-         if (!Array.isArray(u)) {
+         if (!array.is(u)) {
             return false;
          }
          unsound.assert<unknown[]>(u);
@@ -33,10 +34,10 @@ export function tuple<rs extends rtti[]>(...rs: readonly [...rs]): rtti<decant_t
          return true;
       },
       assert(u: unknown): void {
-         if (!Array.isArray(u)) {
+         if (!array.is(u)) {
             throw new FoundatsionError(
                `Since ${this.name} extends array<unknown>, tried asserting for`,
-               "array<unknown> but failed since Array.isArray returned false.",
+               "array<unknown> but failed since array.is returned false.",
             );
          }
          unsound.assert<unknown[]>(u);

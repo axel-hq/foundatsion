@@ -1,6 +1,7 @@
 import {oo} from "./oo";
 import {rtti} from "./rtti";
 import {unsound} from "./unsound";
+import {unknown} from "./unknown";
 import {FoundatsionError} from "./error";
 
 const cache = new WeakMap<rtti, rtti<unknown[]>>();
@@ -14,22 +15,21 @@ export function array<t>(r: rtti<t>): rtti<t[]> {
       name: `array<${r.name}>`,
       is(u: unknown): u is t[] {
          return true
-            && Array.isArray(u)
+            && array.is(u)
             && u.every(elem => r.is(elem));
       },
       assert<u>(u: u): asserts u is u & t[] {
-         if (!Array.isArray(u)) {
+         if (!array.is(u)) {
             throw new FoundatsionError(
                `Tried asserting for ${this.name} but failed since`,
-               "Array.isArray returned false.",
+               "array.is returned false.",
             );
          }
-         unsound.assert<unknown[]>(u);
 
          for (let i = 0; i < u.length; i++) {
             try {
                const elem = u[i];
-               unsound.fuck_off(r.assert)(elem);
+               r.assert(elem);
             } catch (e) {
                if (e instanceof Error) {
                   throw new FoundatsionError(
@@ -50,3 +50,17 @@ export function array<t>(r: rtti<t>): rtti<t[]> {
 
    return new_rtti;
 }
+export namespace array {
+   export const name = "array<unknown>";
+   export function is(u: unknown): u is unknown[] {
+      return Array.isArray(u);
+   }
+   export function assert<u>(this: typeof array, u: u): asserts u is u & unknown[] {
+      if (array.is(u)) return;
+      throw new FoundatsionError(
+         `Tried asserting for ${this.name} but failed since`,
+         "array.is returned false.",
+      );
+   }
+}
+cache.set(unknown, array);

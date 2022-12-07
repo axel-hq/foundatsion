@@ -171,8 +171,19 @@ export namespace FoundatsionError {
       export function split_into(s: string): line[] {
          return s.split("\n") as line[];
       }
-      export const wrap: {(l: line, line_length: number): line[]} =
-         unsound.shut_up(text.wrap);
+      export function wrap(this: typeof line, l: line, length: number): line[] {
+         const lines: string[] = [];
+         const r = new RegExp(`(.{1,${length}})(?:\\s|$)`, "g");
+         for (const [, capture_group] of l.matchAll(r)) {
+            if (capture_group == null) {
+               throw new FoundatsionError(
+                  `Called ${this.name}.wrap ${length} but internal regex capture group was null.`,
+               );
+            }
+            lines.push(capture_group);
+         }
+         return lines as line[];
+      }
    }
    /**
     * A passage represents a multiple indented (or unindented) blocks of text.
@@ -278,12 +289,6 @@ export namespace FoundatsionError {
       export function is(u: unknown): u is passage {
          return Array.isArray(u) && u.every(passage.is);
       }
-      /**
-       * highly unsafe and will not work if passage.assert depends on anything
-       * inside `this` except for .name and .is.
-       * this is really cursed and should probably be changed later thanks.
-       */
-      const super_assert = passage.assert.bind(unsound.shut_up(passages));
       export function assert<u>(this: typeof passages, u: u): asserts u is u & passages {
          if (!Array.isArray(u)) {
             throw new FoundatsionError(
@@ -291,8 +296,8 @@ export namespace FoundatsionError {
                "Array.isArray returned false.",
             );
          }
-         // lol it doesn't even know it's an assert function
-         super_assert(u);
+         passage.assert(u);
+         u satisfies passages;
       }
       // incomplete rtti because I don't care
       export function cast_to_string(passages: passage[]): string {

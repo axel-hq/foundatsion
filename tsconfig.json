@@ -12,12 +12,13 @@
    // emit
    ,  "newLine": "lf"
    ,  "noEmitOnError": true
+   // ,  "sourceMap": true
    // ,  "outDir": "bin"
    // interop constraints
    ,  "esModuleInterop": true
    ,  "forceConsistentCasingInFileNames": true
    // Language and Environment
-   ,  "lib": ["es2020"]
+   ,  "lib": ["es2020", "dom"]
    ,  "target": "es2020"
    // Projects
    // ,  "incremental": true
