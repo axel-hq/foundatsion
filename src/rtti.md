@@ -5,7 +5,7 @@ There are a few operations on rtti objects.
 Since TypeScript is bad, there's a question of where these functions belong and
 what to name them since there's no multiple dispatch at compile time.
 
-## is (type predicate)
+## is
 
 ```hs
 is :: in -> Guards out
@@ -45,7 +45,7 @@ assert :: in -> Asserts out
 
 ### Standard
 
-Type guards, also known as `assert` functions, are also owned by an `rtti<b>`.
+`assert` functions are also owned by an `rtti<b>`.
 
 ```ts
 // right
@@ -82,8 +82,8 @@ purpose: converting between data types while still retaining the same conceptual
 value.
 
 ```hs
-cast :: a -> b
-cast :: b -> c
+cast_to_b :: a -> b
+cast_from_b :: b -> c
 ```
 
 ### Standard

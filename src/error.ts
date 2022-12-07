@@ -138,7 +138,7 @@ export class FoundatsionError extends Error {
 
       super(FoundatsionError.passages.cast_to_string(new_passages));
 
-      Object.defineProperty(this, "lines", {
+      Object.defineProperty(this, "passages", {
          configurable: false,
          enumerable: false,
          value: new_passages,
@@ -187,57 +187,67 @@ export namespace FoundatsionError {
             return line.is(u);
          }
       }
-      export function assert<u>(this: typeof passage, u: u): asserts u is u & passage {
+      export function assert<u>(this: typeof passage, top: u): asserts top is u & passage {
          // honestly, I don't really know if this is any better for performance
          // but I'm mostly doing it for the error message
-         const stack = [u];
-         while (stack.length > 0) {
-            const last_e = stack.pop();
-            try {
-               if (Array.isArray(last_e)) {
-                  // push sub array to back in reverse
-                  // let's imagine you have a passage like so
-                  // [[a, b, c], d]
-                  // let's examine the stack at each loop
+         type to_be_asserted = {e: unknown; path: number[]};
+         const stack: to_be_asserted[] = [{e: top, path: []}];
+         let curr: to_be_asserted | undefined;
+         while (curr = stack.pop()) {
+            if (Array.isArray(curr.e)) {
+               // push sub array to back in reverse
+               // let's imagine you have a passage like so
+               // [[a, b, c], d]
+               // let's examine the stack at each loop
 
-                  /* loop n
-                     bottom
-                     middle
-                     top <- next
-                  */
+               /* loop n
+                  bottom
+                  middle
+                  top <- next
+               */
 
-                  /* loop 0
-                     [[a, b, c], d] <- next
-                  */
+               /* loop 0
+                  [[a, b, c], d] <- next
+               */
 
-                  /* loop 1
-                     d
-                     [a, b, c] <- next
-                  */
+               /* loop 1
+                  d
+                  [a, b, c] <- next
+               */
 
-                  /* loop 2
-                     d
-                     c
-                     b
-                     a <- next
-                  */
+               /* loop 2
+                  d
+                  c
+                  b
+                  a <- next
+               */
 
-                  // etc...
-                  // since our stack uses the last element of the array as the
-                  // top, we need to do it like this.
-                  // notice how the elements are asserted in depth first order.
-                  for (let i = last_e.length; i --> 0;) {
-                     stack.push(last_e[i]);
-                  }
-               } else {
-                  line.assert(last_e);
+               // etc...
+               // since our stack uses the last element of the array as the
+               // top, we need to do it like this.
+               // notice how the elements are asserted in depth first order.
+               for (let i = curr.e.length; i --> 0;) {
+                  stack.push({e: curr.e[i], path: [...curr.path, i]});
                }
+            }
+            try {
+               line.assert(curr.e);
             } catch (e) {
                if (e instanceof Error) {
-                  throw new FoundatsionError(
-                     `Error while asserting for ${this.name} at depth=${stack.length}`,
-                     e,
-                  );
+                  if (curr.path.length > 0) {
+                     const location = `top${curr.path.map(n => `[${n}]`).join("")}`;
+                     throw new FoundatsionError(
+                        `Error while asserting for ${this.name} at ${location}:`,
+                        e,
+                     );
+                  } else {
+                     throw new FoundatsionError(
+                        `While asserting for ${this.name}, a non-array value`,
+                        "was passed in as the top argument which resulted",
+                        "in an error:",
+                        e,
+                     );
+                  }
                } else {
                   throw e;
                }
@@ -264,16 +274,25 @@ export namespace FoundatsionError {
    // passages <: passage
    export type passages = passage[];
    export namespace passages {
-      export const name = "passages";
+      export const name = "FoundatsionError.passages";
       export function is(u: unknown): u is passage {
          return Array.isArray(u) && u.every(passage.is);
       }
+      /**
+       * highly unsafe and will not work if passage.assert depends on anything
+       * inside `this` except for .name and .is.
+       * this is really cursed and should probably be changed later thanks.
+       */
+      const super_assert = passage.assert.bind(unsound.shut_up(passages));
       export function assert<u>(this: typeof passages, u: u): asserts u is u & passages {
          if (!Array.isArray(u)) {
             throw new FoundatsionError(
-               "",
+               `Could not assert for ${this.name} but failed since`,
+               "Array.isArray returned false.",
             );
          }
+         // lol it doesn't even know it's an assert function
+         super_assert(u);
       }
       // incomplete rtti because I don't care
       export function cast_to_string(passages: passage[]): string {
