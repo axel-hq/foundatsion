@@ -25,7 +25,9 @@ export declare const nt_s: unique symbol;
 type newtype_partials_union<uniq_union extends keyof any> =
    {[k in uniq_union]: {[nt_s]: {[_ in k]: void}}}[uniq_union];
 
+//! foundatsion::newtype
 export type newtype<uniq extends string | symbol> = {[nt_s]: {[k in uniq]: void}};
+//! foundatsion::unwrap
 export type unwrap<outer> =
    outer extends {[nt_s]: {}}
       ? outer extends infer inner & tt.union_to_intersection<newtype_partials_union<keyof outer[typeof nt_s]>>

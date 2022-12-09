@@ -16,17 +16,26 @@ export namespace rtti {
 
    export type is<t = unknown> = {(u: unknown): u is t};
    export type assert<t = unknown> = {(u: unknown): asserts u is t};
+   export namespace assert {
+      export type t<f extends {(u: unknown): void}> =
+         f extends {(u: unknown): asserts u is infer r} ? r : unknown;
+      declare const assert_function_s: unique symbol;
+      export type assert_function<t> = {[assert_function_s]: t};
+      export type force_t<wanted, r> =
+         r extends {assert: assert}
+            ? t<r["assert"]> extends wanted ? unknown : assert_function<wanted>
+            : assert_function<wanted>;
+   }
 
-   type isish<t> = {is: is<t>};
-   type assertish<t> = {assert: assert<t>};
    type castish<t, r> =
       & {[k in keyof r as k extends "cast_from" ? k : never]: {(u: unknown): t}}
       & {[k in keyof r as k extends `cast_from_${string}` ? k : never]: {(a: any): t}}
       & {[k in keyof r as k extends `cast_to_${string}` ? k : never]: {(t: t): any}};
 
-   type well_formed<t, r> = isish<t> & assertish<t> & castish<t, r>;
+   type well_formed<t, r> = {is: is<t>} & castish<t, r> & assert.force_t<t, r>;
 
-   export const verify: {<t, r>(t: T<t>, r: r & well_formed<t, r>): void} = ignore;
+   export const verify: {<t, r>(t: T<t>, r: r & well_formed<t, r>): void}
+      = ignore;
 
    export function is_from_assert<t>(a: assert<t>): is<t> {
       function is(u: unknown): boolean {
