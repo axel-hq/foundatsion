@@ -16,6 +16,7 @@ export namespace oo {
          throw new FoundatsionError(
             `Asserting for ${this.name} failed!\n`,
             `typeof value was "${typeof u}" when it should've been "object".`,
+            `Instead, value was ${text.show(u)}`,
          );
       }
       if (u === null) {

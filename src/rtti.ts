@@ -63,13 +63,21 @@ export namespace rtti {
             && oo.field_is(u, "assert", any_fn);
       }
       export function assert<u>(this: typeof meta, u: u): asserts u is u & rtti {
-         if (!is(u)) {
-            throw new FoundatsionError(
-               `Value was ${this.name}!`,
-            );
+         try {
+            oo.assert(u);
+            oo.assert_field_is(u, "name", string);
+            oo.assert_field_is(u, "is", any_fn);
+            oo.assert_field_is(u, "assert", any_fn);
+         } catch (e) {
+            if (e instanceof Error) {
+               throw new FoundatsionError(
+                  `While asserting for ${this.name},`,
+                  "an error was thrown:",
+                  e,
+               );
+            }
+            throw e;
          }
       }
    }
 }
-
-rtti.verify(T<string>, string); // CULTS

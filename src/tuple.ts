@@ -4,6 +4,7 @@ import {array} from "./array";
 import {unsound} from "./unsound";
 import {__unreachable} from "./type_traits";
 import {FoundatsionError} from "./error";
+import {text} from "./text";
 
 type decant_tuple<rs extends readonly [...rtti[]]> =
    rs extends readonly [rtti<infer t>, ...infer tail extends [...rtti[]]]
@@ -18,29 +19,20 @@ export function tuple<rs extends rtti[]>(...rs: readonly [...rs]): rtti<decant_t
          if (!array.is(u)) {
             return false;
          }
-         unsound.assert<unknown[]>(u);
          if (u.length !== rs.length) {
             return false;
          }
-         for (let i = 0; i < rs.length; i++) {
-            const r = rs[i];
-            if (r === undefined) {
-               __unreachable();
-            }
-            if (!r.is(u[i])) {
-               return false;
-            }
-         }
-         return true;
+
+         return rs.every((r, i) => r.is(u[i]));
       },
       assert(u: unknown): void {
          if (!array.is(u)) {
             throw new FoundatsionError(
                `Since ${this.name} extends array<unknown>, tried asserting for`,
                "array<unknown> but failed since array.is returned false.",
+               `Instead, value was ${text.show(u)}`,
             );
          }
-         unsound.assert<unknown[]>(u);
          if (u.length !== rs.length) {
             throw new FoundatsionError(
                `Tried asserting for ${this.name} but the lengths were`,
@@ -49,13 +41,9 @@ export function tuple<rs extends rtti[]>(...rs: readonly [...rs]): rtti<decant_t
                `Received: {length: ${u.length}}\n`,
             );
          }
-         for (let i = 0; i < rs.length; i++) {
-            const maybe_r = rs[i];
-            if (maybe_r === undefined) {
-               __unreachable();
-            }
-            // picky typescript
-            const r: typeof maybe_r = maybe_r;
+
+         rs.forEach((_r, i) => {
+            const r: typeof _r = _r;
             try {
                r.assert(u[i]);
             } catch (e) {
@@ -69,7 +57,7 @@ export function tuple<rs extends rtti[]>(...rs: readonly [...rs]): rtti<decant_t
                   throw e;
                }
             }
-         }
+         });
       },
    };
 }

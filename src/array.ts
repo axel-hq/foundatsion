@@ -3,6 +3,7 @@ import {rtti} from "./rtti";
 import {unsound} from "./unsound";
 import {unknown} from "./unknown";
 import {FoundatsionError} from "./error";
+import {text} from "./text";
 
 const cache = new WeakMap<rtti, rtti<unknown[]>>();
 
@@ -22,7 +23,8 @@ export function array<t>(r: rtti<t>): rtti<t[]> {
          if (!array.is(u)) {
             throw new FoundatsionError(
                `Tried asserting for ${this.name} but failed since`,
-               "array.is returned false.",
+               "array.is returned false.\n",
+               `Instead, value was ${text.show(u)}`,
             );
          }
 

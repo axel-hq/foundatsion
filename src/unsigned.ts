@@ -5,6 +5,7 @@ import {bigint} from "./bigint";
 import {number} from "./number";
 import {newtype} from "./newtype";
 import {FoundatsionError} from "./error";
+import {text} from "./text";
 
 {
    const r = union(bigint, number);
@@ -29,7 +30,7 @@ export namespace unsigned {
    export function assert_from_bigint_or_number(b: bigint | number): asserts b is unsigned {
       if (is_from_bigint_or_number(b)) return;
       throw new FoundatsionError(
-         `Could not assert for unsigned because ${b} was not greater than or`,
+         `Could not assert for unsigned because ${text.show(b)} was not greater than or`,
          "equal to zero!",
       );
    }
