@@ -178,18 +178,24 @@ export namespace FoundatsionError {
       export function split_into(s: string): line[] {
          return unsound.shut_up(s.split("\n"));
       }
+      export function slice(this: typeof line, l: line, start?: number, end?: number): line {
+         return unsound.shut_up(l.slice(start, end));
+      }
       export function wrap(this: typeof line, l: line, length: number): line[] {
          const lines: line[] = [];
-         const r = new RegExp(`(.{1,${length}})(?:\\s|$)`, "g");
-         for (const [, capture_group] of l.matchAll(r)) {
-            if (capture_group == null) {
-               throw new FoundatsionError(
-                  `Called ${this.name}.wrap ${length} but internal regex capture group was null.`,
-               );
+
+         let i = 0;
+         while (l.length - i > length) {
+            const pos = l.indexOf(" ", i);
+            if (pos === -1) {
+               lines.push(line.slice(l, i, i + length));
+               i += length;
+            } else {
+               lines.push(line.slice(l, i, pos));
+               i = pos + 1; // omit the " " character
             }
-            unsound.assert<line>(capture_group);
-            lines.push(capture_group);
          }
+         lines.push(line.slice(l, i));
          return lines;
       }
       export type force_line<s> =

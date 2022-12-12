@@ -9,13 +9,15 @@ export type oo = object & {[k in string]: unknown};
 export namespace oo {
    export const name = "open-object";
    export function is(u: unknown): u is oo {
-      return typeof u === "object" && u !== null;
+      return (typeof u === "object" || typeof u === "function") && u !== null;
    }
    export function assert<u>(this: typeof oo, u: u): asserts u is u & oo {
-      if (typeof u !== "object") {
+      if (typeof u === "object" || typeof u === "function") {}
+      else {
          throw new FoundatsionError(
             `Asserting for ${this.name} failed!\n`,
-            `typeof value was "${typeof u}" when it should've been "object".`,
+            `typeof value was "${typeof u}" when it should've been "object" | "function".`,
+            `Instead, value was ${text.show(u)}`,
          );
       }
       if (u === null) {
