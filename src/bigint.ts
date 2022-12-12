@@ -2,6 +2,7 @@ import {T} from "./type_traits";
 import {rtti} from "./rtti";
 import {unsound} from "./unsound";
 import {FoundatsionError} from "./error";
+import {text} from "./text";
 
 export namespace bigint {
    export const name = "bigint";
@@ -13,6 +14,7 @@ export namespace bigint {
          throw new FoundatsionError(
             `Tried asserting for ${this.name} but failed.\n`,
             `typeof value was "${typeof u}" when it should've been "bigint".`,
+            `Instead, value was ${text.show(u)}`,
          );
       }
    }

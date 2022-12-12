@@ -6,6 +6,8 @@ export namespace text {
     * use this.
     *
     * Don't plug `typeof x` into this, that'd be silly.
+    *
+    * Will not error
     */
    export function show(u: unknown): string {
       switch (typeof u) {
