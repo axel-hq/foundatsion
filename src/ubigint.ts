@@ -19,11 +19,14 @@ export const ubigint = {
       try {
          var b = BigInt(s);
       } catch (e) {
-         throw new FoundatsionError(
-            `Tried casting string to ${this.name} but failed since the BigInt`,
-            "constructor threw an Error!",
-            unsound.cast<Error>(e),
-         );
+         if (e instanceof Error) {
+            throw new FoundatsionError(
+               `Tried casting string to ${this.name} but failed since the BigInt`,
+               "constructor threw an Error!",
+               e,
+            );
+         }
+         throw e;
       }
       try {
          unsigned.assert_from_bigint(b);

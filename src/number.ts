@@ -1,6 +1,7 @@
 import {T} from "./type_traits";
 import {rtti} from "./rtti";
 import {FoundatsionError} from "./error";
+import {text} from "./text";
 
 export namespace number {
    export const name = "number";
@@ -12,6 +13,7 @@ export namespace number {
          throw new FoundatsionError(
             `Tried asserting for ${this.name} but failed.\n`,
             `typeof value was "${typeof u}" but should've been "number".`,
+            `Instead, value was ${text.show(u)}`,
          );
       }
    }

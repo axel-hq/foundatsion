@@ -1,6 +1,7 @@
 import {T} from "./type_traits";
 import {rtti} from "./rtti";
 import {FoundatsionError} from "./error";
+import {text} from "./text";
 
 export namespace boolean {
    export const name = "boolean";
@@ -12,6 +13,7 @@ export namespace boolean {
          throw new FoundatsionError(
             `Tried asserting for ${this.name} but failed.\n`,
             `typeof value was "${typeof u}" when it should've been "boolean".`,
+            `Instead, value was ${text.show(u)}`,
          );
       }
    }

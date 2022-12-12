@@ -1,6 +1,7 @@
 import {rtti} from "./rtti";
 import {FoundatsionError} from "./error";
 import {T} from "./type_traits";
+import {text} from "./text";
 
 export namespace symbol {
    export const name = "symbol";
@@ -12,6 +13,7 @@ export namespace symbol {
          throw new FoundatsionError(
             `Tried asserting for ${this.name} but failed.\n`,
             `typeof value was "${typeof u}" when it should've been "symbol".`,
+            `Instead, value was ${text.show(u)}`,
          );
       }
    }

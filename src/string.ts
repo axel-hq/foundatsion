@@ -1,4 +1,5 @@
 import {FoundatsionError} from "./error";
+import {text} from "./text";
 
 export namespace string {
    export const name = "string";
@@ -9,7 +10,8 @@ export namespace string {
       if (typeof u !== "string") {
          throw new FoundatsionError(
             `Tried asserting for ${this.name} but failed.\n`,
-            `typeof value was "${typeof u}" but should've been "string".`,
+            `typeof value was "${typeof u}" but should've been "string".\n`,
+            `Instead, value was ${text.show(u)}`,
          );
       }
    }

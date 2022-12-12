@@ -6,6 +6,10 @@ else
 	PATH := $/node_modules/.bin:$(PATH)
 endif
 
+test:
+	node test
+.PHONY: test
+
 errors:
 	tsc --noEmit
 .PHONY: errors
