@@ -1,4 +1,5 @@
 import {array} from "./array";
+import {oo} from "./oo";
 
 export namespace text {
    /**
@@ -15,7 +16,7 @@ export namespace text {
       case "boolean":   return `${u}`;
       case "number":    return `${u}`;
       case "string":    return JSON.stringify(u);
-      case "symbol":    return `Symbol(${show(u.description)})`;
+      case "symbol":    return `Symbol(${u.description === undefined ? "" : show(u.description)})`;
       case "undefined": return "undefined";
       case "function":  return `function ${u.name}(...)`;
       case "object":
@@ -24,7 +25,8 @@ export namespace text {
          } else if (u === null) {
             return "null";
          } else {
-            return "object";
+            const defined_keys = oo.keys(u).filter(k => u[k] !== undefined);
+            return `{${defined_keys.join(", ")}}`;
          }
       }
    }
