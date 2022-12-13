@@ -81,3 +81,5 @@ export namespace rtti {
       }
    }
 }
+
+rtti.verify(T<string>, string);

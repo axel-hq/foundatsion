@@ -3,9 +3,10 @@ import {text} from "./text";
 import {unsound} from "./unsound";
 import {id, ignore, tt} from "./type_traits";
 import {FoundatsionError} from "./error";
+import {any_fn} from "./any_fn";
 
 /** Open Object */
-export type oo = object & {[k in string]: unknown};
+export type oo = (object | any_fn) & {[k in string]: unknown};
 export namespace oo {
    export const name = "open-object";
    export function is(u: unknown): u is oo {
