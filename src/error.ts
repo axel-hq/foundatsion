@@ -185,8 +185,8 @@ export namespace FoundatsionError {
          const lines: line[] = [];
 
          let i = 0;
-         while (l.length - i > length) {
-            const pos = l.indexOf(" ", i);
+         while (i + length < l.length) {
+            const pos = l.lastIndexOf(" ", i + length);
             if (pos === -1) {
                lines.push(line.slice(l, i, i + length));
                i += length;
