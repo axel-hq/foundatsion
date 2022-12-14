@@ -6,9 +6,9 @@ else
 	PATH := $/node_modules/.bin:$(PATH)
 endif
 
-test:
-	node test
-.PHONY: test
+build: cjs es6 dts
+	-
+.PHONY: build
 
 errors:
 	tsc --noEmit
@@ -32,11 +32,16 @@ es6: clean
 
 dts: clean
 	tsc --module es2020 --emitDeclarationOnly --declaration --declarationDir bin/dts
+	node add_command_comments
 .PHONY: dts
 
-build: cjs es6 dts
-	-
-.PHONY: build
+zzz: cjs
+	node $@
+.PHONY: zzz
+
+test:
+	ava --verbose
+.PHONY: test
 
 publish: build
 	npm publish --dry-run

@@ -1,9 +1,9 @@
 import {oo} from "./oo";
 import {rtti} from "./rtti";
+import {text} from "./text";
 import {unsound} from "./unsound";
 import {unknown} from "./unknown";
 import {FoundatsionError} from "./error";
-import {text} from "./text";
 
 const cache = new WeakMap<rtti, rtti<unknown[]>>();
 
@@ -53,6 +53,8 @@ export function array<t>(r: rtti<t>): rtti<t[]> {
    return new_rtti;
 }
 export namespace array {
+   // just in case bundlers mess with this
+   Object.defineProperty(array, "name", {value: "array"});
    export function is(u: unknown): u is unknown[] {
       return Array.isArray(u);
    }
