@@ -1,6 +1,3 @@
-import {array} from "./array";
-import {oo} from "./oo";
-
 export namespace text {
    /**
     * Whenever you're printing something from the user, you should probably just
@@ -20,12 +17,12 @@ export namespace text {
       case "undefined": return "undefined";
       case "function":  return `function ${u.name}(...)`;
       case "object":
-         if (array.is(u)) {
+         if (Array.isArray(u)) {
             return `[${u.map(show).join(", ")}]`;
          } else if (u === null) {
             return "null";
          } else {
-            const defined_keys = oo.keys(u).filter(k => u[k] !== undefined);
+            const defined_keys = Object.keys(u).filter(k => (u as any)[k] !== undefined);
             return `{${defined_keys.join(", ")}}`;
          }
       }

@@ -25,13 +25,25 @@ export class FoundatsionError extends Error {
       }
       for (const e of msg) {
          if (typeof e === "string") {
+            if (e === "") {
+               // this variant is an utter pain in the ass to deal with.
+               if (linebuffer === null) {
+                  linebuffer = FoundatsionError.line("");
+               } else {
+                  linebuffer = FoundatsionError.line.concat(
+                     launder<FoundatsionError.line>(linebuffer),
+                     " ",
+                  );
+               }
+            }
             let line: FoundatsionError.line;
             // while we can find a newline in the string
-            for (
-               let next: string | null = e;
-               [line, next] = FoundatsionError.line.next(next), next;
-            )
-            {
+            let next: string | null = e;
+            while (true) {
+               [line, next] = FoundatsionError.line.next(next);
+               if (next === null) {
+                  break;
+               }
                // [1]
                // this one confused me initially when I read it a second time.
                // normally when we have a line, we append it to the linebuffer
@@ -49,7 +61,8 @@ export class FoundatsionError extends Error {
                // If we imagine the linebuffer = "foo", we don't want to flush
                // "foo ". We just want to flush without adding a space.
                if (line === "") {
-                  continue; // HAHAHAHAHAAHHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHA
+                  linebuffer = flush(linebuffer);
+                  linebuffer satisfies null; continue;
                }
 
                // [3] (condition 3)
@@ -145,8 +158,11 @@ export class FoundatsionError extends Error {
 export namespace FoundatsionError {
    /** A line is a string without a newline in it. */
    export type line = string & newtype<"FoundatsionError.line">;
+   export function line<s extends string>(s: s & line.force_line<s>): s & line {
+      return unsound.bless<s & line>(s);
+   }
    export namespace line {
-      export const name = "FoundatsionError.line";
+      Object.defineProperty(line, "name", {value: "FoundatsionError.line"});
       export function is(u: unknown): u is line {
          return string.is(u) && (!u.includes("\n"));
       }
@@ -215,6 +231,7 @@ export namespace FoundatsionError {
          [k in keyof i]: force_line<i[k]>;
       };
 
+      // please fucking inline this, v8
       export function concat<i extends string[]>(...i: i & force_lines<i>): line {
          return unsound.cast<line>(i.join(""));
       }

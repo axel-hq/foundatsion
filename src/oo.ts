@@ -1,9 +1,10 @@
 import {rtti} from "./rtti";
 import {text} from "./text";
+import {any_fn} from "./any_fn";
+import {string} from "./string";
 import {unsound} from "./unsound";
 import {id, ignore, tt} from "./type_traits";
 import {FoundatsionError} from "./error";
-import {any_fn} from "./any_fn";
 
 /** Open Object */
 export type oo = (object | any_fn) & {[k in string]: unknown};
@@ -66,3 +67,5 @@ export namespace oo {
       return unsound.shut_up(Object.keys(o));
    }
 }
+
+oo.assert(string)
