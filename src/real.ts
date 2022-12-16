@@ -6,9 +6,18 @@ import {newtype} from "./newtype";
 import {unsound} from "./unsound";
 import {FoundatsionError} from "./error";
 
+export type force_real<n extends number> =
+   `${number}` extends `${n}`
+      ? real
+      : n;
+
 export type real = number & newtype<"real">;
+export function real<n extends number>(n: n & force_real<n>): n & real {
+   unsound.assert<real>(n);
+   return n;
+}
 export namespace real {
-   export const name = "real";
+   Object.defineProperty(real, "name", {value: "real"});
    export function is(u: unknown): u is real {
       return number.is(u) && (!Number.isNaN(u)) && Number.isFinite(u);
    }

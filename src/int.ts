@@ -6,9 +6,25 @@ import {newtype} from "./newtype";
 import {unsound} from "./unsound";
 import {FoundatsionError} from "./error";
 
+type no_dot_rec<s extends string> =
+   s extends `${infer head}${infer tail}`
+      ? head extends "."
+         ? int
+         : no_dot_rec<tail>
+      : unknown;
+
+type force_int<n extends number> =
+   `${number}` extends `${n}`
+      ? int
+      : no_dot_rec<`${n}`>;
+
 export type int = real & newtype<"int">;
+export function int<n extends number>(n: n & force_int<n>): n & int {
+   unsound.assert<int>(n);
+   return n;
+}
 export namespace int {
-   export const name = "int";
+   Object.defineProperty(int, "name", {value: "int"});
    export function is(u: unknown): u is int {
       return Number.isInteger(u);
    }

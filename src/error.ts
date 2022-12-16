@@ -26,7 +26,6 @@ export class FoundatsionError extends Error {
       for (const e of msg) {
          if (typeof e === "string") {
             if (e === "") {
-               // this variant is an utter pain in the ass to deal with.
                if (linebuffer === null) {
                   linebuffer = FoundatsionError.line("");
                } else {

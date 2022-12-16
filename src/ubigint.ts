@@ -1,10 +1,10 @@
+import {T} from "./type_traits";
 import {rtti} from "./rtti";
 import {inter} from "./inter";
 import {bigint} from "./bigint";
 import {unsound} from "./unsound";
 import {unsigned} from "./unsigned";
 import {FoundatsionError} from "./error";
-import {T} from "./type_traits";
 
 export type ubigint = unsigned & bigint;
 export const ubigint = {

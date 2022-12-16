@@ -3,6 +3,8 @@
 // annotation, I must re-declare, annotate and export any rtti objects that
 // contain assertion functions.
 export {array} from "./array";
+import {any_fn as _any_fn} from "./any_fn";
+export const any_fn: typeof _any_fn = _any_fn;
 import {assert as _assert} from "./assert";
 export const assert: typeof _assert = _assert;
 export {assert_and_return} from "./assert";

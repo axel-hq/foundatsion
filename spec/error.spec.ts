@@ -51,8 +51,8 @@ test("FoundatsionError handles complex input well", t => {
       "\nWhen a man looks for something beyond his reach", "",
       "his friends say he's\nlooking for the pot of gold at the end of", "", "",
       "the rainbow", "", "", "\n",
-   )
-   t.deepEqual(e.passages, [
+   );
+   const canonical = [
       "When the sunlight strikes raindrops in the air, they act as a prism and form a rainbow",
       "These take the shape of a long round arch, with its path high above.",
       "",
@@ -60,5 +60,11 @@ test("FoundatsionError handles complex input well", t => {
       "",
       "When a man looks for something beyond his reach  his friends say he's",
       "looking for the pot of gold at the end of   the rainbow  ",
+   ];
+   t.deepEqual(e.passages, canonical);
+   const ee = new F.Error(e);
+   t.deepEqual(ee.passages, [
+      "FoundatsionError:",
+      canonical,
    ]);
 });
