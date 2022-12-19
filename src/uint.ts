@@ -8,19 +8,12 @@ import {unsound} from "./unsound";
 import {unsigned} from "./unsigned";
 import {FoundatsionError} from "./error";
 
-type no_dot_rec<s extends string> =
-   s extends `${infer head}${infer tail}`
-      ? head extends "."
-         ? uint
-         : no_dot_rec<tail>
-      : unknown;
-
 type force_uint<n extends number> =
    `${number}` extends `${n}`
       ? uint
-      : `${n}` extends `-${number}`
+      : `${n}` extends `-${number}` | `${string}.${string}`
          ? uint
-         : no_dot_rec<`${n}`>;
+         : unknown;
 
 export type uint = unsigned & int;
 function uint_static<n extends number>(n: n & force_uint<n>): n & uint {

@@ -6,17 +6,12 @@ import {newtype} from "./newtype";
 import {unsound} from "./unsound";
 import {FoundatsionError} from "./error";
 
-type no_dot_rec<s extends string> =
-   s extends `${infer head}${infer tail}`
-      ? head extends "."
-         ? int
-         : no_dot_rec<tail>
-      : unknown;
-
 type force_int<n extends number> =
    `${number}` extends `${n}` // †
       ? int
-      : no_dot_rec<`${n}`>;
+      : `${n}` extends `${string}.${string}`
+         ? int
+         : unknown;
 // †
 // Even though n <: number, that does not ensure that n is a unit type
 // number & {foo: "bar"} <: number, however we are still unable to determine
