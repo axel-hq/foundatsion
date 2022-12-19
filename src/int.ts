@@ -14,9 +14,21 @@ type no_dot_rec<s extends string> =
       : unknown;
 
 type force_int<n extends number> =
-   `${number}` extends `${n}`
+   `${number}` extends `${n}` // †
       ? int
       : no_dot_rec<`${n}`>;
+// †
+// Even though n <: number, that does not ensure that n is a unit type
+// number & {foo: "bar"} <: number, however we are still unable to determine
+// "int-iness", for lack of a better word.
+// We can, however, handle unions of unit types, as we can introspect upon those
+// the union elements to determine if they satisfy int.
+
+// Something of interest is that even though int(a as (1 | 2)) works perfectly
+// well, doing the same thing (or what would appear to be the same thing) at the
+// type level does not.
+
+type unknown_for_some_reason = force_int<1 | 2>;
 
 export type int = real & newtype<"int">;
 export function int<n extends number>(n: n & force_int<n>): n & int {

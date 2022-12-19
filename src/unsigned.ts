@@ -1,11 +1,11 @@
 import {T} from "./type_traits";
 import {rtti} from "./rtti";
+import {text} from "./text";
 import {union} from "./union";
 import {bigint} from "./bigint";
 import {number} from "./number";
 import {newtype} from "./newtype";
 import {FoundatsionError} from "./error";
-import {text} from "./text";
 
 {
    const r = union(bigint, number);
@@ -27,7 +27,7 @@ export namespace unsigned {
       return bigint_or_number.is(u) && is_from_bigint_or_number(u);
    }
 
-   export function assert_from_bigint_or_number(b: bigint | number): asserts b is unsigned {
+   export function assert_from_bigint_or_number<b extends bigint | number>(b: b): asserts b is b & unsigned {
       if (is_from_bigint_or_number(b)) return;
       throw new FoundatsionError(
          `Could not assert for unsigned because ${text.show(b)} was not greater than or`,
@@ -35,9 +35,9 @@ export namespace unsigned {
       );
    }
 
-   export const assert_from_bigint: {(b: bigint): asserts b is bigint & unsigned}
+   export const assert_from_bigint: {<b extends bigint>(b: b): asserts b is b & unsigned}
       = assert_from_bigint_or_number;
-   export const assert_from_number: {(n: number): asserts n is number & unsigned}
+   export const assert_from_number: {<n extends number>(n: n): asserts n is n & unsigned}
       = assert_from_bigint_or_number;
 
    export function assert(u: unknown): asserts u is unsigned {

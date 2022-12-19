@@ -33,7 +33,7 @@ export namespace rtti {
       & {[k in keyof r as k extends `cast_to_${string}` ? k : never]: {(t: t): any}};
 
    type callish<t, r> =
-      r extends any_fn ? {(a: any): t} : unknown;
+      r extends any_fn ? {(...args: any[]): t} : unknown;
 
    type well_formed<t, r> =
       & {is: is<t>}
@@ -41,8 +41,12 @@ export namespace rtti {
       & castish<t, r>
       & callish<t, r>;
 
-   export const verify: {<t, r>(t: T<t>, r: r & well_formed<t, r>): void}
-      = ignore;
+   export const verify:
+   {
+      <wt extends T<unknown>, r>
+         (wt: wt, r: r & well_formed<wt extends T<infer it> ? it : never, r>): void;
+   }
+   = ignore;
 
    export function is_from_assert<t>(a: assert<t>): is<t> {
       function is(u: unknown): boolean {
@@ -89,4 +93,6 @@ export namespace rtti {
    }
 }
 
+// we have this verify here because otherwise we'd create a circular dependency
+// between rtti and string.
 rtti.verify(T<string>, string);

@@ -1,5 +1,5 @@
+import {F} from ".";
 import test from "ava";
-import {F} from "../src";
 
 // @ts-expect-error
 F.real(NaN);

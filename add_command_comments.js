@@ -1,3 +1,7 @@
+// the dts generator strips comments from the output files so we're just gonna
+// add em ourselves.
+// this actually works out nicely because it means other libraries aren't gonna
+// have these comments in em.
 const fs = require("fs");
 
 const nt = "bin/dts/newtype.d.ts";

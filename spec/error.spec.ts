@@ -1,5 +1,5 @@
+import {F} from ".";
 import test from "ava";
-import {F} from "../src";
 
 const passages = "passages";
 
