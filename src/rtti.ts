@@ -32,7 +32,14 @@ export namespace rtti {
       & {[k in keyof r as k extends `cast_from_${string}` ? k : never]: {(a: any): t}}
       & {[k in keyof r as k extends `cast_to_${string}` ? k : never]: {(t: t): any}};
 
-   type well_formed<t, r> = {is: is<t>} & castish<t, r> & assert.force_t<t, r>;
+   type callish<t, r> =
+      r extends any_fn ? {(a: any): t} : unknown;
+
+   type well_formed<t, r> =
+      & {is: is<t>}
+      & assert.force_t<t, r>
+      & castish<t, r>
+      & callish<t, r>;
 
    export const verify: {<t, r>(t: T<t>, r: r & well_formed<t, r>): void}
       = ignore;

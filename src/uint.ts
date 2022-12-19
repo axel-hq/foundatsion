@@ -1,3 +1,4 @@
+import {T} from "./type_traits";
 import {int} from "./int";
 import {rtti} from "./rtti";
 import {inter} from "./inter";
@@ -5,7 +6,6 @@ import {ubigint} from "./ubigint";
 import {unsound} from "./unsound";
 import {unsigned} from "./unsigned";
 import {FoundatsionError} from "./error";
-import {T} from "./type_traits";
 
 export type uint = unsigned & int;
 export const uint = {

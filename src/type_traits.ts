@@ -126,4 +126,17 @@ export namespace tt {
     * // a has different behavior than b
     */
    export type merge<o extends {}> = {[k in keyof o]: o[k]};
+
+   export type keyof_any<t> = t extends unknown ? keyof t : never;
+
+   type assign_field_rec<o extends {}[], key extends keyof any> =
+      o extends [infer head, ...infer tail extends {}[]]
+         ? assign_field_rec<tail, key> extends never
+            ? head extends {[k in key]: infer v}
+               ? v
+               : never
+            : assign_field_rec<tail, key>
+         : never;
+   export type assign<o extends {}[]> =
+      {[k in keyof_any<o[number]>]: assign_field_rec<o, k>};
 }

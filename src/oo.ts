@@ -1,7 +1,6 @@
 import {rtti} from "./rtti";
 import {text} from "./text";
 import {any_fn} from "./any_fn";
-import {string} from "./string";
 import {unsound} from "./unsound";
 import {id, ignore, tt} from "./type_traits";
 import {FoundatsionError} from "./error";
@@ -68,4 +67,4 @@ export namespace oo {
    }
 }
 
-oo.assert(string)
+type z = keyof ({a: 1} | {b: 2});

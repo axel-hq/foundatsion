@@ -1,3 +1,5 @@
+import {tt} from "./type_traits";
+import {unsound} from "./unsound";
 import {FoundatsionError} from "./error";
 
 export type any_fn = {(...args: any[]): unknown};
@@ -15,5 +17,18 @@ export namespace any_fn {
             `typeof value was "${typeof u}" when it should've been "function".`,
          );
       }
+   }
+
+   export function imbue
+      <fn extends any_fn, objs extends object[]>
+         (fn: fn, ...objs: objs):
+            fn & tt.assign<objs>
+   {
+      const obj = Object.assign(Object.create(null), ...objs);
+      const new_fn = fn.bind(objs);
+      for (const [key, value] of Object.entries(obj)) {
+         Object.defineProperty(new_fn, key, {value});
+      }
+      return unsound.shut_up(new_fn);
    }
 }
