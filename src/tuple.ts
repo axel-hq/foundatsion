@@ -1,10 +1,9 @@
 // tuple with .length = n
 import {rtti} from "./rtti";
+import {text} from "./text";
 import {array} from "./array";
-import {unsound} from "./unsound";
 import {__unreachable} from "./type_traits";
 import {FoundatsionError} from "./error";
-import {text} from "./text";
 
 type decant_tuple<rs extends readonly [...rtti[]]> =
    rs extends readonly [rtti<infer t>, ...infer tail extends [...rtti[]]]

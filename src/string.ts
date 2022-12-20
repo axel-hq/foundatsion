@@ -1,5 +1,5 @@
-import {FoundatsionError} from "./error";
 import {text} from "./text";
+import {FoundatsionError} from "./error";
 
 export namespace string {
    export const name = "string";

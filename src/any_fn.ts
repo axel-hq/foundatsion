@@ -1,4 +1,3 @@
-import {tt} from "./type_traits";
 import {unsound} from "./unsound";
 import {FoundatsionError} from "./error";
 
@@ -19,13 +18,14 @@ export namespace any_fn {
       }
    }
 
+   /** Add fields to a function. */
    export function imbue
-      <fn extends any_fn, obj extends object>
-         (fn: fn, obj: obj):
-            fn & obj
+      <fn extends any_fn, fields extends object>
+         (fn: fn, fields: fields):
+            fn & fields
    {
-      const new_fn = fn.bind(obj);
-      for (const [key, value] of Object.entries(obj)) {
+      const new_fn = fn.bind(fields);
+      for (const [key, value] of Object.entries(fields)) {
          Object.defineProperty(new_fn, key, {value});
       }
       return unsound.shut_up(new_fn);

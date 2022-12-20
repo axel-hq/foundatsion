@@ -24,6 +24,7 @@ type force_int<n extends number> =
 // type level does not.
 
 type unknown_for_some_reason = force_int<1 | 2>;
+void (0 as unknown_for_some_reason);
 
 export type int = real & newtype<"int">;
 export function int<n extends number>(n: n & force_int<n>): n & int {

@@ -1,3 +1,4 @@
+// this file is not allowed to depend on other files!
 export namespace text {
    /**
     * Whenever you're printing something from the user, you should probably just

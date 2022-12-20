@@ -5,19 +5,11 @@ import {never} from "./never";
 import {FoundatsionError} from "./error";
 import {tt, __unreachable} from "./type_traits";
 
-type require_const_prim_tpl<ts extends tt.prim[]> = {
-   [k in (number & keyof ts)]:
-      tt.is_const_prim<ts[k]> extends true
-      ? ts[k]
-      : tt.const_prim;
-};
-
 export function f_enum
    <prims extends tt.prim[]>
-      (name: string, prims: readonly [...prims] & require_const_prim_tpl<prims>):
-         rtti<prims[number]>;
-
-export function f_enum(name: string, prims: readonly tt.prim[]): rtti {
+      (name: string, prims: readonly [...prims] & tt.require_unit_tpl<prims>):
+         rtti<prims[number]>
+{
    if (prims.length === 0) {
       return never;
    }
@@ -28,7 +20,7 @@ export function f_enum(name: string, prims: readonly tt.prim[]): rtti {
 
    return {
       name,
-      is(u: unknown): u is unknown {
+      is(u: unknown): u is prims[number] {
          return prims.some(p => p === u);
       },
       assert<u>(u: u): asserts u is u & unknown {

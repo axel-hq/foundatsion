@@ -53,7 +53,8 @@ export function array<t>(r: rtti<t>): rtti<t[]> {
    return new_rtti;
 }
 export namespace array {
-   // just in case bundlers mess with this
+   // Bundlers could change the name of the function declared above.
+   // Since we actually depend on this.name, let's explicitly set it.
    Object.defineProperty(array, "name", {value: "array"});
    export function is(u: unknown): u is unknown[] {
       return Array.isArray(u);

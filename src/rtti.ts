@@ -15,6 +15,7 @@ export namespace rtti {
    export type t<r extends rtti> = r extends rtti<infer t> ? t : never;
 
    export type is<t = unknown> = {(u: unknown): u is t};
+
    export type assert<t = unknown> = {(u: unknown): asserts u is t};
    export namespace assert {
       export type t<f extends {(u: unknown): void}> =

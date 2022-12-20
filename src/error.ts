@@ -1,3 +1,6 @@
+/*******************************************************************************
+/                         Abandon all hope ye who enter                        /
+*******************************************************************************/
 import {text} from "./text";
 import {string} from "./string";
 import {newtype} from "./newtype";
@@ -89,6 +92,8 @@ export class FoundatsionError extends Error {
          }
 
          // passages
+         // notice the complete trust taken in this branch!
+         // not as if we could throw an error if the input was malformatted.
          if (Array.isArray(e)) {
             if (linebuffer !== null) {
                linebuffer = flush(linebuffer);
@@ -213,6 +218,8 @@ export namespace FoundatsionError {
          lines.push(line.slice(l, i));
          return lines;
       }
+      // it'd be nice if we could just check that s </: `${string}\n${string}`
+      // but what happens if you put in string?
       export type force_line<s> =
          s extends ""
             ? string

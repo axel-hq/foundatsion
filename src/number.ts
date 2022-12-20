@@ -1,7 +1,7 @@
 import {T} from "./type_traits";
 import {rtti} from "./rtti";
-import {FoundatsionError} from "./error";
 import {text} from "./text";
+import {FoundatsionError} from "./error";
 
 export namespace number {
    export const name = "number";

@@ -10,6 +10,8 @@ type union_decant<rs extends [...rtti[]]> =
 
 // I'm adding a little bit of extra type information that *technically*
 // shouldn't exist on an rtti object but I'm not telling anyone, are you?
+// Imagine a scenario where union(union(string)) happens, for instance.
+// It'd be nice to be able to access the original string rtti.
 const union_rtti_ary: unique symbol = Symbol();
 type union_rtti_object = rtti & {[union_rtti_ary]: rtti[]};
 namespace union_rtti_object {
@@ -17,7 +19,7 @@ namespace union_rtti_object {
       // This is really not good enough to prove that u is union_rtti_object.
       // But if someone else gets a hold of that symbol, that's not really
       // something that I can prevent.
-      return Object.hasOwnProperty.call(u, union_rtti_ary);
+      return union_rtti_ary in unsound.shut_up(u);
    }
 }
 

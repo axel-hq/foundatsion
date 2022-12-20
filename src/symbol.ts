@@ -1,7 +1,7 @@
-import {rtti} from "./rtti";
-import {FoundatsionError} from "./error";
 import {T} from "./type_traits";
+import {rtti} from "./rtti";
 import {text} from "./text";
+import {FoundatsionError} from "./error";
 
 export namespace symbol {
    export const name = "symbol";

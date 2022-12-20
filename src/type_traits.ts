@@ -67,19 +67,19 @@ export namespace tt {
             : false;
 
    /** Returns `true | false` */
-   export type is_const_string<s extends string> =
+   export type is_unit_string<s extends string> =
       is_union<s> extends true
          ? false
          : not_templated_string<s>;
 
-   declare const const_string: unique symbol;
-   export type const_string = {[const_string]: void};
+   declare const unit_string: unique symbol;
+   export type unit_string = {[unit_string]: void};
 
    // Internally, the typescript compiler has a flag called Unit.
    // That's basically what we're making here except on the typelevel.
 
    // Returns `true | false`
-   export type is_const_prim<p extends prim> =
+   export type is_uint<p extends prim> =
       is_union<p> extends true                                   // case: union
          ? false
       : p extends number                                         // case: number
@@ -91,18 +91,29 @@ export namespace tt {
             ? false
             : true
       : p extends string                                         // case: string
-         ? is_const_string<p>
+         ? is_unit_string<p>
       : p extends symbol                                         // case: symbol
          ? symbol extends p
             ? false
             : true
       : true;
 
-   declare const const_prim: unique symbol;
-   export type const_prim = {[const_prim]: void};
+   declare const unit: unique symbol;
+   /**
+    * A unit is a type which is satisfied by a single known runtime value.
+    * For instance, `1` is a unit but `1 | 2` is not.
+    */
+   export type unit = {[unit]: void};
 
-   export type require_const_prim<t extends prim> =
-      is_const_prim<t> extends true ? t : const_prim;
+   export type require_unit<t extends prim> =
+      is_uint<t> extends true ? t : unit;
+
+   export type require_unit_tpl<ts extends tt.prim[]> = {
+      [k in (number & keyof ts)]:
+         tt.is_uint<ts[k]> extends true
+         ? ts[k]
+         : tt.unit;
+   };
 
    /**
     * If you're using this, you're probably doing something wrong.

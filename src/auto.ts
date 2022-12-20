@@ -6,6 +6,13 @@ import {FoundatsionError} from "./error";
 
 type template = rtti | {[k in string]: template};
 
+/**
+ * Get the expressed type of a template.
+ * @example
+ * type expressed = auto_decant<{name: rtti<string>}>;
+ * // equivalent to
+ * type expressed = {name: string};
+ */
 type auto_decant<t extends template> =
    t extends rtti<infer i> ? i :
    t extends {name: string; is: any_fn; assert: any_fn} ? never :
@@ -14,6 +21,9 @@ type auto_decant<t extends template> =
 export type auto<t extends template> = rtti<auto_decant<t>>;
 export function auto<t extends template>(t: t): auto<t> {
    if (rtti.meta.is(t)) {
+      // Call looks like F.auto(F.string).
+      // Do nothing.
+      // Shouldn't need this cast but ts is too stupid.
       return unsound.shut_up(t);
    }
 
@@ -24,6 +34,7 @@ export function auto<t extends template>(t: t): auto<t> {
          let pairs: is_pair[] = [{t: t, u: u_toplevel}];
 
          // depth first type predicate-ing
+         // TODO: change direction of stack
          while (pairs.length > 0) {
             const current = pairs[0];
             // pop head
