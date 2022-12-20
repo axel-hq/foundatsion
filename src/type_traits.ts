@@ -12,6 +12,7 @@ const internal_t = class T<_> {};
 // for explicit type parameters
 export const T = internal_t as typeof internal_t & newtype<"T">;
 export type T<t> = typeof T<t> & newtype<"T">;
+export type Tt<t extends T<any>> = t extends T<infer t> ? t : never;
 
 /**
  * λx.x

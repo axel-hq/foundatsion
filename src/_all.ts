@@ -21,7 +21,7 @@ export const int: typeof _int = _int;
 export {inter} from "./inter";
 import {never as _never} from "./never";
 export const never: typeof _never = _never;
-export {nt_s, newtype, unwrap} from "./newtype";
+export {nt_s, newtype, unwrap, api_in} from "./newtype";
 import {number as _number} from "./number";
 export const number: typeof _number = _number;
 import {oo as _oo} from "./oo";

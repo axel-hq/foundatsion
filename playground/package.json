@@ -1,0 +1,5 @@
+{
+   "dependencies": {
+      "@axel-hq/foundatsion": "file:.."
+   }
+}
