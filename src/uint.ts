@@ -1,4 +1,4 @@
-import {T} from "./type_traits";
+import {T, tt} from "./type_traits";
 import {int} from "./int";
 import {rtti} from "./rtti";
 import {inter} from "./inter";
@@ -20,7 +20,8 @@ function uint_static<n extends number>(n: n & force_uint<n>): n & uint {
    unsound.assert<uint>(n);
    return n;
 }
-export const uint = any_fn.imbue(uint_static, inter(unsigned, int), {
+export const uint = any_fn.imbue(uint_static, {
+   ...inter(unsigned, int),
    name: "uint",
    cast_from_ubigint(u: ubigint): uint {
       return unsound.bless<uint>(int.cast_from_bigint(u));

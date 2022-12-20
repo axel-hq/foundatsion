@@ -19,7 +19,8 @@ function ubigint_static<b extends bigint>(b: b & force_ubigint<b>): b & ubigint 
    unsound.assert<ubigint>(b);
    return b;
 }
-export const ubigint = any_fn.imbue(ubigint_static, inter(unsigned, bigint), {
+export const ubigint = any_fn.imbue(ubigint_static, {
+   ...inter(unsigned, bigint),
    name: "ubigint",
    cast_from(u: unknown): ubigint {
       const b = bigint.cast_from(u);

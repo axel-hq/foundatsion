@@ -19,7 +19,8 @@ function ureal_static<n extends number>(n: n & force_ureal<n>): n & ureal {
    unsound.assert<ureal>(n);
    return n;
 }
-export const ureal = any_fn.imbue(ureal_static, inter(unsigned, real), {
+export const ureal = any_fn.imbue(ureal_static, {
+   ...inter(unsigned, real),
    name: "ureal",
    cast_from_string(s: string): ureal {
       try {

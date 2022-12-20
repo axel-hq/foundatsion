@@ -20,12 +20,11 @@ export namespace any_fn {
    }
 
    export function imbue
-      <fn extends any_fn, objs extends object[]>
-         (fn: fn, ...objs: objs):
-            fn & tt.assign<objs>
+      <fn extends any_fn, obj extends object>
+         (fn: fn, obj: obj):
+            fn & obj
    {
-      const obj = Object.assign(Object.create(null), ...objs);
-      const new_fn = fn.bind(objs);
+      const new_fn = fn.bind(obj);
       for (const [key, value] of Object.entries(obj)) {
          Object.defineProperty(new_fn, key, {value});
       }

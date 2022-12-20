@@ -10,12 +10,12 @@ test("invariant: number", t => {
 });
 
 test("imbue makes new function", t => {
-   const new_id = F.any_fn.imbue(F.id);
+   const new_id = F.any_fn.imbue(F.id, {});
    t.not(new_id, F.id);
 });
 
 test("imbue returns an identical function", t => {
-   const new_id = F.any_fn.imbue(F.id);
+   const new_id = F.any_fn.imbue(F.id, {});
    const rand = Math.random() * 300 | 0;
    t.is(new_id(rand), rand);
 });
@@ -28,13 +28,11 @@ test("imbue does not modify original", t => {
 });
 
 test("imbue correctly collapses into new function", t => {
-   const new_id = F.any_fn.imbue(
-      F.id,
-      {lorem: "ibsum"},
-      {wait: "that was a typo"},
-      {lorem: "ipsum"}
-   );
+   const new_id = F.any_fn.imbue(F.id, {
+      lorem: "ibsum",
+      wait: "that was a typo",
+   });
 
-   t.is(new_id.lorem, "ipsum");
+   t.is(new_id.lorem, "ibsum");
    t.is(new_id.wait, "that was a typo");
 });
