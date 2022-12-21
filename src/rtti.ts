@@ -2,7 +2,7 @@ import {oo} from "./oo";
 import {any_fn} from "./any_fn";
 import {string} from "./string";
 import {unsound} from "./unsound";
-import {T, ignore} from "./type_traits";
+import {ignore, iT} from "./type_traits";
 import {FoundatsionError} from "./error";
 
 export type rtti<t = unknown> = {
@@ -43,7 +43,7 @@ export namespace rtti {
       & castish<t, r>
       & callish<t, r>;
 
-   export const verify: {<t, r>(wt: T<t>, r: r & well_formed<t, r>): void}
+   export const verify: {<t, r>(wt: iT<t>, r: r & well_formed<t, r>): void}
       = ignore;
 
    export function is_from_assert<t>(a: assert<t>): is<t> {
@@ -93,4 +93,4 @@ export namespace rtti {
 
 // we have this verify here because otherwise we'd create a circular dependency
 // between rtti and string.
-rtti.verify(T<string>, string);
+rtti.verify(iT<string>, string);

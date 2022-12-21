@@ -1,4 +1,4 @@
-import {T} from "./type_traits";
+import {iT} from "./type_traits";
 import {rtti} from "./rtti";
 import {text} from "./text";
 import {union} from "./union";
@@ -57,4 +57,4 @@ export namespace unsigned {
    }
 }
 
-rtti.verify(T<unsigned>, unsigned);
+rtti.verify(iT<unsigned>, unsigned);

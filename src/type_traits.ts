@@ -7,12 +7,16 @@ export function __unreachable(): never {
 export const ignore = (..._: any[]): void => {};
 export const absurd = <t>(_: never): t => __unreachable();
 
-const internal_t = class T<_> {};
-
+const internal_T = class T<_> {};
 // for explicit type parameters
-export const T = internal_t as typeof internal_t & newtype<"T">;
+export const T = internal_T as typeof internal_T & newtype<"T">;
 export type T<t> = typeof T<t> & newtype<"T">;
-export type Tt<t extends T<any>> = t extends T<infer t> ? t : never;
+
+// invarient T
+declare const iT_s: unique symbol;
+export const iT: {new <t>(): {[iT_s]: {(t: t): t}}} & newtype<"iT"> =
+   class iT {} as never;
+export type iT<t> = typeof iT<t>;
 
 /**
  * λx.x

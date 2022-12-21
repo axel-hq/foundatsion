@@ -1,7 +1,7 @@
 // just want to make sure that we don't import the rtti value because that would
 // make it a circular value dependency
 import type {rtti} from "./rtti";
-import {id, ignore} from "./type_traits";
+import {id, ignore, T} from "./type_traits";
 
 export namespace unsound {
    /** Cast any value to type t. */
@@ -12,8 +12,10 @@ export namespace unsound {
    export const bless = cast;
    /** Changes the type of an identifier. */
    export const assert: {<t>(val: any): asserts val is t} = ignore;
-   export function assert_and_return<t, v>(_: rtti<t>, v: v): t & v {
-      return v as never;
+   export function assert_and_return<t, v>(_: T<t>, v: v): t & v;
+   export function assert_and_return<t, v>(_: rtti<t>, v: v): t & v;
+   export function assert_and_return(_: any, v: any): any {
+      return v;
    }
    export const assert_not_undefined: {<t>(v: t): asserts v is Exclude<t, undefined>}
       = ignore as never;

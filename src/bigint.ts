@@ -1,4 +1,4 @@
-import {T} from "./type_traits";
+import {iT} from "./type_traits";
 import {rtti} from "./rtti";
 import {text} from "./text";
 import {unsound} from "./unsound";
@@ -23,4 +23,4 @@ export namespace bigint {
    export const cast_from_string: {(s: string): bigint} = BigInt;
 }
 
-rtti.verify(T<bigint>, bigint);
+rtti.verify(iT<bigint>, bigint);

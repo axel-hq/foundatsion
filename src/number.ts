@@ -1,4 +1,4 @@
-import {T} from "./type_traits";
+import {iT} from "./type_traits";
 import {rtti} from "./rtti";
 import {text} from "./text";
 import {FoundatsionError} from "./error";
@@ -23,4 +23,4 @@ export namespace number {
    export const cast_from_bigint: {(b: bigint): number} = Number;
 }
 
-rtti.verify(T<number>, number);
+rtti.verify(iT<number>, number);

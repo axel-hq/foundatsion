@@ -1,4 +1,4 @@
-import {T} from "./type_traits";
+import {iT} from "./type_traits";
 import {rtti} from "./rtti";
 import {text} from "./text";
 import {FoundatsionError} from "./error";
@@ -20,4 +20,4 @@ export namespace symbol {
    export const cast_from_string = Symbol.for.bind(Symbol);
 }
 
-rtti.verify(T<symbol>, symbol);
+rtti.verify(iT<symbol>, symbol);

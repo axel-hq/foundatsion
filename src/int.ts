@@ -1,4 +1,4 @@
-import {T} from "./type_traits";
+import {iT} from "./type_traits";
 import {real} from "./real";
 import {rtti} from "./rtti";
 import {text} from "./text";
@@ -63,4 +63,4 @@ export namespace int {
    }
 }
 
-rtti.verify(T<int>, int);
+rtti.verify(iT<int>, int);

@@ -11,8 +11,5 @@ namespace bad {
          throw new F.Error("You failed.");
       }
    }
-   export function cast_to_number(b: bad): number {
-      return Math.sin(b);
-   }
 }
-F.rtti.verify(F.T<bad>, bad);
+F.rtti.verify(F.iT<"bad">, bad);
