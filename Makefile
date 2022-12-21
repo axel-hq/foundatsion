@@ -6,7 +6,7 @@ else
 	PATH := $/node_modules/.bin:$(PATH)
 endif
 
-build: cjs es6 dts
+build: clean cjs es6 dts
 	-
 .PHONY: build
 
@@ -22,15 +22,15 @@ else
 endif
 .PHONY: clean
 
-cjs: clean
+cjs:
 	tsc --module commonjs --outDir bin/cjs
 .PHONY: cjs
 
-es6: clean
+es6:
 	tsc --module es2020 --outDir bin/es6
 .PHONY: es6
 
-dts: clean
+dts:
 	tsc --module es2020 --emitDeclarationOnly --declaration --declarationDir bin/dts
 	node add_command_comments
 .PHONY: dts

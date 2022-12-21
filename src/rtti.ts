@@ -24,7 +24,8 @@ export namespace rtti {
       export type assert_function<t> = {[assert_function_s]: t};
       export type force_t<wanted, r> =
          r extends {assert: assert}
-            ? t<r["assert"]> extends wanted ? unknown : assert_function<wanted>
+            ? t<r["assert"]> extends wanted ? unknown
+            : assert_function<wanted>
             : assert_function<wanted>;
    }
 
@@ -42,12 +43,8 @@ export namespace rtti {
       & castish<t, r>
       & callish<t, r>;
 
-   export const verify:
-   {
-      <wt extends T<unknown>, r>
-         (wt: wt, r: r & well_formed<wt extends T<infer it> ? it : never, r>): void;
-   }
-   = ignore;
+   export const verify: {<t, r>(wt: T<t>, r: r & well_formed<t, r>): void}
+      = ignore;
 
    export function is_from_assert<t>(a: assert<t>): is<t> {
       function is(u: unknown): boolean {
