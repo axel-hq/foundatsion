@@ -1,15 +1,8 @@
 import {F} from "@axel-hq/foundatsion";
 
-type bad = number & F.newtype<"bad">;
-namespace bad {
-   export const name = "bad";
-   export const is = F.rtti.is_from_assert(assert);
-   export function assert(u: unknown): asserts u is bad {
-      F.number.assert(u);
-      if (Math.sin(u) > 0) { }
-      else {
-         throw new F.Error("You failed.");
-      }
-   }
+function untrusted(i: F.api_in<F.int>): number {
+   F.number.assert(i);
+   
 }
-F.rtti.verify(F.iT<"bad">, bad);
+
+type z = 1 & never;

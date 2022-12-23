@@ -1,4 +1,4 @@
-import {iT} from "./type_traits";
+import {T} from "./type_traits";
 import {rtti} from "./rtti";
 import {inter} from "./inter";
 import {any_fn} from "./any_fn";
@@ -56,4 +56,4 @@ export const ubigint = any_fn.imbue(ubigint_static, {
    },
 });
 
-rtti.verify(iT<ubigint>, ubigint);
+rtti.verify(T<ubigint>, ubigint);

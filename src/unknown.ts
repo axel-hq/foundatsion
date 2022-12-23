@@ -1,5 +1,5 @@
 import {rtti} from "./rtti";
-import {ignore, iT} from "./type_traits";
+import {ignore, T} from "./type_traits";
 
 export namespace unknown {
    export const name = "unknown";
@@ -9,4 +9,4 @@ export namespace unknown {
    export const assert: rtti.assert = ignore;
 }
 
-rtti.verify(iT<unknown>, unknown);
+rtti.verify(T<unknown>, unknown);

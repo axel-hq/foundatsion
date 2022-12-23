@@ -45,7 +45,6 @@ export {
    id,
    ct_true,
    T,
-   iT,
    tt,
 } from "./type_traits";
 import {ubigint as _ubigint} from "./ubigint";

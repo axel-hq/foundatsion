@@ -1,4 +1,4 @@
-import {iT} from "./type_traits";
+import {T} from "./type_traits";
 import {int} from "./int";
 import {rtti} from "./rtti";
 import {inter} from "./inter";
@@ -44,4 +44,4 @@ export const uint = any_fn.imbue(uint_static, {
    },
 });
 
-rtti.verify(iT<uint>, uint);
+rtti.verify(T<uint>, uint);

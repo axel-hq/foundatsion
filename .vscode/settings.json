@@ -1,7 +1,4 @@
 {
-   "editor.unicodeHighlight.allowedCharacters": {
-      "ꓸ": true,
-   },
    "cSpell.words": [
       "artti",
       "assertish",
@@ -10,9 +7,6 @@
       "casty",
       "isish",
       "rtti",
-      "rttii",
-      "rꓸassert",
-      "tꓸassert"
    ],
-   "typescript.tsdk": "node_modules\\typescript\\lib"
+   "typescript.tsdk": "node_modules/typescript/lib"
 }

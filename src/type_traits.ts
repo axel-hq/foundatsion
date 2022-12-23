@@ -1,5 +1,4 @@
-import {newtype} from "./newtype";
-
+// this function 
 export function __unreachable(): never {
    throw __unreachable;
 }
@@ -7,16 +6,23 @@ export function __unreachable(): never {
 export const ignore = (..._: any[]): void => {};
 export const absurd = <t>(_: never): t => __unreachable();
 
-const internal_T = class T<_> {};
-// for explicit type parameters
-export const T = internal_T as typeof internal_T & newtype<"T">;
-export type T<t> = typeof T<t> & newtype<"T">;
-
-// invarient T
-declare const iT_s: unique symbol;
-export const iT: {new <t>(): {[iT_s]: {(t: t): t}}} & newtype<"iT"> =
-   class iT {} as never;
-export type iT<t> = typeof iT<t>;
+/** Explicit type parameter (invariant by default) */
+export type T<t> = typeof T<t>;
+export function T<t>(_do_not_call_this_function_or_you_will_be_fired: never): {(v: t): t} {
+   __unreachable();
+}
+export namespace T {
+   /** Covariant explicit type parameter */
+   export type Co<t> = typeof Co<t>;
+   export function Co<t>(_do_not_call_this_function_or_you_will_be_fired: never): {(v: t): any} {
+      __unreachable();
+   }
+   /** Contravariant explicit type parameter */
+   export type Contra<t> = typeof Contra<t>;
+   export function Contra<t>(_do_not_call_this_function_or_you_will_be_fired: never): {(v: any): t} {
+      __unreachable();
+   }
+}
 
 /**
  * λx.x
@@ -48,12 +54,12 @@ export namespace tt {
 
    type _is_union<t1, t2> =
       t2 extends unknown
-         ? t2 extends t1
-            ? unknown // it's not a union
-            : true
+         ? t1 extends t2
+            ? never
+            : true // union found
          : never;
    /** Returns `true` if t is a union */
-   export type is_union<t> = _is_union<t, t>;
+   export type is_union<t> = _is_union<t, t> extends never ? false : true;
 
    /** Returns `true` on regular string and `false` on templated string */
    export type not_templated_string<s extends string> =
@@ -84,23 +90,21 @@ export namespace tt {
    // That's basically what we're making here except on the typelevel.
 
    // Returns `true | false`
-   export type is_uint<p extends prim> =
+   export type is_unit<p extends prim> =
       is_union<p> extends true                                   // case: union
          ? false
       : p extends number                                         // case: number
-         ? number extends p
+         ? `${number}` extends `${p}`
             ? false
             : true
       : p extends bigint                                         // case: bigint
-         ? bigint extends p
+         ? `${bigint}` extends `${p}`
             ? false
             : true
       : p extends string                                         // case: string
          ? is_unit_string<p>
       : p extends symbol                                         // case: symbol
-         ? symbol extends p
-            ? false
-            : true
+         ? false
       : true;
 
    declare const unit: unique symbol;
@@ -111,11 +115,11 @@ export namespace tt {
    export type unit = {[unit]: void};
 
    export type require_unit<t extends prim> =
-      is_uint<t> extends true ? t : unit;
+      is_unit<t> extends true ? t : unit;
 
    export type require_unit_tpl<ts extends tt.prim[]> = {
       [k in (number & keyof ts)]:
-         tt.is_uint<ts[k]> extends true
+         tt.is_unit<ts[k]> extends true
          ? ts[k]
          : tt.unit;
    };

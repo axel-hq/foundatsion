@@ -1,4 +1,4 @@
-import {iT} from "./type_traits";
+import {T} from "./type_traits";
 import {rtti} from "./rtti";
 import {FoundatsionError} from "./error";
 
@@ -14,4 +14,4 @@ export namespace never {
    }
 }
 
-rtti.verify(iT<never>, never);
+rtti.verify(T<never>, never);

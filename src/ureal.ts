@@ -1,4 +1,4 @@
-import {iT} from "./type_traits";
+import {T} from "./type_traits";
 import {real} from "./real";
 import {rtti} from "./rtti";
 import {inter} from "./inter";
@@ -40,4 +40,4 @@ export const ureal = any_fn.imbue(ureal_static, {
    },
 });
 
-rtti.verify(iT<ureal>, ureal);
+rtti.verify(T<ureal>, ureal);
