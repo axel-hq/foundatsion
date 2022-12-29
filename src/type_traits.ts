@@ -1,4 +1,3 @@
-// this function 
 export function __unreachable(): never {
    throw __unreachable;
 }
