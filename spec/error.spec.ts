@@ -1,9 +1,10 @@
 import {F} from ".";
 import test from "ava";
 
+// prevent refactoring actions
 const passages = "passages";
 
-test("e.passages is object", t => {
+test(`e.${passages} is object`, t => {
    const e = new F.Error("lorem ipsum");
    t.is(typeof e[passages], "object");
 });

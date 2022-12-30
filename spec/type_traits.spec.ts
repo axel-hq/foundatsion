@@ -12,7 +12,6 @@ $.true$<F.tt.is_unit<undefined>>;
 $.true$<F.tt.is_unit<never>>; // cults, this should probably be false but whatever
 $.true$<F.tt.is_unit<null>>;
 $.true$<F.tt.is_unit<"">>;
-// why doesn't this pass?
 $.true$<F.tt.is_unit<"this is still a unit but it's a weird one" & oh_no>>;
 $.false$<F.tt.is_unit<boolean & oh_no>>;
 $.false$<F.tt.is_unit<number & oh_no>>;

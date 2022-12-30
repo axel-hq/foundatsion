@@ -64,7 +64,7 @@ export namespace tt {
    export type not_templated_string<s extends string> =
       s extends ""
          ? true
-         : s extends `${infer head}${infer tail}`
+         : `${s}` extends `${infer head}${infer tail}`
             ? string extends head
                ? false
                : `${number}` extends head
