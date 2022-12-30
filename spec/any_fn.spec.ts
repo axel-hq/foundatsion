@@ -23,8 +23,8 @@ test("imbue returns an identical function", t => {
 test("imbue does not modify original", t => {
    F.any_fn.imbue(F.any_fn.imbue, {key: "value"});
    // @ts-expect-error
-   void F.any_fn.key;
-   t.not((F.any_fn as any).key, "value");
+   void F.any_fn.imbue.key;
+   t.not((F.any_fn.imbue as any).key, "value");
 });
 
 test("imbue correctly collapses into new function", t => {

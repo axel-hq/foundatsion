@@ -13,12 +13,12 @@ export function T<t>(_do_not_call_this_function_or_you_will_be_fired: never): {(
 export namespace T {
    /** Covariant explicit type parameter */
    export type Co<t> = typeof Co<t>;
-   export function Co<t>(_do_not_call_this_function_or_you_will_be_fired: never): {(v: t): any} {
+   export function Co<t>(_do_not_call_this_function_or_I_will_kill_you: never): {(v: t): any} {
       __unreachable();
    }
    /** Contravariant explicit type parameter */
    export type Contra<t> = typeof Contra<t>;
-   export function Contra<t>(_do_not_call_this_function_or_you_will_be_fired: never): {(v: any): t} {
+   export function Contra<t>(_do_not_call_this_function_or_you_will_be_flensed: never): {(v: any): t} {
       __unreachable();
    }
 }

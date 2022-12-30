@@ -29,7 +29,7 @@ function contravariant<t>(_: F.T.Contra<t>, __: t): void {}
 
 declare const top_s: unique symbol;
 
-type top = {[top_s]};
+type top = {[top_s]: void};
 type middle1 = top & {species: string};
 type middle2 = top & {color: string};
 type bottom = middle1 & middle2;
@@ -143,7 +143,7 @@ namespace take {
    contravariant(F.T<top>, top);
    contravariant(F.T<top>, middle1);
    contravariant(F.T<top>, middle2);
-   contravariant(F.T<top>, top);
+   contravariant(F.T<top>, bottom);
 
    // t := top
    take.contravariant(F.T<top>, take.top);
