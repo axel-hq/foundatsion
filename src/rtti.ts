@@ -18,8 +18,20 @@ export namespace rtti {
 
    export type assert<t = unknown> = {(u: unknown): asserts u is t};
    export namespace assert {
+      // assert functions are really really annoying and don't properly work
+      // within the type system.
+      // (u => asserts u is x) is isometric to (u => void).
+      // Why? Because MICROSOFT HATES YOU OK.
+      // Fear not! Using conditional types with infer, we can smuggle the
+      // asserted-to type out of the type predicate.
+      // The downside is that we can't tell the difference between that and
+      // asserting to unknown.
+      // But asserting to unknown is like pretty stupid so if you're doing that
+      // that's not really my fault.
       export type t<f extends {(u: unknown): void}> =
          f extends {(u: unknown): asserts u is infer r} ? r : unknown;
+      // this here is just for nice error messages...
+      // (u: unknown) => void is not assignable to assert_function<number>
       declare const assert_function_s: unique symbol;
       export type assert_function<t> = {[assert_function_s]: t};
       export type force_t<wanted, r> =
@@ -30,6 +42,13 @@ export namespace rtti {
    }
 
    type castish<t, r> =
+      // so why are we doing this mapped type nonsense right here?
+      // well, one would assume that having an index signature with an optional
+      // value would cover the cast_to and cast_from case like saying
+      // "if you have cast_from I expect it to return t"
+      // but no. typescript hates me and the feeling is mutual.
+      // Instead, what we're gonna do is just check if every cast_to or
+      // from function *that exists* on type r is the correct format.
       & {[k in keyof r as k extends "cast_from" ? k : never]: {(u: unknown): t}}
       & {[k in keyof r as k extends `cast_from_${string}` ? k : never]: {(a: any): t}}
       & {[k in keyof r as k extends `cast_to_${string}` ? k : never]: {(t: t): any}};
@@ -46,6 +65,10 @@ export namespace rtti {
    export const verify: {<t, r>(wt: T<t>, r: r & well_formed<t, r>): void}
       = ignore;
 
+   /**
+    * In general, you shouldn't be using this but it can be a nice for fast
+    * development.
+    */
    export function is_from_assert<t>(a: assert<t>): is<t> {
       function is(u: unknown): boolean {
          try {
