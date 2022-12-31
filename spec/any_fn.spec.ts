@@ -2,11 +2,11 @@ import {F} from ".";
 import test from "ava";
 
 test("invariant: object", t => {
-   t.throws(() => F.any_fn.assert({}));
-})
+   t.throws(() => { F.any_fn.assert({}) });
+});
 
 test("invariant: number", t => {
-   t.throws(() => F.any_fn.assert(Math.random() * 3000));
+   t.throws(() => { F.any_fn.assert(Math.random() * 3000) });
 });
 
 test("imbue makes new function", t => {
