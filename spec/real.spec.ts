@@ -24,7 +24,7 @@ two_or_three satisfies 2 | 3;
 
 test("invariant: NaN", t => {
    const v = NaN;
-   t.false(F.real.is(v))
+   t.false(F.real.is(v));
    t.throws(() => {
       F.real.assert(v);
    });
@@ -32,7 +32,7 @@ test("invariant: NaN", t => {
 
 test("invariant: Infinity", t => {
    const v = Infinity;
-   t.false(F.real.is(v))
+   t.false(F.real.is(v));
    t.throws(() => {
       F.real.assert(v);
    });
@@ -40,7 +40,7 @@ test("invariant: Infinity", t => {
 
 test("invariant: -Infinity", t => {
    const v = -Infinity;
-   t.false(F.real.is(v))
+   t.false(F.real.is(v));
    t.throws(() => {
       F.real.assert(v);
    });

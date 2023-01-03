@@ -1,0 +1,20 @@
+{
+   "compilerOptions": {
+      "exactOptionalPropertyTypes": true,
+      "noImplicitAny": true,
+      "noImplicitReturns": true,
+      "noImplicitThis": true,
+      "noUncheckedIndexedAccess": true,
+      "strict": true,
+      "useUnknownInCatchVariables": true,
+      "moduleResolution": "node16",
+      "newLine": "lf",
+      "noEmitOnError": true,
+      "sourceMap": true,
+      "removeComments": false,
+      "esModuleInterop": true,
+      "forceConsistentCasingInFileNames": true,
+      "lib": ["es2020", "dom"],
+      "target": "es2020",
+   },
+}

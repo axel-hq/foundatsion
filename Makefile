@@ -23,24 +23,18 @@ endif
 .PHONY: clean
 
 cjs:
-	tsc --module commonjs --outDir bin/cjs
-.PHONY: cjs
+	tsc -p tsconfig.cjs.json
 
-es6:
-	tsc --module es2020 --outDir bin/es6
-.PHONY: es6
+es6: $(src_files)
+	tsc -p tsconfig.esm.json
 
-dts:
-	tsc --module es2020 --emitDeclarationOnly --declaration --declarationDir bin/dts
+dts: es6
 	node add_command_comments
 .PHONY: dts
 
-zzz: cjs
-	node $@
-.PHONY: zzz
-
 test:
-	ava --verbose
+	tsc -p tsconfig.spec.json
+	ava bin/spec --verbose
 .PHONY: test
 
 publish: build

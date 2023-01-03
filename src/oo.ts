@@ -47,8 +47,6 @@ export namespace oo {
       } catch (e) {
          if (e instanceof Error) {
             throw new FoundatsionError(
-               // JSON.stringify(k) is used to escape quotes and other weird
-               // characters within k.
                `While asserting for {[${text.show(k)}]: ${t.name}}`,
                "an error was thrown:",
                e,
@@ -66,5 +64,3 @@ export namespace oo {
       return unsound.shut_up(Object.keys(o));
    }
 }
-
-type z = keyof ({a: 1} | {b: 2});
