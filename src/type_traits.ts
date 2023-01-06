@@ -116,12 +116,10 @@ export namespace tt {
    export type require_unit<t extends prim> =
       is_unit<t> extends true ? t : unit;
 
-   export type require_unit_tpl<ts extends tt.prim[]> = {
-      [k in (number & keyof ts)]:
-         tt.is_unit<ts[k]> extends true
-         ? ts[k]
-         : tt.unit;
-   };
+   export type require_unit_tpl<ts extends prim[]> =
+      ts extends [infer head extends prim, ...infer tail extends prim[]]
+         ? [require_unit<head>, ...require_unit_tpl<tail>]
+         : [];
 
    /**
     * If you're using this, you're probably doing something wrong.
@@ -147,4 +145,16 @@ export namespace tt {
    export type merge<o extends {}> = {[k in keyof o]: o[k]};
 
    export type keyof_any<t> = t extends unknown ? keyof t : never;
+
+   /**
+    * Deeply converts all array types into their readonly form
+    */
+   export type cnst<u> = u extends prim
+      ? u
+      : u extends (infer t)[]
+         ? readonly cnst<t>[]
+         : u extends [infer head, ...infer tail]
+            ? readonly [cnst<head>, ...cnst<tail>]
+            : {[k in keyof u]: cnst<u[k]>}
+   ;
 }

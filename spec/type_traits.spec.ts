@@ -44,6 +44,10 @@ middle2 satisfies top;
 bottom satisfies top;
 bottom satisfies middle1;
 bottom satisfies middle2;
+// @ts-expect-error
+middle1 satisfies middle2;
+// @ts-expect-error
+middle2 satisfies middle1;
 
 type take<t> = {(_: t): void};
 function take<t>(_: t): void {}
@@ -178,6 +182,21 @@ namespace take {
    take.contravariant(F.T<bottom>, take.middle1);
    take.contravariant(F.T<bottom>, take.middle2);
    take.contravariant(F.T<bottom>, take.bottom);
+}
+
+{
+   // @ts-expect-error
+   take<[middle1, middle2]>([middle1, middle2] as const);
+   take<F.tt.cnst<[middle1, middle2]>>([middle1, middle2] as const);
+   take<F.tt.cnst<{list: top[]; a: 1}>>({list: [top, bottom, middle2], a: 1} as const);
+
+   // F.tt.cnst deals with recursive types well
+   type recursive = string & {[i in number]: recursive};
+   const recursive = "" as recursive;
+   take<F.tt.cnst<{list: [middle1, middle2[]]; z: recursive}>>({
+      list: [middle1, [middle2, bottom]],
+      z: recursive,
+   } as const);
 }
 
 import test from "ava";
