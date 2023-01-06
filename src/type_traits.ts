@@ -118,8 +118,8 @@ export namespace tt {
 
    export type require_unit_tpl<ts extends prim[]> =
       ts extends [infer head extends prim, ...infer tail extends prim[]]
-         ? [require_unit<head>, ...require_unit_tpl<tail>]
-         : [];
+         ? readonly [require_unit<head>, ...require_unit_tpl<tail>]
+         : readonly [];
 
    /**
     * If you're using this, you're probably doing something wrong.
@@ -151,10 +151,13 @@ export namespace tt {
     */
    export type cnst<u> = u extends prim
       ? u
-      : u extends (infer t)[]
-         ? readonly cnst<t>[]
-         : u extends [infer head, ...infer tail]
-            ? readonly [cnst<head>, ...cnst<tail>]
-            : {[k in keyof u]: cnst<u[k]>}
-   ;
+      : u extends readonly [infer head, ...infer tail]
+         ? readonly [cnst<head>, ...cnst<tail>]
+         : u extends readonly [...infer head, infer tail]
+            ? readonly [...cnst<head>, cnst<tail>]
+            : u extends readonly []
+               ? readonly []
+               : u extends readonly (infer t)[]
+                  ? readonly cnst<t>[]
+                  : {[k in keyof u]: cnst<u[k]>};
 }

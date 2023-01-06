@@ -184,11 +184,24 @@ namespace take {
    take.contravariant(F.T<bottom>, take.bottom);
 }
 
+// F.tt.cnst works properly
 {
    // @ts-expect-error
    take<[middle1, middle2]>([middle1, middle2] as const);
    take<F.tt.cnst<[middle1, middle2]>>([middle1, middle2] as const);
+   // @ts-expect-error
+   take<F.tt.cnst<[middle1, middle2]>>([middle2, middle1] as const);
    take<F.tt.cnst<{list: top[]; a: 1}>>({list: [top, bottom, middle2], a: 1} as const);
+
+   // F.tt.cnst correctly handles an empty tuple
+   take<F.tt.cnst<[]>>([] as const);
+
+   // F.tt.cnst doesn't mess with values that are already readonly
+   take<F.tt.cnst<readonly top[]>>([top, bottom, middle1]);
+   take<F.tt.cnst<readonly [top, bottom, middle1]>>([top, bottom, middle1]);
+   // NOTE(Marcus): for some reason the type is being inferred correctly here
+   // @ts-expect-error
+   take<F.tt.cnst<readonly [top, bottom, middle1]>>([top, bottom, middle2]);
 
    // F.tt.cnst deals with recursive types well
    type recursive = string & {[i in number]: recursive};
@@ -197,6 +210,14 @@ namespace take {
       list: [middle1, [middle2, bottom]],
       z: recursive,
    } as const);
+
+   take<F.tt.cnst<["hello", 7n, ...number[], "goodbye", 3]>>(
+      ["hello", 7n, 0, 3.14, -17, "goodbye", 3] as const
+   );
+   take<F.tt.cnst<["hello", 7n, ...number[], "goodbye", 3]>>(
+      // @ts-expect-error
+      ["hello", 7n, 0, 3.14, -17, "goodbye"] as const
+   );
 }
 
 import test from "ava";

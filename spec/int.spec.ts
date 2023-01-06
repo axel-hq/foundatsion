@@ -27,7 +27,7 @@ two_or_three satisfies F.real & (2 | 3);
 
 test("invariant: NaN", t => {
    const v = NaN;
-   t.false(F.int.is(v))
+   t.false(F.int.is(v));
    t.throws(() => {
       F.int.assert(v);
    });
@@ -35,7 +35,7 @@ test("invariant: NaN", t => {
 
 test("invariant: Infinity", t => {
    const v = Infinity;
-   t.false(F.int.is(v))
+   t.false(F.int.is(v));
    t.throws(() => {
       F.int.assert(v);
    });
@@ -43,7 +43,15 @@ test("invariant: Infinity", t => {
 
 test("invariant: -Infinity", t => {
    const v = -Infinity;
-   t.false(F.int.is(v))
+   t.false(F.int.is(v));
+   t.throws(() => {
+      F.int.assert(v);
+   });
+});
+
+test("invariant: 3.14", t => {
+   const v = 3.14;
+   t.false(F.int.is(v));
    t.throws(() => {
       F.int.assert(v);
    });
@@ -58,8 +66,12 @@ test("invariant: (.2 + .1) * 10", t => {
    });
 });
 
-const r = Math.random() * 100 | 0;
-test(`random: ${r} as i32 is integer`, t => {
-   t.true(F.int.is(r));
-   t.notThrows(() => { F.int.assert(r) });
-})
+test("All numbers between -100 and 100 are integers", t => {
+   for (let i = -100; i <= 100; i++) {
+      t.true(F.int.is(i));
+      {
+         const i_static = i;
+         t.notThrows(() => { F.int.assert(i_static) });
+      }
+   }
+});
