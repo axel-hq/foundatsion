@@ -54,6 +54,11 @@ export const ubigint = any_fn.imbue(ubigint_static, {
       }
       return b;
    },
+   cast_from_number(n: number): ubigint {
+      const b = bigint.cast_from_number(n);
+      unsigned.assert_from_bigint(b);
+      return b;
+   },
 });
 
 rtti.verify(T<ubigint>, ubigint);
