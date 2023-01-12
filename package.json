@@ -38,6 +38,7 @@
    },
    "scripts": {
       "prepack": "npm run build",
+      "err": "tsc --noEmit",
       "clean": "make clean",
       "build-cjs": "tsc -p tsconfig.cjs.json",
       "build-es6": "tsc -p tsconfig.esm.json",
