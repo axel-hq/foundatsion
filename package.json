@@ -1,6 +1,6 @@
 {
    "name": "@axel-hq/foundatsion",
-   "version": "0.6.6",
+   "version": "0.6.7",
    "description": "A library for runtime type-checking in TypeScript",
    "homepage": "https://github.com/axel-hq/foundatsion#readme",
    "repository": "git@github.com:axel-hq/foundatsion.git",
@@ -35,5 +35,14 @@
    },
    "engines": {
       "node": ">=16"
+   },
+   "scripts": {
+      "prepack": "npm run build",
+      "clean": "make clean",
+      "build-cjs": "tsc -p tsconfig.cjs.json",
+      "build-es6": "tsc -p tsconfig.esm.json",
+      "build-dts": "node add_command_comments",
+      "build": "npm run clean && npm run build-cjs && npm run build-es6 && npm run build-dts",
+      "test": "tsc -p tsconfig.spec.json && ava bin/spec --verbose"
    }
 }
