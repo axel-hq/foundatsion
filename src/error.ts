@@ -207,7 +207,7 @@ export namespace FoundatsionError {
          let i = 0;
          while (i + length < l.length) {
             const pos = l.lastIndexOf(" ", i + length);
-            if (pos === -1) {
+            if (pos <= i) { // Also covers the -1 case
                lines.push(line.slice(l, i, i + length));
                i += length;
             } else {
