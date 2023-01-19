@@ -3,7 +3,7 @@
    "include": ["src/*.ts"],
    "compilerOptions": {
       "module": "es2020",
-      "outDir": "bin/esm",
+      "outDir": "bin/es6",
       "declaration": true,
       "declarationDir": "bin/dts",
    },
